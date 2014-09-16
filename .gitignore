@@ -22,3 +22,6 @@
 
 # JetBrains CLion IDE
 .idea
+
+build
+install
