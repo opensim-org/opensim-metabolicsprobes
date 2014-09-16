@@ -128,13 +128,15 @@ void UchidaBhargava2004MuscleMetabolicsProbe::constructProperties()
  */
 void UchidaBhargava2004MuscleMetabolicsProbe::connectToModel(Model& aModel)
 {
-    std::cout << "DEBUG-1" << std::endl;
     Super::connectToModel(aModel);
     if (isDisabled()) return;   // Nothing to connect
+
 
     const int nM = 
         get_UchidaBhargava2004MuscleMetabolicsProbe_MetabolicMuscleParameterSet()
         .getSize();
+
+    std::cout << "DEBUG-1 nM " << nM << std::endl;
     for (int i=0; i<nM; ++i) {
         connectIndividualMetabolicMuscle(aModel, 
             upd_UchidaBhargava2004MuscleMetabolicsProbe_MetabolicMuscleParameterSet()[i]);
@@ -251,6 +253,7 @@ void UchidaBhargava2004MuscleMetabolicsProbe::connectIndividualMetabolicMuscle(
 SimTK::Vector UchidaBhargava2004MuscleMetabolicsProbe::
 computeProbeInputs(const State& s) const
 {
+    std::cout << "DEBUG COMPUTEPROBEINPUTS" << std::endl;
     // Initialize metabolic energy rate values
     double Adot, Mdot, Sdot, Bdot, Wdot;
     Adot = Mdot = Sdot = Bdot = Wdot = 0;

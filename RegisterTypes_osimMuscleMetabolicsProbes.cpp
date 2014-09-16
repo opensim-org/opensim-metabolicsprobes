@@ -36,7 +36,11 @@ static dllObjectInstantiator instantiator;
 OSIMMUSCLEMETABOLICSPROBES_API void RegisterTypes_osimMuscleMetabolicsProbes()
 {
 	Object::RegisterType( UchidaBhargava2004MuscleMetabolicsProbe() );
+    Object::RegisterType( UchidaBhargava2004MuscleMetabolicsProbe_MetabolicMuscleParameterSet() );
+    Object::RegisterType( UchidaBhargava2004MuscleMetabolicsProbe_MetabolicMuscleParameter() );
     Object::RegisterType( UchidaUmberger2010MuscleMetabolicsProbe() );
+    Object::RegisterType( UchidaUmberger2010MuscleMetabolicsProbe_MetabolicMuscleParameterSet() );
+    Object::RegisterType( UchidaUmberger2010MuscleMetabolicsProbe_MetabolicMuscleParameter() );
 }
 
 dllObjectInstantiator::dllObjectInstantiator() 
