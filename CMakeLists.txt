@@ -23,5 +23,6 @@ set_target_properties(osimMuscleMetabolicsProbes PROPERTIES
 target_link_libraries(osimMuscleMetabolicsProbes ${OPENSIMSIMBODY_LIBRARIES})
 
 install(TARGETS osimMuscleMetabolicsProbes DESTINATION .)
-install(FILES README.md DESTINATION .)
+install(FILES README.txt DESTINATION .)
+install(DIRECTORY examples DESTINATION .)
 
