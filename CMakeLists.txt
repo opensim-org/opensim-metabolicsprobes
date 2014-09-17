@@ -18,6 +18,8 @@ set(SOURCE
     )
 
 add_library(osimMuscleMetabolicsProbes SHARED ${SOURCE})
+set_target_properties(osimMuscleMetabolicsProbes PROPERTIES
+	DEFINE_SYMBOL OSIMMUSCLEMETABOLICSPROBES_EXPORTS)
 target_link_libraries(osimMuscleMetabolicsProbes ${OPENSIMSIMBODY_LIBRARIES})
 
 install(TARGETS osimMuscleMetabolicsProbes DESTINATION .)
