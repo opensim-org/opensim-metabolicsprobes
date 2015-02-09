@@ -4,7 +4,7 @@ platform: x64
 
 init:
   # Put MSBuild on the path.
-  - SET PATH=C:\Program Files (x86)\MSBuild\10.0\bin\;%PATH%
+  - SET PATH=C:\Program Files (x86)\MSBuild\12.0\bin\;%PATH%
 
 build_script:
   - mkdir build
