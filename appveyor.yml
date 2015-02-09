@@ -1,0 +1,19 @@
+# Written by referring to OpenSim's appveyor.yml.
+
+platform: x64
+
+init:
+  # Put MSBuild on the path.
+  - SET PATH=C:\Program Files (x86)\MSBuild\10.0\bin\;%PATH%
+
+build_script:
+  - mkdir build
+  - cd build
+  # Configure.
+  - cmake .. -G"Visual Studio 10 Win64" -DOPENSIM_INSTALL_DIR="../OpenSim 3.1"
+  # Compile.
+  - MSBuild OpenSimMuscleMetabolicsProbes.sln /target:ALL_BUILD /p:Configuration=Release /maxcpucount:4
+
+test_script:
+  # TODO
+  - echo "TODO"
