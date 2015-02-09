@@ -35,15 +35,16 @@ uses CMC's excitations. Otherwise, the probe output will be incorrect
 
 - Run the tool! In the OpenSim GUI:
 
-    - Add <OpenSim install directory>/plugins to your PATH.
+    - Add <OpenSim install directory>/plugins to your PATH, where
+      <OpenSim install directory> is probably C:/OpenSim 3.1 or C:/OpenSim 3.2.
     - Open the OpenSim GUI, and load the plugin via Tools > User Plugins.
     - Run the tool (CMC or Analyze) using the setup file that contains the ProbeReporter.
 
 To use this plugin with OpenSim command line tools on Windows:
 
-    > analyze -S setup_file.xml -L <OpenSim install directory/plugins/osimMuscleMetabolicsProbes
+    > analyze -S setup_file.xml -L <OpenSim install directory>/plugins/osimMuscleMetabolicsProbes
     
 On UNIX:
 
-    $ analyze -S setup_file.xml -L <OpenSim install directory/plugins/libosimMuscleMetabolicsProbes
+    $ analyze -S setup_file.xml -L <OpenSim install directory>/plugins/libosimMuscleMetabolicsProbes
 
