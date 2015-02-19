@@ -2,18 +2,14 @@
 
 platform: x64
 
-init:
-  # Put MSBuild on the path.
-  - SET PATH=C:\Program Files (x86)\MSBuild\12.0\bin\;%PATH%
-  - dir "C:\\Program Files (x86)"
-
 build_script:
   - mkdir build
   - cd build
   # Configure.
   - cmake .. -G"Visual Studio 10 Win64" -DOPENSIM_INSTALL_DIR="C:/projects/opensim-metabolicsprobes/OpenSim 3.1"
   # Compile.
-  - MSBuild OpenSimMuscleMetabolicsProbes.sln /target:ALL_BUILD /p:Configuration=Release /maxcpucount:4 /verbosity:quiet
+  #- MSBuild OpenSimMuscleMetabolicsProbes.sln /target:ALL_BUILD /p:Configuration=Release /maxcpucount:4 /verbosity:quiet
+  - cmake --build . --config RelWithDebInfo --target ALL_BUILD -- /verbosity:quiet
 
 test_script:
   # TODO
