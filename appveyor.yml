@@ -6,7 +6,7 @@ build_script:
   - mkdir build
   - cd build
   # Configure.
-  - cmake .. -G"Visual Studio 10 Win64" -DOPENSIM_INSTALL_DIR="C:/projects/opensim-metabolicsprobes/OpenSim 3.1"
+  - cmake .. -G"Visual Studio 10 Win64" -DOPENSIM_INSTALL_DIR="C:/projects/opensim-metabolicsprobes/OpenSim 3.1" -DCMAKE_INSTALL_PREFIX="C:/projects/opensim-metabolicsprobes/install"
   # Compile.
   #- MSBuild OpenSimMuscleMetabolicsProbes.sln /target:ALL_BUILD /p:Configuration=Release /maxcpucount:4 /verbosity:quiet
   - cmake --build . --config RelWithDebInfo --target ALL_BUILD -- /verbosity:quiet
@@ -14,3 +14,10 @@ build_script:
 test_script:
   # TODO
   - echo "TODO"
+
+after_test:
+  # Install.
+  - cmake --build . --config RelWithDebInfo --target INSTALL -- /verbosity:quiet
+  # Create zip of the installation.
+  - 7z a opensim-metabolicsprobes.zip C:/projects/opensim-metabolicsprobes/install/
+  - appveyor PushArtifact opensim-metabolicsprobes.zip
