@@ -143,7 +143,7 @@ public:
     //--------------------------------------------------------------------------
     void setFiberLength(SimTK::State& s, double fiberLength) const
     {
-        setStateVariableValue(s, stateName_fiberLength, fiberLength);
+        setStateVariable(s, stateName_fiberLength, fiberLength);
         markCacheVariableInvalid(s, "lengthInfo");
         markCacheVariableInvalid(s, "velInfo");
         markCacheVariableInvalid(s, "dynamicsInfo");
@@ -151,7 +151,7 @@ public:
 
     void setNormFiberVelocity(SimTK::State& s, double normFiberVelocity) const
     {
-        setStateVariableValue(s, stateName_fiberVelocity, normFiberVelocity *
+        setStateVariable(s, stateName_fiberVelocity, normFiberVelocity *
                          getMaxContractionVelocity() * getOptimalFiberLength());
         markCacheVariableInvalid(s, "velInfo");
         markCacheVariableInvalid(s, "dynamicsInfo");
@@ -160,9 +160,9 @@ public:
     //--------------------------------------------------------------------------
     // MODELCOMPONENT INTERFACE
     //--------------------------------------------------------------------------
-    void extendConnectToModel(Model& model)
+    void connectToModel(Model& model)
     {
-        Super::extendConnectToModel(model);
+        Super::connectToModel(model);
         #ifdef USE_ACTIVATION_DYNAMICS_MODEL
         ZerothOrderMuscleActivationDynamics &zomad =
             upd_ZerothOrderMuscleActivationDynamics();
@@ -170,31 +170,34 @@ public:
         #endif
     }
 
-    void extendAddToSystem(SimTK::MultibodySystem& system) const
+    void addToSystem(SimTK::MultibodySystem& system) const
     {
-        Super::extendAddToSystem(system);
+        Super::addToSystem(system);
         addStateVariable(stateName_fiberLength);
         addStateVariable(stateName_fiberVelocity);
     }
 
-    void extendInitStateFromProperties(SimTK::State& s) const
+    void initStateFromProperties(SimTK::State& s) const
     {
-        Super::extendInitStateFromProperties(s);
+        Super::initStateFromProperties(s);
         setFiberLength(s, getOptimalFiberLength());
     }
 
-    void extendSetPropertiesFromState(const SimTK::State& s)
+    void setPropertiesFromState(const SimTK::State& s)
     {
-        Super::extendSetPropertiesFromState(s);
+        Super::setPropertiesFromState(s);
         setOptimalFiberLength(getFiberLength(s));
     }
 
-    void computeStateVariableDerivatives(const SimTK::State& s) const
+    SimTK::Vector computeStateVariableDerivatives(const SimTK::State& s) const
     {
         // This implementation is not intended for use in dynamic simulations.
-        const int n = getNumStateVariables();
-        setStateVariableDerivativeValue(s, stateName_fiberLength, 0.0);
-        setStateVariableDerivativeValue(s, stateName_fiberVelocity, 0.0);
+        SimTK::Vector derivs = Super::computeStateVariableDerivatives(s);
+        const int n = derivs.size();
+        derivs.resizeKeep(n + getNumStateVariables());
+        for (int i = 0; i < getNumStateVariables(); ++i) 
+            derivs[n + i] = 0;
+        return derivs;
     }
 
     //--------------------------------------------------------------------------
@@ -214,7 +217,7 @@ public:
     double computeActuation(const SimTK::State& s) const
     {
         const MuscleDynamicsInfo& mdi = getMuscleDynamicsInfo(s);
-        setActuation(s, mdi.tendonForce);
+        setForce(s, mdi.tendonForce);
         return mdi.tendonForce;
     }
 
@@ -222,7 +225,7 @@ public:
     void calcMuscleLengthInfo(const SimTK::State& s, MuscleLengthInfo& mli)
         const
     {
-        mli.fiberLength            = getStateVariableValue(s, stateName_fiberLength);
+        mli.fiberLength            = getStateVariable(s, stateName_fiberLength);
         mli.fiberLengthAlongTendon = mli.fiberLength;
         mli.normFiberLength        = mli.fiberLength / getOptimalFiberLength();
         mli.tendonLength           = 0;
@@ -250,7 +253,7 @@ public:
     void calcFiberVelocityInfo(const SimTK::State& s, FiberVelocityInfo& fvi)
         const
     {
-        fvi.fiberVelocity = getStateVariableValue(s, stateName_fiberVelocity);
+        fvi.fiberVelocity = getStateVariable(s, stateName_fiberVelocity);
         fvi.fiberVelocityAlongTendon = fvi.fiberVelocity;
         fvi.normFiberVelocity        = fvi.fiberVelocity /
                         (getMaxContractionVelocity() * getOptimalFiberLength());
@@ -365,7 +368,7 @@ void generateUmbergerMuscleData(const std::string& muscleName,
     // Create OpenSim model.
     Model model;
     model.setName("testModel_"+muscleName);
-    Ground& ground = model.updGround();
+    OpenSim::Body& ground = model.getGroundBody();
 
     // Create block. The length and velocity of the muscle will be specified, so
     // the properties of the block are irrelevant.
@@ -381,7 +384,6 @@ void generateUmbergerMuscleData(const std::string& muscleName,
     CoordinateSet& prisCoordSet = prismatic->upd_CoordinateSet();
     prisCoordSet[0].setName("xTranslation");
     model.addBody(block);
-    model.addJoint(prismatic);
 
     // Create muscle attached to ground and block.
     UmbergerMuscle *muscle = new UmbergerMuscle(muscleName, maxIsometricForce,
@@ -662,7 +664,7 @@ void testProbesUsingMillardMuscleSimulation()
     //--------------------------------------------------------------------------
     Model model;
     model.setName("testModel_metabolics");
-    Ground& ground = model.updGround();
+    OpenSim::Body& ground = model.getGroundBody();
 
     // Create block.
     const double blockMass       = 1.0;
@@ -685,7 +687,6 @@ void testProbesUsingMillardMuscleSimulation()
     prisCoordSet[0].setPrescribedFunction(motion);
     prisCoordSet[0].setDefaultIsPrescribed(true);
     model.addBody(block);
-    model.addJoint(prismatic);
 
     // Create muscles attached to ground and block.
     //                    _______
