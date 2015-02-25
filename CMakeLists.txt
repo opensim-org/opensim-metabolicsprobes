@@ -26,3 +26,9 @@ install(TARGETS osimMuscleMetabolicsProbes DESTINATION .)
 install(FILES README.txt DESTINATION .)
 install(DIRECTORY examples DESTINATION .)
 
+enable_testing()
+include(CTest)
+
+add_executable(testMuscleMetabolicsProbes tests/testMuscleMetabolicsProbes.cpp)
+add_test(testMuscleMetabolicsProbes testMuscleMetabolicsProbes)
+
