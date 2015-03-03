@@ -15,18 +15,23 @@ build_script:
   #- MSBuild OpenSimMuscleMetabolicsProbes.sln /target:ALL_BUILD /p:Configuration=Release /maxcpucount:4 /verbosity:quiet
   - cmake --build . --config RelWithDebInfo --target ALL_BUILD -- /verbosity:quiet
 
-  ## Build with Visual Studio 12.
-  - mkdir "C:/projects/opensim-metabolicsprobes/build_vs12"
-  - cd "C:/projects/opensim-metabolicsprobes/build_vs12"
-  # Configure.
-  - cmake .. -G"Visual Studio 12 Win64" -DOPENSIM_INSTALL_DIR="C:/projects/opensim-metabolicsprobes/OpenSim 3.1" -DCMAKE_INSTALL_PREFIX="C:/projects/opensim-metabolicsprobes/install_vs12"
-  # Compile.
-  - cmake --build . --config RelWithDebInfo --target ALL_BUILD -- /verbosity:quiet
+  ### Build with Visual Studio 12.
+  #- mkdir "C:/projects/opensim-metabolicsprobes/build_vs12"
+  #- cd "C:/projects/opensim-metabolicsprobes/build_vs12"
+  ## Configure.
+  #- cmake .. -G"Visual Studio 12 Win64" -DOPENSIM_INSTALL_DIR="C:/projects/opensim-metabolicsprobes/OpenSim 3.1" -DCMAKE_INSTALL_PREFIX="C:/projects/opensim-metabolicsprobes/install_vs12"
+  ## Compile.
+  #- cmake --build . --config RelWithDebInfo --target ALL_BUILD -- /verbosity:quiet
 
 
 test_script:
-  # TODO
-  - echo "TODO"
+  # Visual Studio 10.    
+  - cd "C:/projects/opensim-metabolicsprobes/build_vs10"
+  - ctest -V
+
+  ## Visual Studio 12.
+  #- cd "C:/projects/opensim-metabolicsprobes/build_vs12"
+  #- ctest -V
 
 after_test:
   ## Visual Studio 10.
@@ -42,15 +47,15 @@ after_test:
   - 7z a opensim-metabolicsprobes_vs10.zip C:/projects/opensim-metabolicsprobes/install_vs10/
   - appveyor PushArtifact opensim-metabolicsprobes_vs10.zip
 
-  ## Visual Studio 10.
-  - cd "C:/projects/opensim-metabolicsprobes/build_vs12"
-  # Install.
-  - cmake --build . --config RelWithDebInfo --target INSTALL -- /verbosity:quiet
+  ### Visual Studio 12.
+  #- cd "C:/projects/opensim-metabolicsprobes/build_vs12"
+  ## Install.
+  #- cmake --build . --config RelWithDebInfo --target INSTALL -- /verbosity:quiet
 
-  # Run the analysis.
-  - cd "C:/projects/opensim-metabolicsprobes/install_vs12/examples"
-  - analyze -S subject01_Setup_Analyze_Metabolics.xml -L ../osimMuscleMetabolicsProbes
+  ## Run the analysis.
+  #- cd "C:/projects/opensim-metabolicsprobes/install_vs12/examples"
+  #- analyze -S subject01_Setup_Analyze_Metabolics.xml -L ../osimMuscleMetabolicsProbes
 
-  # Create zip of the installation.
-  - 7z a opensim-metabolicsprobes_vs12.zip C:/projects/opensim-metabolicsprobes/install_vs12/
-  - appveyor PushArtifact opensim-metabolicsprobes_vs12.zip
+  ## Create zip of the installation.
+  #- 7z a opensim-metabolicsprobes_vs12.zip C:/projects/opensim-metabolicsprobes/install_vs12/
+  #- appveyor PushArtifact opensim-metabolicsprobes_vs12.zip
