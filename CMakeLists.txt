@@ -29,7 +29,7 @@ install(DIRECTORY examples DESTINATION .)
 enable_testing()
 include(CTest)
 
-#add_executable(testMuscleMetabolicsProbes tests/testMuscleMetabolicsProbes.cpp)
-#target_link_libraries(testMuscleMetabolicsProbes ${OPENSIMSIMBODY_LIBRARIES})
-#add_test(testMuscleMetabolicsProbes testMuscleMetabolicsProbes)
+add_executable(testMuscleMetabolicsProbes tests/testMuscleMetabolicsProbes.cpp)
+target_link_libraries(testMuscleMetabolicsProbes ${OPENSIMSIMBODY_LIBRARIES})
+add_test(testMuscleMetabolicsProbes testMuscleMetabolicsProbes)
 
