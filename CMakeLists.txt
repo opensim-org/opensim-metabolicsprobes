@@ -29,7 +29,9 @@ install(DIRECTORY examples DESTINATION .)
 enable_testing()
 include(CTest)
 
+include_directories(${PROJECT_SOURCE_DIR})
 add_executable(testMuscleMetabolicsProbes tests/testMuscleMetabolicsProbes.cpp)
-target_link_libraries(testMuscleMetabolicsProbes ${OPENSIMSIMBODY_LIBRARIES})
+target_link_libraries(testMuscleMetabolicsProbes ${OPENSIMSIMBODY_LIBRARIES}
+    osimMuscleMetabolicsProbes)
 add_test(testMuscleMetabolicsProbes testMuscleMetabolicsProbes)
 

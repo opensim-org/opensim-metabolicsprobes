@@ -50,8 +50,8 @@
 #include <OpenSim/Common/osimCommon.h>
 #include <OpenSim/Actuators/osimActuators.h>
 #include <OpenSim/Simulation/osimSimulation.h>
-#include <OpenSim/Simulation/Model/Umberger2010MuscleMetabolicsProbe.h>
-#include <OpenSim/Simulation/Model/Bhargava2004MuscleMetabolicsProbe.h>
+#include "UchidaUmberger2010MuscleMetabolicsProbe.h"
+#include "UchidaBhargava2004MuscleMetabolicsProbe.h"
 #include <OpenSim/Analyses/ProbeReporter.h>
 #include <OpenSim/Analyses/MuscleAnalysis.h>
 #include "auxiliaryTestFunctions.h"
@@ -63,8 +63,8 @@
 #include <OpenSim/Actuators/ZerothOrderMuscleActivationDynamics.h>
 #endif
 
-const bool DISPLAY_PROBE_OUTPUTS      = false;
-const bool DISPLAY_ERROR_CALCULATIONS = false;
+const bool DISPLAY_PROBE_OUTPUTS      = true;
+const bool DISPLAY_ERROR_CALCULATIONS = true;
 const bool OUTPUT_FILES               = false;
 
 using namespace OpenSim;
@@ -400,8 +400,8 @@ void generateUmbergerMuscleData(const std::string& muscleName,
     model.addController(controller);
 
     // Attach Umberger probes. Must call addProbe() before addMuscle().
-    Umberger2010MuscleMetabolicsProbe* mechanicalPowerProbe =
-        new Umberger2010MuscleMetabolicsProbe(false, false, false, true);
+    UchidaUmberger2010MuscleMetabolicsProbe* mechanicalPowerProbe =
+        new UchidaUmberger2010MuscleMetabolicsProbe(false, false, false, true);
     model.addProbe(mechanicalPowerProbe);
 
     model.setup();
@@ -409,8 +409,8 @@ void generateUmbergerMuscleData(const std::string& muscleName,
     mechanicalPowerProbe->setOperation("value");
     mechanicalPowerProbe->addMuscle(muscleName, slowTwitchRatio, muscleMass);
 
-    Umberger2010MuscleMetabolicsProbe* totalEnergyRateProbe =
-        new Umberger2010MuscleMetabolicsProbe(true, true, false, true);
+    UchidaUmberger2010MuscleMetabolicsProbe* totalEnergyRateProbe =
+        new UchidaUmberger2010MuscleMetabolicsProbe(true, true, false, true);
     model.addProbe(totalEnergyRateProbe);
     totalEnergyRateProbe->setName("totalEnergyRateProbe");
     totalEnergyRateProbe->setOperation("value");
@@ -521,6 +521,7 @@ void compareUmbergerProbeToPublishedResults()
             rateExpected = ((-187.6077328*vNorm - 553.9650747)*vNorm
                            - 194.9721769)*vNorm + 332.9105995;
         }
+
         ASSERT_EQUAL(rateExpected, sol_totalEnergyRate[i], 1.0,
             "testMuscleMetabolicsProbes: error in soleus total energy rate.");
 
@@ -730,8 +731,8 @@ void testProbesUsingMillardMuscleSimulation()
          << "Umberger2010 probe" << endl;
 
     // Add a test probe to the model. This probe will eventually be removed.
-    Umberger2010MuscleMetabolicsProbe* umbergerTest = new
-        Umberger2010MuscleMetabolicsProbe(true, true, true, true);
+    UchidaUmberger2010MuscleMetabolicsProbe* umbergerTest = new
+        UchidaUmberger2010MuscleMetabolicsProbe(true, true, true, true);
     model.addProbe(umbergerTest);
     ASSERT(model.getNumProbes()==1, __FILE__, __LINE__,
         "Umberger2010MuscleMetabolicsProbe could not be added to the model.");
@@ -779,8 +780,8 @@ void testProbesUsingMillardMuscleSimulation()
          << "Bhargava2004 probe\n" << endl;
 
     // Add a test probe to the model. This probe will eventually be removed.
-    Bhargava2004MuscleMetabolicsProbe* bhargavaTest = new
-        Bhargava2004MuscleMetabolicsProbe(true, true, true, true, true);
+    UchidaBhargava2004MuscleMetabolicsProbe* bhargavaTest = new
+        UchidaBhargava2004MuscleMetabolicsProbe(true, true, true, true, true);
     model.addProbe(bhargavaTest);
     ASSERT(model.getNumProbes()==1, __FILE__, __LINE__,
         "Bhargava2004MuscleMetabolicsProbe could not be added to the model.");
@@ -829,8 +830,8 @@ void testProbesUsingMillardMuscleSimulation()
 
     // Attach Umberger2010 probes to record individual heat rate and mechanical
     // power components at each point in time for muscle1.
-    Umberger2010MuscleMetabolicsProbe* umbergerActMaint_rate_m1 = new
-        Umberger2010MuscleMetabolicsProbe(true, false, false, false);
+    UchidaUmberger2010MuscleMetabolicsProbe* umbergerActMaint_rate_m1 = new
+        UchidaUmberger2010MuscleMetabolicsProbe(true, false, false, false);
     model.addProbe(umbergerActMaint_rate_m1);
     umbergerActMaint_rate_m1->setName("umbergerActMaint_rate_m1");
     umbergerActMaint_rate_m1->setOperation("value");
@@ -838,8 +839,8 @@ void testProbesUsingMillardMuscleSimulation()
     cout << setw(w) << ++probeCounter << ") Added Umberger2010 probe: "
          << "activation and maintenance heat rate (muscle 1)" << endl;
 
-    Umberger2010MuscleMetabolicsProbe* umbergerShorten_rate_m1 = new
-        Umberger2010MuscleMetabolicsProbe(false, true, false, false);
+    UchidaUmberger2010MuscleMetabolicsProbe* umbergerShorten_rate_m1 = new
+        UchidaUmberger2010MuscleMetabolicsProbe(false, true, false, false);
     model.addProbe(umbergerShorten_rate_m1);
     umbergerShorten_rate_m1->setName("umbergerShorten_rate_m1");
     umbergerShorten_rate_m1->setOperation("value");
@@ -847,8 +848,8 @@ void testProbesUsingMillardMuscleSimulation()
     cout << setw(w) << ++probeCounter << ") Added Umberger2010 probe: "
          << "shortening and lengthening heat rate (muscle 1)" << endl;
 
-    Umberger2010MuscleMetabolicsProbe* umbergerBasal_rate_m1 = new
-        Umberger2010MuscleMetabolicsProbe(false, false, true, false);
+    UchidaUmberger2010MuscleMetabolicsProbe* umbergerBasal_rate_m1 = new
+        UchidaUmberger2010MuscleMetabolicsProbe(false, false, true, false);
     model.addProbe(umbergerBasal_rate_m1);
     umbergerBasal_rate_m1->setName("umbergerBasal_rate_m1");
     umbergerBasal_rate_m1->setOperation("value");
@@ -856,8 +857,8 @@ void testProbesUsingMillardMuscleSimulation()
     cout << setw(w) << ++probeCounter << ") Added Umberger2010 probe: "
          << "basal heat rate (muscle 1)" << endl;
 
-    Umberger2010MuscleMetabolicsProbe* umbergerMechWork_rate_m1 = new
-        Umberger2010MuscleMetabolicsProbe(false, false, false, true);
+    UchidaUmberger2010MuscleMetabolicsProbe* umbergerMechWork_rate_m1 = new
+        UchidaUmberger2010MuscleMetabolicsProbe(false, false, false, true);
     model.addProbe(umbergerMechWork_rate_m1);
     umbergerMechWork_rate_m1->setName("umbergerMechWork_rate_m1");
     umbergerMechWork_rate_m1->setOperation("value");
@@ -867,8 +868,8 @@ void testProbesUsingMillardMuscleSimulation()
 
     // Attach Umberger2010 probe to record total rate of energy liberation at
     // each point in time for muscle1.
-    Umberger2010MuscleMetabolicsProbe* umbergerTotal_rate_m1 = new
-        Umberger2010MuscleMetabolicsProbe(true, true, true, true);
+    UchidaUmberger2010MuscleMetabolicsProbe* umbergerTotal_rate_m1 = new
+        UchidaUmberger2010MuscleMetabolicsProbe(true, true, true, true);
     model.addProbe(umbergerTotal_rate_m1);
     umbergerTotal_rate_m1->setName("umbergerTotal_rate_m1");
     umbergerTotal_rate_m1->setOperation("value");
@@ -879,8 +880,8 @@ void testProbesUsingMillardMuscleSimulation()
     // Attach Umberger2010 probes to record total energy liberation over the
     // entire simulation for (a) muscle1, (b) muscle2, (c) total for both
     // muscles, and (d) total for both muscles with all components reported.
-    Umberger2010MuscleMetabolicsProbe* umbergerTotal_m1 = new
-        Umberger2010MuscleMetabolicsProbe(true, true, true, true);
+    UchidaUmberger2010MuscleMetabolicsProbe* umbergerTotal_m1 = new
+        UchidaUmberger2010MuscleMetabolicsProbe(true, true, true, true);
     model.addProbe(umbergerTotal_m1);
     umbergerTotal_m1->setName("umbergerTotal_m1");
     umbergerTotal_m1->setOperation("integrate");
@@ -889,8 +890,8 @@ void testProbesUsingMillardMuscleSimulation()
     cout << setw(w) << ++probeCounter << ") Added Umberger2010 probe: "
          << "total energy liberation (muscle 1)" << endl;
 
-    Umberger2010MuscleMetabolicsProbe* umbergerTotal_m2 = new
-        Umberger2010MuscleMetabolicsProbe(true, true, true, true);
+    UchidaUmberger2010MuscleMetabolicsProbe* umbergerTotal_m2 = new
+        UchidaUmberger2010MuscleMetabolicsProbe(true, true, true, true);
     model.addProbe(umbergerTotal_m2);
     umbergerTotal_m2->setName("umbergerTotal_m2");
     umbergerTotal_m2->setOperation("integrate");
@@ -899,8 +900,8 @@ void testProbesUsingMillardMuscleSimulation()
     cout << setw(w) << ++probeCounter << ") Added Umberger2010 probe: "
          << "total energy liberation (muscle 2)" << endl;
 
-    Umberger2010MuscleMetabolicsProbe* umbergerTotal_both = new
-        Umberger2010MuscleMetabolicsProbe(true, true, true, true);
+    UchidaUmberger2010MuscleMetabolicsProbe* umbergerTotal_both = new
+        UchidaUmberger2010MuscleMetabolicsProbe(true, true, true, true);
     model.addProbe(umbergerTotal_both);
     umbergerTotal_both->setName("umbergerTotal_both");
     umbergerTotal_both->setOperation("integrate");
@@ -910,8 +911,8 @@ void testProbesUsingMillardMuscleSimulation()
     cout << setw(w) << ++probeCounter << ") Added Umberger2010 probe: "
          << "total energy liberation (both muscles, total only)" << endl;
 
-    Umberger2010MuscleMetabolicsProbe* umbergerTotalAllPieces_both = new
-        Umberger2010MuscleMetabolicsProbe(true, true, true, true);
+    UchidaUmberger2010MuscleMetabolicsProbe* umbergerTotalAllPieces_both = new
+        UchidaUmberger2010MuscleMetabolicsProbe(true, true, true, true);
     model.addProbe(umbergerTotalAllPieces_both);
     umbergerTotalAllPieces_both->setName("umbergerTotalAllPieces_both");
     umbergerTotalAllPieces_both->setOperation("integrate");
@@ -925,8 +926,8 @@ void testProbesUsingMillardMuscleSimulation()
 
     // Attach Bhargava2004 probes to record individual heat rate and mechanical
     // power components at each point in time for muscle1.
-    Bhargava2004MuscleMetabolicsProbe* bhargavaAct_rate_m1 = new
-        Bhargava2004MuscleMetabolicsProbe(true, false, false, false, false);
+    UchidaBhargava2004MuscleMetabolicsProbe* bhargavaAct_rate_m1 = new
+        UchidaBhargava2004MuscleMetabolicsProbe(true, false, false, false, false);
     model.addProbe(bhargavaAct_rate_m1);
     bhargavaAct_rate_m1->setName("bhargavaAct_rate_m1");
     bhargavaAct_rate_m1->setOperation("value");
@@ -934,8 +935,8 @@ void testProbesUsingMillardMuscleSimulation()
     cout << setw(w) << ++probeCounter << ") Added Bhargava2004 probe: "
          << "activation heat rate (muscle 1)" << endl;
 
-    Bhargava2004MuscleMetabolicsProbe* bhargavaMaint_rate_m1 = new
-        Bhargava2004MuscleMetabolicsProbe(false, true, false, false, false);
+    UchidaBhargava2004MuscleMetabolicsProbe* bhargavaMaint_rate_m1 = new
+        UchidaBhargava2004MuscleMetabolicsProbe(false, true, false, false, false);
     model.addProbe(bhargavaMaint_rate_m1);
     bhargavaMaint_rate_m1->setName("bhargavaMaint_rate_m1");
     bhargavaMaint_rate_m1->setOperation("value");
@@ -943,8 +944,8 @@ void testProbesUsingMillardMuscleSimulation()
     cout << setw(w) << ++probeCounter << ") Added Bhargava2004 probe: "
          << "maintenance heat rate (muscle 1)" << endl;
 
-    Bhargava2004MuscleMetabolicsProbe* bhargavaShorten_rate_m1 = new
-        Bhargava2004MuscleMetabolicsProbe(false, false, true, false, false);
+    UchidaBhargava2004MuscleMetabolicsProbe* bhargavaShorten_rate_m1 = new
+        UchidaBhargava2004MuscleMetabolicsProbe(false, false, true, false, false);
     model.addProbe(bhargavaShorten_rate_m1);
     bhargavaShorten_rate_m1->setName("bhargavaShorten_rate_m1");
     bhargavaShorten_rate_m1->setOperation("value");
@@ -952,8 +953,8 @@ void testProbesUsingMillardMuscleSimulation()
     cout << setw(w) << ++probeCounter << ") Added Bhargava2004 probe: "
          << "shortening and lengthening heat rate (muscle 1)" << endl;
 
-    Bhargava2004MuscleMetabolicsProbe* bhargavaBasal_rate_m1 = new
-        Bhargava2004MuscleMetabolicsProbe(false, false, false, true, false);
+    UchidaBhargava2004MuscleMetabolicsProbe* bhargavaBasal_rate_m1 = new
+        UchidaBhargava2004MuscleMetabolicsProbe(false, false, false, true, false);
     model.addProbe(bhargavaBasal_rate_m1);
     bhargavaBasal_rate_m1->setName("bhargavaBasal_rate_m1");
     bhargavaBasal_rate_m1->setOperation("value");
@@ -961,8 +962,8 @@ void testProbesUsingMillardMuscleSimulation()
     cout << setw(w) << ++probeCounter << ") Added Bhargava2004 probe: "
          << "basal heat rate (muscle 1)" << endl;
 
-    Bhargava2004MuscleMetabolicsProbe* bhargavaMechWork_rate_m1 = new
-        Bhargava2004MuscleMetabolicsProbe(false, false, false, false, true);
+    UchidaBhargava2004MuscleMetabolicsProbe* bhargavaMechWork_rate_m1 = new
+        UchidaBhargava2004MuscleMetabolicsProbe(false, false, false, false, true);
     model.addProbe(bhargavaMechWork_rate_m1);
     bhargavaMechWork_rate_m1->setName("bhargavaMechWork_rate_m1");
     bhargavaMechWork_rate_m1->setOperation("value");
@@ -972,8 +973,8 @@ void testProbesUsingMillardMuscleSimulation()
 
     // Attach Bhargava2004 probe to record total rate of energy liberation at
     // each point in time for muscle1.
-    Bhargava2004MuscleMetabolicsProbe* bhargavaTotal_rate_m1 = new
-        Bhargava2004MuscleMetabolicsProbe(true, true, true, true, true);
+    UchidaBhargava2004MuscleMetabolicsProbe* bhargavaTotal_rate_m1 = new
+        UchidaBhargava2004MuscleMetabolicsProbe(true, true, true, true, true);
     model.addProbe(bhargavaTotal_rate_m1);
     bhargavaTotal_rate_m1->setName("bhargavaTotal_rate_m1");
     bhargavaTotal_rate_m1->setOperation("value");
@@ -984,8 +985,8 @@ void testProbesUsingMillardMuscleSimulation()
     // Attach Bhargava2004 probes to record total energy liberation over the
     // entire simulation for (a) muscle1, (b) muscle2, and (c) total for both
     // muscles, and (d) total for both muscles with all components reported.
-    Bhargava2004MuscleMetabolicsProbe* bhargavaTotal_m1 = new
-        Bhargava2004MuscleMetabolicsProbe(true, true, true, true, true);
+    UchidaBhargava2004MuscleMetabolicsProbe* bhargavaTotal_m1 = new
+        UchidaBhargava2004MuscleMetabolicsProbe(true, true, true, true, true);
     model.addProbe(bhargavaTotal_m1);
     bhargavaTotal_m1->setName("bhargavaTotal_m1");
     bhargavaTotal_m1->setOperation("integrate");
@@ -994,8 +995,8 @@ void testProbesUsingMillardMuscleSimulation()
     cout << setw(w) << ++probeCounter << ") Added Bhargava2004 probe: "
          << "total energy liberation (muscle 1)" << endl;
 
-    Bhargava2004MuscleMetabolicsProbe* bhargavaTotal_m2 = new
-        Bhargava2004MuscleMetabolicsProbe(true, true, true, true, true);
+    UchidaBhargava2004MuscleMetabolicsProbe* bhargavaTotal_m2 = new
+        UchidaBhargava2004MuscleMetabolicsProbe(true, true, true, true, true);
     model.addProbe(bhargavaTotal_m2);
     bhargavaTotal_m2->setName("bhargavaTotal_m2");
     bhargavaTotal_m2->setOperation("integrate");
@@ -1004,8 +1005,8 @@ void testProbesUsingMillardMuscleSimulation()
     cout << setw(w) << ++probeCounter << ") Added Bhargava2004 probe: "
          << "total energy liberation (muscle 2)" << endl;
 
-    Bhargava2004MuscleMetabolicsProbe* bhargavaTotal_both = new
-        Bhargava2004MuscleMetabolicsProbe(true, true, true, true, true);
+    UchidaBhargava2004MuscleMetabolicsProbe* bhargavaTotal_both = new
+        UchidaBhargava2004MuscleMetabolicsProbe(true, true, true, true, true);
     model.addProbe(bhargavaTotal_both);
     bhargavaTotal_both->setName("bhargavaTotal_both");
     bhargavaTotal_both->setOperation("integrate");
@@ -1015,8 +1016,8 @@ void testProbesUsingMillardMuscleSimulation()
     cout << setw(w) << ++probeCounter << ") Added Bhargava2004 probe: "
          << "total energy liberation (both muscles, total only)" << endl;
 
-    Bhargava2004MuscleMetabolicsProbe* bhargavaTotalAllPieces_both = new
-        Bhargava2004MuscleMetabolicsProbe(true, true, true, true, true);
+    UchidaBhargava2004MuscleMetabolicsProbe* bhargavaTotalAllPieces_both = new
+        UchidaBhargava2004MuscleMetabolicsProbe(true, true, true, true, true);
     model.addProbe(bhargavaTotalAllPieces_both);
     bhargavaTotalAllPieces_both->setName("bhargavaTotalAllPieces_both");
     bhargavaTotalAllPieces_both->setOperation("integrate");
