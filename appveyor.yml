@@ -10,7 +10,9 @@ environment:
     - OSIMDIR: OpenSim 3.2-64bit-VS10
       NICKN: 3.2_64bit_vs10
       VSVER: Visual Studio 10 Win64
-
+    - OSIMDIR: OpenSim 3.2-64bit-VS12
+      NICKN: 3.2_64bit_vs12
+      VSVER: Visual Studio 12 Win64
 
 init:
   - SET PATH=C:/projects/opensim-metabolicsprobes/$(OSIMDIR)/bin;%PATH%
