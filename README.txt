@@ -1,7 +1,7 @@
 OpenSim muscle metabolics probes
 ================================
 
-https://ci.appveyor.com/project/chrisdembia/opensim-metabolicsprobes
+https://ci.appveyor.com/project/chrisdembia/opensim-metabolicsprobes-pc54r
 
 Tom Uchida (@tkuchida) has made numerous changes to OpenSim's muscle metabolics
 probes.  This plugin contains his changes so that people can use these
