@@ -24,6 +24,7 @@ build_script:
   - mkdir "C:/projects/opensim-metabolicsprobes/build"
   - cd "C:/projects/opensim-metabolicsprobes/build"
   # Configure.
+  - dir ..
   - cmake .. -G"%VSVER%" -DOPENSIM_INSTALL_DIR="C:/projects/opensim-metabolicsprobes/%OSIMDIR%" -DCMAKE_INSTALL_PREFIX="C:/projects/opensim-metabolicsprobes/install"
   # Compile.
   #- MSBuild OpenSimMuscleMetabolicsProbes.sln /target:ALL_BUILD /p:Configuration=Release /maxcpucount:4 /verbosity:quiet
