@@ -2,8 +2,6 @@
 
 shallow_clone: true
 
-platform: x64
-
 environment:
   matrix:
     - OSIMDIR: OpenSim 3.1
