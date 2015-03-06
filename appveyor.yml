@@ -15,13 +15,13 @@ environment:
       VSVER: Visual Studio 12 Win64
 
 init:
-  - SET PATH=C:/projects/opensim-metabolicsprobes/$(OSIMDIR)/bin;%PATH%
+  - SET PATH=C:/projects/opensim-metabolicsprobes/%OSIMDIR%/bin;%PATH%
 
 build_script:
   - mkdir "C:/projects/opensim-metabolicsprobes/build"
   - cd "C:/projects/opensim-metabolicsprobes/build"
   # Configure.
-  - cmake .. -G"$(VSVER)" -DOPENSIM_INSTALL_DIR="C:/projects/opensim-metabolicsprobes/$(OSIMDIR)" -DCMAKE_INSTALL_PREFIX="C:/projects/opensim-metabolicsprobes/install"
+  - cmake .. -G"%VSVER%" -DOPENSIM_INSTALL_DIR="C:/projects/opensim-metabolicsprobes/%OSIMDIR%" -DCMAKE_INSTALL_PREFIX="C:/projects/opensim-metabolicsprobes/install"
   # Compile.
   #- MSBuild OpenSimMuscleMetabolicsProbes.sln /target:ALL_BUILD /p:Configuration=Release /maxcpucount:4 /verbosity:quiet
   - cmake --build . --config RelWithDebInfo --target ALL_BUILD -- /verbosity:quiet
@@ -40,5 +40,5 @@ after_test:
   - analyze -S subject01_Setup_Analyze_Metabolics.xml -L ../osimMuscleMetabolicsProbes
 
   # Create zip of the installation.
-  - 7z a opensim-metabolicsprobes_opensim_$(NICKN).zip C:/projects/opensim-metabolicsprobes/install/
-  - appveyor PushArtifact opensim-metabolicsprobes_opensim_$(NICKN).zip
+  - 7z a opensim-metabolicsprobes_opensim_%NICKN%.zip C:/projects/opensim-metabolicsprobes/install/
+  - appveyor PushArtifact opensim-metabolicsprobes_opensim_%NICKN%.zip
