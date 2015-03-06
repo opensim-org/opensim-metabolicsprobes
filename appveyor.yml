@@ -6,27 +6,20 @@ init:
   - SET PATH=C:/projects/opensim-metabolicsprobes/OpenSim 3.1/bin;%PATH%
 
 build_script:
-  ## Build with Visual Studio 10.
-  - mkdir "C:/projects/opensim-metabolicsprobes/build_vs10"
-  - cd "C:/projects/opensim-metabolicsprobes/build_vs10"
+  ## Build OpenSim 3.1 64bit with Visual Studio 10.
+  - mkdir "C:/projects/opensim-metabolicsprobes/build_3.1_64bit_vs10"
+  - cd "C:/projects/opensim-metabolicsprobes/build_3.1_64bit_vs10"
   # Configure.
-  - cmake .. -G"Visual Studio 10 Win64" -DOPENSIM_INSTALL_DIR="C:/projects/opensim-metabolicsprobes/OpenSim 3.1" -DCMAKE_INSTALL_PREFIX="C:/projects/opensim-metabolicsprobes/install_vs10"
+  - cmake .. -G"Visual Studio 10 Win64" -DOPENSIM_INSTALL_DIR="C:/projects/opensim-metabolicsprobes/OpenSim 3.1" -DCMAKE_INSTALL_PREFIX="C:/projects/opensim-metabolicsprobes/install_3.1_64bit_vs10"
   # Compile.
   #- MSBuild OpenSimMuscleMetabolicsProbes.sln /target:ALL_BUILD /p:Configuration=Release /maxcpucount:4 /verbosity:quiet
   - cmake --build . --config RelWithDebInfo --target ALL_BUILD -- /verbosity:quiet
 
-  ### Build with Visual Studio 12.
-  #- mkdir "C:/projects/opensim-metabolicsprobes/build_vs12"
-  #- cd "C:/projects/opensim-metabolicsprobes/build_vs12"
-  ## Configure.
-  #- cmake .. -G"Visual Studio 12 Win64" -DOPENSIM_INSTALL_DIR="C:/projects/opensim-metabolicsprobes/OpenSim 3.1" -DCMAKE_INSTALL_PREFIX="C:/projects/opensim-metabolicsprobes/install_vs12"
-  ## Compile.
-  #- cmake --build . --config RelWithDebInfo --target ALL_BUILD -- /verbosity:quiet
 
 
 test_script:
-  # Visual Studio 10.    
-  - cd "C:/projects/opensim-metabolicsprobes/build_vs10"
+  # OpenSim 3.1 64bit with Visual Studio 10.    
+  - cd "C:/projects/opensim-metabolicsprobes/build_3.1_64bit_vs10"
   - ctest -V
 
   ## Visual Studio 12.
@@ -35,16 +28,16 @@ test_script:
 
 after_test:
   ## Visual Studio 10.
-  - cd "C:/projects/opensim-metabolicsprobes/build_vs10"
+  - cd "C:/projects/opensim-metabolicsprobes/build_3.1_64bit_vs10"
   # Install.
   - cmake --build . --config RelWithDebInfo --target INSTALL -- /verbosity:quiet
 
   # Run the analysis.
-  - cd "C:/projects/opensim-metabolicsprobes/install_vs10/examples"
+  - cd "C:/projects/opensim-metabolicsprobes/install_3.1_64bit_vs10/examples"
   - analyze -S subject01_Setup_Analyze_Metabolics.xml -L ../osimMuscleMetabolicsProbes
 
   # Create zip of the installation.
-  - 7z a opensim-metabolicsprobes_opensim-3.1_64bit_vs10.zip C:/projects/opensim-metabolicsprobes/install_vs10/
+  - 7z a opensim-metabolicsprobes_opensim-3.1_64bit_vs10.zip C:/projects/opensim-metabolicsprobes/install_3.1_64bit_vs10/
   - appveyor PushArtifact opensim-metabolicsprobes_opensim-3.1_64bit_vs10.zip
 
   ### Visual Studio 12.
