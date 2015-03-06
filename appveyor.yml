@@ -44,8 +44,8 @@ after_test:
   - analyze -S subject01_Setup_Analyze_Metabolics.xml -L ../osimMuscleMetabolicsProbes
 
   # Create zip of the installation.
-  - 7z a opensim-metabolicsprobes_vs10.zip C:/projects/opensim-metabolicsprobes/install_vs10/
-  - appveyor PushArtifact opensim-metabolicsprobes_vs10.zip
+  - 7z a opensim-metabolicsprobes_opensim-3.1_64bit_vs10.zip C:/projects/opensim-metabolicsprobes/install_vs10/
+  - appveyor PushArtifact opensim-metabolicsprobes_opensim-3.1_64bit_vs10.zip
 
   ### Visual Studio 12.
   #- cd "C:/projects/opensim-metabolicsprobes/build_vs12"
