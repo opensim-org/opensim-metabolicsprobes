@@ -4,7 +4,8 @@ platform: x64
 
 environment:
   matrix:
-    - OSIMDIR=OpenSim 3.1 NICKN=3.1_64bit_vs10
+    - OSIMDIR: OpenSim 3.1
+      NICKN: 3.1_64bit_vs10
 
 
 init:
