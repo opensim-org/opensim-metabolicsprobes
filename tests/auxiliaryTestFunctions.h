@@ -27,7 +27,7 @@
 #include <OpenSim/Common/Function.h>
 #include <OpenSim/Common/LinearFunction.h>
 #include <OpenSim/Common/PropertyObjArray.h>
-#include "getRSS.h"
+//#include "getRSS.h"
 
 using namespace OpenSim;
 using namespace std;
