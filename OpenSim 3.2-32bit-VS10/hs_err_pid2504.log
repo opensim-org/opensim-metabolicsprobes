@@ -1,0 +1,239 @@
+#
+# There is insufficient memory for the Java Runtime Environment to continue.
+# Native memory allocation (malloc) failed to allocate 1301312 bytes for Chunk::new
+# Possible reasons:
+#   The system is out of physical RAM or swap space
+#   In 32 bit mode, the process size limit was hit
+# Possible solutions:
+#   Reduce memory load on the system
+#   Increase physical memory or swap space
+#   Check if swap backing store is full
+#   Use 64 bit Java on a 64 bit OS
+#   Decrease Java heap size (-Xmx/-Xms)
+#   Decrease number of Java threads
+#   Decrease Java thread stack sizes (-Xss)
+#   Set larger code cache with -XX:ReservedCodeCacheSize=
+# This output file may be truncated or incomplete.
+#
+#  Out of Memory Error (allocation.cpp:317), pid=2504, tid=2500
+#
+# JRE version: 6.0_33-b05
+# Java VM: Java HotSpot(TM) Server VM (20.8-b03 mixed mode windows-x86 )
+
+---------------  T H R E A D  ---------------
+
+Current thread (0x022d8800):  JavaThread "C2 CompilerThread1" daemon [_thread_in_native, id=2500, stack(0x07750000,0x07950000)]
+
+Stack: [0x07750000,0x07950000],  sp=0x0794e798,  free space=2041k
+Native frames: (J=compiled Java code, j=interpreted, Vv=VM code, C=native code)
+
+[error occurred during error reporting (printing native stack), id 0xc0000005]
+
+
+Current CompileTask:
+C2:163856071 1603  !   org.python.core.PyJavaType.init(Ljava/lang/Class;Ljava/util/Set;)V (2650 bytes)
+
+
+---------------  P R O C E S S  ---------------
+
+Java Threads: ( => current thread )
+  0x0f5c4400 JavaThread "org.python.google.common.base.internal.Finalizer" daemon [_thread_blocked, id=4032, stack(0x0d010000,0x0d210000)]
+  0x0f5c5c00 JavaThread "Timer-2" daemon [_thread_blocked, id=816, stack(0x07e10000,0x08010000)]
+  0x0f5c5800 JavaThread "Inactive RequestProcessor thread [Was:Timeout waitFinished compatibility processor/org.openide.util.Task$1Run]" daemon [_thread_blocked, id=2164, stack(0x0aa50000,0x0ac50000)]
+  0x5fbf0400 JavaThread "Inactive RequestProcessor thread [Was:StdErr Flush/org.netbeans.core.startup.TopLogging$LgStream]" daemon [_thread_blocked, id=2432, stack(0x08e30000,0x09030000)]
+  0x0b6d4800 JavaThread "File Watcher" daemon [_thread_blocked, id=4068, stack(0x08290000,0x08490000)]
+  0x0b6d5400 JavaThread "Swing-Shell" daemon [_thread_blocked, id=664, stack(0x0ade0000,0x0afe0000)]
+  0x0b26c800 JavaThread "AWT-EventQueue-1" [_thread_in_Java, id=1148, stack(0x0c990000,0x0cb90000)]
+  0x0b26a800 JavaThread "Thread-3" daemon [_thread_blocked, id=788, stack(0x0c790000,0x0c990000)]
+  0x09d31800 JavaThread "TimerQueue" daemon [_thread_blocked, id=400, stack(0x0c590000,0x0c790000)]
+  0x07679c00 JavaThread "AWT-Windows" daemon [_thread_in_native, id=3424, stack(0x0a3f0000,0x0a5f0000)]
+  0x09ac0800 JavaThread "AWT-Shutdown" [_thread_blocked, id=2676, stack(0x0a1f0000,0x0a3f0000)]
+  0x0770ec00 JavaThread "Java2D Disposer" daemon [_thread_blocked, id=196, stack(0x09ff0000,0x0a1f0000)]
+  0x07633800 JavaThread "CLI Requests Server" daemon [_thread_in_native, id=1732, stack(0x09320000,0x09520000)]
+  0x075be800 JavaThread "Active Reference Queue Daemon" daemon [_thread_blocked, id=2956, stack(0x08050000,0x08250000)]
+  0x022dd800 JavaThread "Low Memory Detector" daemon [_thread_blocked, id=768, stack(0x07990000,0x07b90000)]
+=>0x022d8800 JavaThread "C2 CompilerThread1" daemon [_thread_in_native, id=2500, stack(0x07750000,0x07950000)]
+  0x022d6800 JavaThread "C2 CompilerThread0" daemon [_thread_blocked, id=2392, stack(0x07310000,0x07510000)]
+  0x022d6000 JavaThread "Attach Listener" daemon [_thread_blocked, id=1820, stack(0x070d0000,0x072d0000)]
+  0x022d1400 JavaThread "Signal Dispatcher" daemon [_thread_blocked, id=668, stack(0x06e90000,0x07090000)]
+  0x022b2000 JavaThread "Finalizer" daemon [_thread_blocked, id=2932, stack(0x06c50000,0x06e50000)]
+  0x022b1000 JavaThread "Reference Handler" daemon [_thread_blocked, id=3328, stack(0x06a10000,0x06c10000)]
+  0x02d59800 JavaThread "main" [_thread_blocked, id=2364, stack(0x00090000,0x00290000)]
+
+Other Threads:
+  0x022ac800 VMThread [stack: 0x067d0000,0x069d0000] [id=3332]
+  0x0752d400 WatcherThread [stack: 0x07bd0000,0x07dd0000] [id=3056]
+
+VM state:not at safepoint (normal execution)
+
+VM Mutex/Monitor currently owned by a thread: None
+
+Heap
+ PSYoungGen      total 10112K, used 8170K [0x3eac0000, 0x3f810000, 0x54010000)
+  eden space 6976K, 85% used [0x3eac0000,0x3f090350,0x3f190000)
+  from space 3136K, 70% used [0x3f4d0000,0x3f6fa758,0x3f7e0000)
+  to   space 3328K, 0% used [0x3f190000,0x3f190000,0x3f4d0000)
+ PSOldGen        total 61184K, used 53701K [0x14010000, 0x17bd0000, 0x3eac0000)
+  object space 61184K, 87% used [0x14010000,0x17481488,0x17bd0000)
+ PSPermGen       total 43520K, used 43496K [0x10010000, 0x12a90000, 0x14010000)
+  object space 43520K, 99% used [0x10010000,0x12a8a398,0x12a90000)
+
+Code Cache  [0x02d60000, 0x03220000, 0x05d60000)
+ total_blobs=1973 nmethods=1570 adapters=355 free_code_cache=45404992 largest_free_block=15936
+
+Dynamic libraries:
+0x00400000 - 0x00439000 	C:\OpenSim 3.2-32bit\bin\opensim.exe
+0x76fa0000 - 0x77107000 	C:\WINDOWS\SYSTEM32\ntdll.dll
+0x74cb0000 - 0x74df0000 	C:\WINDOWS\SYSTEM32\KERNEL32.DLL
+0x754d0000 - 0x755a0000 	C:\WINDOWS\SYSTEM32\KERNELBASE.dll
+0x74a20000 - 0x74ade000 	C:\WINDOWS\SYSTEM32\msvcrt.dll
+0x756b0000 - 0x75728000 	C:\WINDOWS\SYSTEM32\ADVAPI32.DLL
+0x75130000 - 0x7527c000 	C:\WINDOWS\SYSTEM32\USER32.dll
+0x75a40000 - 0x75a7e000 	C:\WINDOWS\SYSTEM32\sechost.dll
+0x76c40000 - 0x76cf0000 	C:\WINDOWS\SYSTEM32\RPCRT4.dll
+0x74fa0000 - 0x750a7000 	C:\WINDOWS\SYSTEM32\GDI32.dll
+0x749a0000 - 0x749bd000 	C:\WINDOWS\SYSTEM32\SspiCli.dll
+0x74990000 - 0x74999000 	C:\WINDOWS\SYSTEM32\CRYPTBASE.dll
+0x74930000 - 0x74982000 	C:\WINDOWS\SYSTEM32\bcryptPrimitives.dll
+0x75730000 - 0x75755000 	C:\WINDOWS\system32\IMM32.DLL
+0x75910000 - 0x75a07000 	C:\WINDOWS\SYSTEM32\MSCTF.dll
+0x10000000 - 0x10008000 	C:\WINDOWS\KATRACK.DLL
+0x003a0000 - 0x003ee000 	C:\OpenSim 3.2-32bit\platform\lib\nbexec.dll
+0x69280000 - 0x69319000 	C:\WINDOWS\system32\apphelp.dll
+0x02720000 - 0x02b78000 	C:\OpenSim 3.2-32bit\jdk\jre\bin\server\jvm.dll
+0x00450000 - 0x00470000 	C:\WINDOWS\SYSTEM32\WINMM.dll
+0x00470000 - 0x004c6000 	C:\OpenSim 3.2-32bit\bin\MSVCR71.dll
+0x004d0000 - 0x004f0000 	C:\WINDOWS\SYSTEM32\WINMMBASE.dll
+0x004f0000 - 0x0052a000 	C:\WINDOWS\SYSTEM32\cfgmgr32.dll
+0x00530000 - 0x0054f000 	C:\WINDOWS\SYSTEM32\DEVOBJ.dll
+0x6d870000 - 0x6d87c000 	C:\OpenSim 3.2-32bit\jdk\jre\bin\verify.dll
+0x6d3d0000 - 0x6d3ef000 	C:\OpenSim 3.2-32bit\jdk\jre\bin\java.dll
+0x6d8b0000 - 0x6d8bf000 	C:\OpenSim 3.2-32bit\jdk\jre\bin\zip.dll
+0x6d6b0000 - 0x6d6c3000 	C:\OpenSim 3.2-32bit\jdk\jre\bin\net.dll
+0x74ae0000 - 0x74b2d000 	C:\WINDOWS\SYSTEM32\WS2_32.dll
+0x75a30000 - 0x75a37000 	C:\WINDOWS\SYSTEM32\NSI.dll
+0x722b0000 - 0x722f5000 	C:\WINDOWS\system32\mswsock.dll
+0x6d6d0000 - 0x6d6d9000 	C:\OpenSim 3.2-32bit\jdk\jre\bin\nio.dll
+0x721f0000 - 0x7220e000 	C:\WINDOWS\system32\iphlpapi.dll
+0x721e0000 - 0x721e8000 	C:\WINDOWS\SYSTEM32\WINNSI.DLL
+0x68990000 - 0x689a2000 	C:\WINDOWS\SYSTEM32\dhcpcsvc6.DLL
+0x721c0000 - 0x721d3000 	C:\WINDOWS\SYSTEM32\dhcpcsvc.DLL
+0x73000000 - 0x73018000 	C:\WINDOWS\SYSTEM32\CRYPTSP.dll
+0x72fd0000 - 0x72fff000 	C:\WINDOWS\system32\rsaenh.dll
+0x72fb0000 - 0x72fcd000 	C:\WINDOWS\SYSTEM32\bcrypt.dll
+0x69260000 - 0x69279000 	C:\WINDOWS\SYSTEM32\USERENV.dll
+0x72300000 - 0x7230e000 	C:\WINDOWS\SYSTEM32\profapi.dll
+0x71120000 - 0x71130000 	C:\WINDOWS\system32\napinsp.dll
+0x71100000 - 0x71114000 	C:\WINDOWS\system32\pnrpnsp.dll
+0x710e0000 - 0x710f2000 	C:\WINDOWS\system32\NLAapi.dll
+0x71060000 - 0x710dc000 	C:\WINDOWS\SYSTEM32\DNSAPI.dll
+0x71050000 - 0x71059000 	C:\WINDOWS\System32\winrnr.dll
+0x70ff0000 - 0x70ff7000 	C:\Windows\System32\rasadhlp.dll
+0x71000000 - 0x71044000 	C:\WINDOWS\System32\fwpuclnt.dll
+0x6d0b0000 - 0x6d1fc000 	C:\OpenSim 3.2-32bit\jdk\jre\bin\awt.dll
+0x69200000 - 0x6925e000 	C:\WINDOWS\SYSTEM32\WINSPOOL.DRV
+0x755a0000 - 0x756ac000 	C:\WINDOWS\SYSTEM32\ole32.dll
+0x74b80000 - 0x74c06000 	C:\WINDOWS\WinSxS\x86_microsoft.windows.common-controls_6595b64144ccf1df_5.82.9600.16384_none_7c55c866aa0c3ff0\COMCTL32.dll
+0x74df0000 - 0x74f3e000 	C:\WINDOWS\SYSTEM32\combase.dll
+0x717f0000 - 0x71808000 	C:\WINDOWS\system32\DWMAPI.DLL
+0x71810000 - 0x718eb000 	C:\WINDOWS\system32\uxtheme.dll
+0x6d2e0000 - 0x6d32f000 	C:\OpenSim 3.2-32bit\jdk\jre\bin\fontmanager.dll
+0x6d7d0000 - 0x6d7f3000 	C:\OpenSim 3.2-32bit\jdk\jre\bin\splashscreen.dll
+0x73020000 - 0x73029000 	C:\WINDOWS\SYSTEM32\kernel.appcore.dll
+0x75a80000 - 0x76c37000 	C:\WINDOWS\system32\shell32.dll
+0x74b30000 - 0x74b71000 	C:\WINDOWS\SYSTEM32\SHLWAPI.dll
+0x72320000 - 0x72396000 	C:\WINDOWS\SYSTEM32\shcore.dll
+0x68430000 - 0x688b6000 	C:\OpenSim 3.2-32bit\bin\osimJavaJNI.dll
+0x69140000 - 0x691fd000 	C:\OpenSim 3.2-32bit\bin\osimCommon.dll
+0x68e70000 - 0x69131000 	C:\OpenSim 3.2-32bit\bin\osimSimulation.dll
+0x68e10000 - 0x68e67000 	C:\OpenSim 3.2-32bit\bin\osimAnalyses.dll
+0x68380000 - 0x68421000 	C:\OpenSim 3.2-32bit\bin\osimTools.dll
+0x68df0000 - 0x68e0c000 	C:\OpenSim 3.2-32bit\bin\osimSimmFileWriter.dll
+0x68280000 - 0x68376000 	C:\OpenSim 3.2-32bit\bin\osimActuators.dll
+0x68170000 - 0x68276000 	C:\OpenSim 3.2-32bit\bin\OpenSim_SimTKcommon.dll
+0x67f20000 - 0x6816c000 	C:\OpenSim 3.2-32bit\bin\OpenSim_SimTKmath.dll
+0x67d80000 - 0x67f14000 	C:\OpenSim 3.2-32bit\bin\OpenSim_SimTKsimbody.dll
+0x67d10000 - 0x67d79000 	C:\OpenSim 3.2-32bit\bin\MSVCP100.dll
+0x67c50000 - 0x67d0f000 	C:\OpenSim 3.2-32bit\bin\MSVCR100.dll
+0x68dc0000 - 0x68de8000 	C:\OpenSim 3.2-32bit\bin\osimLepton.dll
+0x0ba10000 - 0x0c07e000 	C:\OpenSim 3.2-32bit\bin\liblapack.dll
+0x0c0c0000 - 0x0c0d5000 	C:\OpenSim 3.2-32bit\bin\pthreadVC2.dll
+0x0c0f0000 - 0x0c158000 	C:\OpenSim 3.2-32bit\bin\libblas.dll
+0x6e940000 - 0x6e964000 	C:\OpenSim 3.2-32bit\bin\libgcc_s_dw2-1.dll
+0x6f600000 - 0x6f70c000 	C:\OpenSim 3.2-32bit\bin\libgfortran-3.dll
+0x72310000 - 0x72318000 	C:\WINDOWS\SYSTEM32\WSOCK32.dll
+0x6cf00000 - 0x6cfb3000 	C:\OpenSim 3.2-32bit\bin\libquadmath-0.dll
+0x6d600000 - 0x6d609000 	C:\OpenSim 3.2-32bit\jdk\jre\bin\management.dll
+0x75290000 - 0x75325000 	C:\WINDOWS\SYSTEM32\OLEAUT32.dll
+0x75760000 - 0x7590d000 	C:\WINDOWS\SYSTEM32\SETUPAPI.dll
+0x750b0000 - 0x7512d000 	C:\WINDOWS\SYSTEM32\clbcatq.dll
+0x67b20000 - 0x67c45000 	C:\WINDOWS\system32\propsys.dll
+0x67980000 - 0x67b19000 	C:\WINDOWS\system32\NetworkExplorer.dll
+0x71e50000 - 0x72036000 	C:\WINDOWS\WinSxS\x86_microsoft.windows.common-controls_6595b64144ccf1df_6.0.9600.17031_none_a9efdb8b01377ea7\comctl32.dll
+0x67810000 - 0x6797b000 	C:\WINDOWS\SYSTEM32\WindowsCodecs.dll
+0x68da0000 - 0x68dbf000 	C:\Windows\SYSTEM32\thumbcache.dll
+0x677f0000 - 0x67804000 	C:\WINDOWS\SYSTEM32\MPR.dll
+0x676f0000 - 0x677ef000 	C:\WINDOWS\system32\VBoxMRXNP.dll
+0x68d90000 - 0x68d99000 	C:\WINDOWS\System32\drprov.dll
+0x71590000 - 0x715d2000 	C:\WINDOWS\System32\WINSTA.dll
+0x676d0000 - 0x676e1000 	C:\WINDOWS\System32\ntlanman.dll
+0x717d0000 - 0x717e9000 	C:\WINDOWS\System32\davclnt.dll
+0x717c0000 - 0x717c9000 	C:\WINDOWS\System32\DAVHLPR.dll
+0x676c0000 - 0x676d0000 	C:\WINDOWS\System32\wkscli.dll
+0x676b0000 - 0x676bd000 	C:\WINDOWS\SYSTEM32\cscapi.dll
+0x676a0000 - 0x676aa000 	C:\WINDOWS\System32\netutils.dll
+0x67630000 - 0x67696000 	C:\Windows\SYSTEM32\dlnashext.dll
+0x675d0000 - 0x675e8000 	C:\Windows\System32\DevDispItemProvider.dll
+0x673f0000 - 0x675c9000 	C:\WINDOWS\system32\wpdshext.dll
+0x71c90000 - 0x71ddd000 	C:\WINDOWS\WinSxS\x86_microsoft.windows.gdiplus_6595b64144ccf1df_1.1.9600.17227_none_dad9452e5bcb7986\gdiplus.dll
+0x67360000 - 0x673e4000 	C:\Windows\SYSTEM32\PortableDeviceApi.dll
+0x749e0000 - 0x74a18000 	C:\WINDOWS\SYSTEM32\WINTRUST.dll
+0x75330000 - 0x754b8000 	C:\WINDOWS\SYSTEM32\CRYPT32.dll
+0x749d0000 - 0x749de000 	C:\WINDOWS\SYSTEM32\MSASN1.dll
+0x67320000 - 0x6735c000 	C:\WINDOWS\system32\audiodev.dll
+0x670e0000 - 0x67319000 	C:\WINDOWS\system32\WMVCore.DLL
+0x670a0000 - 0x670d6000 	C:\WINDOWS\system32\WMASF.DLL
+0x67090000 - 0x6709a000 	C:\WINDOWS\SYSTEM32\LINKINFO.dll
+0x66f40000 - 0x6708a000 	C:\Windows\SYSTEM32\urlmon.dll
+0x66d00000 - 0x66f32000 	C:\Windows\SYSTEM32\iertutil.dll
+0x66b20000 - 0x66cf5000 	C:\Windows\SYSTEM32\WININET.dll
+0x71c80000 - 0x71c89000 	C:\WINDOWS\SYSTEM32\Secur32.dll
+0x66b00000 - 0x66b12000 	C:\Program Files (x86)\Common Files\TortoiseOverlays\TortoiseOverlays.dll
+0x66ae0000 - 0x66af4000 	C:\Program Files\TortoiseSVN\bin\TortoiseStub32.dll
+0x66a70000 - 0x66adf000 	C:\Program Files\TortoiseSVN\bin\TortoiseSVN32.dll
+0x72540000 - 0x72548000 	C:\WINDOWS\SYSTEM32\VERSION.dll
+0x66700000 - 0x66a61000 	C:\Program Files\TortoiseSVN\bin\libsvn_tsvn32.dll
+0x666d0000 - 0x666f5000 	C:\Program Files\TortoiseSVN\bin\libapr_tsvn32.dll
+0x666c0000 - 0x666cd000 	C:\Program Files\TortoiseSVN\bin\intl3_tsvn32.dll
+0x66630000 - 0x666b5000 	C:\WINDOWS\SYSTEM32\MSVCP110.dll
+0x66550000 - 0x66626000 	C:\WINDOWS\SYSTEM32\MSVCR110.dll
+0x66510000 - 0x66548000 	C:\Program Files\TortoiseSVN\bin\libaprutil_tsvn32.dll
+0x664f0000 - 0x66503000 	C:\Program Files\TortoiseSVN\bin\libsasl32.dll
+0x754c0000 - 0x754c6000 	C:\WINDOWS\SYSTEM32\PSAPI.DLL
+
+VM Arguments:
+jvm_args: -Xms24m -Xmx1024m -Dsun.java2d.ddoffscreen=false -Dsun.java2d.gdiblit=false -Dsun.java2d.noddraw=true -Duser.language=en -Dnetbeans.user.dir=C:\OpenSim 3.2-32bit -Djdk.home=jdk -splash:C:\Users\Chris\AppData\Roaming\.opensim\dev\var\cache\splash.png -Dnetbeans.home=C:\OpenSim 3.2-32bit\platform -Dnetbeans.user=C:\Users\Chris\AppData\Roaming\.opensim\dev -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=C:\Users\Chris\AppData\Roaming\.opensim\dev\var\log\heapdump.hprof -Dnetbeans.system_http_proxy=DIRECT -Dsun.awt.keepWorkingSetOnMinimize=true -Dnetbeans.dirs=C:\OpenSim 3.2-32bit\opensim;C:\OpenSim 3.2-32bit\ide 
+java_command: <unknown>
+Launcher Type: generic
+
+Environment Variables:
+PATH=C:\OpenSim 3.2-32bit\bin;C:\Program Files\Microsoft MPI\Bin\;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\Program Files\Microsoft SQL Server\110\Tools\Binn\;C:\Program Files (x86)\CMake 2.8\bin;C:\Program Files\TortoiseSVN\bin;C:\Program Files (x86)\Windows Kits\8.1\Windows Performance Toolkit\;C:\Program Files\doxygen\bin;C:\Program Files\TortoiseGit\bin;C:\Program Files (x86)\Microsoft SDKs\TypeScript\1.0\;C:\repos\pgait\opensim-core-install\bin
+USERNAME=Chris
+OS=Windows_NT
+PROCESSOR_IDENTIFIER=Intel64 Family 6 Model 58 Stepping 9, GenuineIntel
+
+
+
+---------------  S Y S T E M  ---------------
+
+OS: Windows NT 6.2 Build 9200 
+
+CPU:total 4 (4 cores per cpu, 1 threads per core) family 6 model 58 stepping 9, cmov, cx8, fxsr, mmx, sse, sse2, sse3, ssse3
+
+Memory: 4k page, physical 4095540k(1977572k free), swap 4816436k(2202296k free)
+
+vm_info: Java HotSpot(TM) Server VM (20.8-b03) for windows-x86 JRE (1.6.0_33-b05), built on Jun 28 2012 17:38:57 by "java_re" with MS VC++ 7.1 (VS2003)
+
+time: Wed Jan 28 10:59:56 2015
+elapsed time: 163802 seconds
+
