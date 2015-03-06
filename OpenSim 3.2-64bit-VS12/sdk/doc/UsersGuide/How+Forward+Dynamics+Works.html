@@ -1,0 +1,118 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+    <head>
+        <title>OpenSim Documentation : How Forward Dynamics Works</title>
+        <link rel="stylesheet" href="styles/site.css" type="text/css" />
+        <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    </head>
+
+    <body>
+        <div id="page">
+            <div id="main">
+                <div id="main-header" class="pageSectionHeader">
+                    <h1 id="title-heading" class="pagetitle">
+                                                <span id="title-text">
+                            OpenSim Documentation : How Forward Dynamics Works
+                        </span>
+                    </h1>
+
+                    <div class="page-metadata">
+                        <p>This page last changed on Oct 04, 2012 by <font color="#0050B2">jenhicks</font>.</p>
+                    </div>
+                </div>
+
+                <div id="content" class="view">
+                    <div id="main-content" class="wiki-content group">
+                    <h2 id="HowForwardDynamicsWorks-MusculoskeletalModelDynamics ">Musculoskeletal Model Dynamics<span style="color: rgb(0,0,0);"> </span></h2><p>In contrast to inverse dynamics where the motion of the model was known and we wanted to determine the forces and torques that generated the motion, in forward dynamics, a mathematical model describes how coordinates and their velocities change due to applied forces and torques (moments).</p><p>From Newton’s second law, we can describe the accelerations (rate of change of velocities) of the coordinates in terms of the inertia and forces applied on the skeleton as a set of rigid-bodies:</p><p><img class="confluence-embedded-image" src="attachments/3376189/3737124.png" data-image-src="attachments/3376189/3737124.png" title="Forward1.png">      Multibody dynamics</p><p>where <img class="confluence-embedded-image" src="attachments/3376189/3737120.png" data-image-src="attachments/3376189/3737120.png" title="Forward5.png"> is the coordinate accelerations due to joint torques, <img class="confluence-embedded-image" src="attachments/3376189/3737119.png" data-image-src="attachments/3376189/3737119.png" title="Forward6.png"> , Coriolis and centrifugal forces, <img class="confluence-embedded-image" src="attachments/3376189/3737118.png" data-image-src="attachments/3376189/3737118.png" title="Forward7.png"> , as a function of coordinates, <img class="confluence-embedded-image" src="attachments/3376189/3737117.png" data-image-src="attachments/3376189/3737117.png" title="Forward8.png"> , and their velocities, <img class="confluence-embedded-image" src="attachments/3376189/3737116.png" data-image-src="attachments/3376189/3737116.png" title="Forward9.png"> , gravity, <img class="confluence-embedded-image" src="attachments/3376189/3737115.png" data-image-src="attachments/3376189/3737115.png" title="Forward10.png"> , and other forces applied to the model, <img class="confluence-embedded-image" src="attachments/3376189/3737114.png" data-image-src="attachments/3376189/3737114.png" title="Forward11.png"> , and <img class="confluence-embedded-image" src="attachments/3376189/3737113.png" data-image-src="attachments/3376189/3737113.png" title="Forward12.png"> is the inverse of the mass matrix.</p><p><img class="confluence-embedded-image" src="attachments/3376189/3737123.png" data-image-src="attachments/3376189/3737123.png" title="Forward2.png">       Moments due to muscle forces</p><p><img class="confluence-embedded-image" src="attachments/3376189/3737122.png" data-image-src="attachments/3376189/3737122.png" title="Forward3.png">                 Muscle contraction dynamics</p><p><img class="confluence-embedded-image" src="attachments/3376189/3737121.png" data-image-src="attachments/3376189/3737121.png" title="Forward4.png">                        Muscle activation dynamics </p><p>The net muscle moments, <img class="confluence-embedded-image" src="attachments/3376189/3737112.png" data-image-src="attachments/3376189/3737112.png" title="Forward13.png"> , in turn, are a result of the moment arms, <img class="confluence-embedded-image" src="attachments/3376189/3737111.png" data-image-src="attachments/3376189/3737111.png" title="Forward14.png"> , multiplied by muscle forces, <img class="confluence-embedded-image" src="attachments/3376189/3737110.png" data-image-src="attachments/3376189/3737110.png" title="Forward15.png"> , which are a function of muscle activations, <img class="confluence-embedded-image" src="attachments/3376189/3737109.png" data-image-src="attachments/3376189/3737109.png" title="Forward16.png"> , and muscle fiber lengths, <img class="confluence-embedded-image" src="attachments/3376189/3737108.png" data-image-src="attachments/3376189/3737108.png" title="Forward17.png"> , and velocities, <img class="confluence-embedded-image" src="attachments/3376189/3737107.png" data-image-src="attachments/3376189/3737107.png" title="Forward18.png"> . Muscle fiber velocities are governed by muscle contraction dynamics, <img class="confluence-embedded-image" src="attachments/3376189/3737106.png" data-image-src="attachments/3376189/3737106.png" title="Forward19.png"> , which is dependent on the current muscle activations and fiber lengths as well as the coordinates and their velocities. Activation dynamics, <img class="confluence-embedded-image" src="attachments/3376189/3737105.png" data-image-src="attachments/3376189/3737105.png" title="Forward20.png"> , describes how the activation rates, <img class="confluence-embedded-image" src="attachments/3376189/3737104.png" data-image-src="attachments/3376189/3737104.png" title="Forward21.png"> , of the muscles respond to input neural excitations, <img class="confluence-embedded-image" src="attachments/3376189/3737103.png" data-image-src="attachments/3376189/3737103.png" title="Forward22.png"> , generally termed the model’s controls. These form a set of differential equations that model <em>musculoskeletal dynamics</em>.</p><h2 id="HowForwardDynamicsWorks-StatesofaMusculoskeletalModel">States of a Musculoskeletal Model</h2><p>The <em>state </em>of a model is the collection of all model variables defined at a given instant in time that are governed by dynamics. The model dynamics describe how the model will advance from a given state to another through time. In a <em>musculoskeletal model</em> the states are the coordinates and their velocities and muscle activations and muscle fiber lengths. The dynamics of a model require the state to be known in order to calculate the rate of change of the model states (joint accelerations, activation rates, and fiber velocities) in response to forces and controls.</p><h2 id="HowForwardDynamicsWorks-ControllingaMusculoskeletalModel">Controlling a Musculoskeletal Model</h2><p>The forces (e.g., muscles) in a <em>musculoskeletal model</em> are governed by dynamics and have inputs that affect their behavior. In OpenSim, these inputs are called the <em>controls</em> of a model, which can be excitations for muscles or torque generators. Ultimately, controls determine the forces and/or torques applied to the model and therefore determine the resultant motion.</p><h2 id="HowForwardDynamicsWorks-NumericalIntegrationofDynamicalEquations">Numerical Integration of Dynamical Equations</h2><p>A simulation is the integration of the musculoskeletal model’s dynamical equations starting from a user-specified initial state. After applying the controls, the activation rates, muscle fiber velocities, and coordinate accelerations are computed. Then, new states at small time interval in the future are determined by numerical integration. A 5<sup>th</sup>-order Runge-Kutta-Feldberg integrator is used to solve (numerically integrate) the dynamical equations for the trajectories of the musculoskeletal model states over a definite interval in time. The Forward Dynamics Tool is an open-loop system that applies muscle/actuator controls with no feedback, or correction mechanism, therefore the states are not required to follow a desired trajectory. </p><h2 id="HowForwardDynamicsWorks-TheForwardToolandCMC"><span style="color: rgb(0,0,0);">The Forward Tool and CMC</span></h2><p><span style="color: rgb(0,0,0);">The Forward Dynamics Tool uses the same model and actuator set used in CMC, together with the initial states and controls computed during the CMC step, to run a muscle-driven forward dynamic simulation that aims to reproduce the same motion tracked by CMC. The input of initial states is optional. If not entered, the model assumes default values for the state variables. Similarly, if no controls are specified as input then the integration proceeds with zero value for the controls.</span></p><p><span style="color: rgb(0,0,0);">As in CMC and RRA, a 5<sup>th</sup> order Runge-Kutta-Feldberg integrator is used. In contrast to CMC, which used PD controllers in a closed-loop system to ensure tracking of the desired trajectories, the Forward Dynamics Tool is an open-loop system. That is, it blindly applies the recorded actuator controls with no feedback or correction mechanism to help ensure accurate tracking. In theory, starting forward with the exact same conditions as CMC, and feeding it the exact same controls computed by CMC, it should reproduce the same trajectory comp</span>uted during CMC. However, even tiny differences in values (due to truncation or round-off) or in the ways these values are used by the Forward Dynamics Tool as compared to CMC will cause the forward simulation to diverge from the expected trajectory. This is particularly a problem for longer simulations, in which small differences have more time to accumulate, and in which divergences can become more noticeable, eventually causing the simulation to become completely unstable.</p><p>The discrepancies between the Forward Dynamics Tool and CMC can be reduced in a number of ways, as was done with the OpenSim example subjects gait2354 and gait2392:</p><ul><li>During the CMC step, it is recommended that the output precision be set to 20 to ensure that the values read in and used by the Forward Dynamics Tool match the values from CMC with a high precision.</li><li>The Forward Dynamics Tool sets the model's initial state to the CMC state values corresponding to the Forward Dynamics Tool's initial time. If you set the Forward Dynamics Tool to start at a time for which no CMC state values are available, the initial time is adjusted to the nearest time that does have state values. This is done automatically.</li><li>Through a property in the Forward Dynamics Tool's setup file (<span style="color: rgb(0,0,128);">&lt;</span><span style="color: rgb(128,0,0);">use_specified_dt</span><span style="color: rgb(0,0,128);">&gt;</span>), you can also use the same integration time steps as were used in CMC. It is recommended that this property be set to <span style="color: rgb(0,128,0);"><strong>true</strong></span> to minimize the divergence of long forward simulations. If set to <span style="color: rgb(0,128,0);"><strong>false</strong></span>, the Forward Dynamics Tool's integrator adaptively computes its own time steps based on the desired set error tolerances. As these time steps tend to differ from those used in CMC, the results usually diverge faster.</li></ul><p> </p><div class="panel" style="background-color: white;border-color: gray;border-style: solid;border-width: 5px;"><div class="panelContent" style="background-color: white;">
+<p>Next: <a href="How%2Bto%2BUse%2Bthe%2BForward%2BDynamics%2BTool.html">How to Use the Forward Dynamics Tool</a></p><p>Previous: <a href="Getting%2BStarted%2Bwith%2BForward%2BDynamics.html">Getting Started with Forward Dynamics</a></p><p>Home: <a href="Forward%2BDynamics.html">Forward Dynamics</a></p>
+</div></div>
+                    </div>
+
+                                        <div class="pageSection group">
+                        <div class="pageSectionHeader">
+                            <h2 id="attachments" class="pageSectionTitle">Attachments:</h2>
+                        </div>
+
+                        <div class="greybox" align="left">
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/3376189/3737125.png">image2012-3-9 15:47:45.png</a> (image/png)
+                                <br/>
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/3376189/3737124.png">Forward1.png</a> (image/png)
+                                <br/>
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/3376189/3737123.png">Forward2.png</a> (image/png)
+                                <br/>
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/3376189/3737122.png">Forward3.png</a> (image/png)
+                                <br/>
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/3376189/3737121.png">Forward4.png</a> (image/png)
+                                <br/>
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/3376189/3737120.png">Forward5.png</a> (image/png)
+                                <br/>
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/3376189/3737119.png">Forward6.png</a> (image/png)
+                                <br/>
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/3376189/3737118.png">Forward7.png</a> (image/png)
+                                <br/>
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/3376189/3737117.png">Forward8.png</a> (image/png)
+                                <br/>
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/3376189/3737116.png">Forward9.png</a> (image/png)
+                                <br/>
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/3376189/3737115.png">Forward10.png</a> (image/png)
+                                <br/>
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/3376189/3737114.png">Forward11.png</a> (image/png)
+                                <br/>
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/3376189/3737113.png">Forward12.png</a> (image/png)
+                                <br/>
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/3376189/3737112.png">Forward13.png</a> (image/png)
+                                <br/>
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/3376189/3737111.png">Forward14.png</a> (image/png)
+                                <br/>
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/3376189/3737110.png">Forward15.png</a> (image/png)
+                                <br/>
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/3376189/3737109.png">Forward16.png</a> (image/png)
+                                <br/>
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/3376189/3737108.png">Forward17.png</a> (image/png)
+                                <br/>
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/3376189/3737107.png">Forward18.png</a> (image/png)
+                                <br/>
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/3376189/3737106.png">Forward19.png</a> (image/png)
+                                <br/>
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/3376189/3737105.png">Forward20.png</a> (image/png)
+                                <br/>
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/3376189/3737104.png">Forward21.png</a> (image/png)
+                                <br/>
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/3376189/3737103.png">Forward22.png</a> (image/png)
+                                <br/>
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/3376189/3737102.docx">Forward Dynamics - How it Works.docx</a> (application/vnd.openxmlformats-officedocument.wordprocessingml.document)
+                                <br/>
+                                                    </div>
+                    </div>
+                    
+                                                      
+                </div>             </div> 
+            <div id="footer" style="background: url(http://simtk-confluence.stanford.edu:8080/images/border/border_bottom.gif) repeat-x;">
+                <p><small>Document generated by Confluence on Feb 24, 2014 09:27</small></p>
+            </div>
+        </div>     </body>
+</html>

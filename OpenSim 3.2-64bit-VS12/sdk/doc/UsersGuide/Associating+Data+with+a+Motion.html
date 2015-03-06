@@ -1,0 +1,59 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+    <head>
+        <title>OpenSim Documentation : Associating Data with a Motion</title>
+        <link rel="stylesheet" href="styles/site.css" type="text/css" />
+        <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    </head>
+
+    <body>
+        <div id="page">
+            <div id="main">
+                <div id="main-header" class="pageSectionHeader">
+                    <h1 id="title-heading" class="pagetitle">
+                                                <span id="title-text">
+                            OpenSim Documentation : Associating Data with a Motion
+                        </span>
+                    </h1>
+
+                    <div class="page-metadata">
+                        <p>This page last changed on Jan 30, 2014 by <font color="#0050B2">jenhicks</font>.</p>
+                    </div>
+                </div>
+
+                <div id="content" class="view">
+                    <div id="main-content" class="wiki-content group">
+                    <p>Once a motion is loaded, you can associate additional motion data with the loaded motion or add files to color the muscles in your model. Read more about each feature below:</p><p><div>
+<ul>
+    <li><a href='#AssociatingDatawithaMotion-AssociateMotionData'>Associate Motion Data</a></li>
+<ul>
+    <li><a href='#AssociatingDatawithaMotion-EditingMotionObjects'>Editing Motion Objects</a></li>
+</ul>
+    <li><a href='#AssociatingDatawithaMotion-ColoringMusclesfromFile'>Coloring Muscles from File</a></li>
+</ul></div></p><h2 id="AssociatingDatawithaMotion-AssociateMotionData">Associate Motion Data</h2><p>If you load a kinematics file for walking, you can associate the corresponding ground reaction force file or trc file with marker data. You can also use the associate feature to visualize the results of analyses, like a <a href="Joint%2BReactions%2BAnalysis.html">Joint Reactions Analysis</a> or <a href="Induced%2BAcceleration%2BAnalysis.html">Induced Acceleration Analysis</a>. To associate data from a motion file to a motion that is already loaded into OpenSim:</p><div class="table-wrap"><table class="confluenceTable"><tbody><tr><th class="nohighlight confluenceTh"><img class="confluence-embedded-image" src="attachments/3376147/3736915.png" data-image-src="attachments/3376147/3736915.png"></th><th class="nohighlight confluenceTh"><ol class="_mce_tagged_br"><li><p class="_mce_tagged_br">Expand the <strong>Motions</strong> branch in the Navigator. </p></li><li><p><strong>Right mouse</strong> click on the desired motion and select <strong>Associate Motion Data..</strong>. or <strong>Color Muscles from File...</strong></p></li><li><p>OpenSim will open a file browser, which you can use to select the desired motion file.</p></li></ol><p>OpenSim will then load the data file (as in preview motion data) and try to guess based on the contents of the file what objects it contains and display these objects (either markers in trc file or forces extracted from an .mot file). The user can then revisit those guesses to affect the definition of these objects as described below. The user can also save the deifnition into an ExternalLoads file to be used by other tool</p></th></tr></tbody></table></div><h3 id="AssociatingDatawithaMotion-EditingMotionObjects">Editing Motion Objects</h3><div class="table-wrap"><table class="confluenceTable"><tbody><tr><th class="nohighlight confluenceTh"><img class="confluence-embedded-image" width="500" src="attachments/3376147/3736914.png" data-image-src="attachments/3376147/3736914.png"></th><th class="nohighlight confluenceTh"><ol><li>To edit the configuration of motion data, expand the <strong>Motions</strong> Branch in the Navigator.</li><li>Next, expand the current loaded motion (e.g. <strong>BothLegsWalk</strong>). You will see the motion data that you've associated. <strong>Right Click</strong> and select<strong> Edit Motion Objects...</strong></li><li>This will open the Inspect Motion Data window. In this window, you'll see any motion objects that OpenSim was able to automatically associate.</li><li><strong>Click to Highlight</strong> a motion object, then select <strong>Edit</strong>. Or if no objects were automatically generated, click <strong>Add</strong> to create a new one. You can have any number of motion objects for a given file with motion data.</li><li>This will open the Create/Edit Motion Objects window. This panel is just like the one used to specify External Loads (see <a href="How%2Bto%2BUse%2Bthe%2BInverse%2BDynamics%2BTool.html">How to Use the Inverse Dynamics Tool</a>). But in this case, it's being used to edit how the motion data's vectors are displayed. <br /><ol><li>The <strong>Apply to </strong>drop down is not used for visualization.</li><li>If you choose <strong>Body Force</strong>, the vector will be shown at the center of mass of the Body you select for <strong>Force Expressed In.</strong></li><li>If you choose<strong> Point Force, </strong>the vector will be shown at the point specified in<strong> Point Columns.</strong></li><li>You can choose to display all components of the vector or only one component (e.g. the X component), using the<strong> Component </strong>drop down.</li><li>Specify the <strong>Force Columns</strong> and and <strong>Point Columns</strong> using the drop down menus.</li><li>Use the<strong> Force Expressed In </strong>and<strong> Point Expressed In </strong>drop downs to choose which body the force vector and point should be visualized in.</li><li><strong>Click </strong>OK.</li></ol></li><li>Once you've specified a motion object, you can Save it to reuse later by clicking <strong>Save... </strong>This creates an xml configuration file for the motion data.</li><li>You can load any existing motion data specification files by clicking <strong>Load...</strong> and selecting the desired file.</li><li>Click <strong>Close</strong> when you are done editing. When you play the current motion, you should see a vector visualizing the motion object.</li></ol><div class='panelMacro'><table class='infoMacro'><colgroup><col width='24'><col></colgroup><tr><td valign='top'><img src="images/icons/emoticons/information.png" width="16" height="16" align="absmiddle" alt="" border="0"></td><td><p>If you don't see the motion object you created, it might be because it is very small. Try changing the Force display size in the <a href="Property%2BEditor.html">Property Editor</a>. You can also change the color of vector, it's also possible that OpenSim couldn't automatically detect any known objects (markers or forces) in the file because the labels don't follow expected conventions.</p></td></tr></table></div><p> </p></th></tr></tbody></table></div><div class='panelMacro'><table class='infoMacro'><colgroup><col width='24'><col></colgroup><tr><td valign='top'><img src="images/icons/emoticons/information.png" width="16" height="16" align="absmiddle" alt="" border="0"></td><td><p>The xml configuration file for visualizing motion data is the same as the one used to specify External Loads for Inverse Dynamics and other tools (see <a href="How%2Bto%2BUse%2Bthe%2BInverse%2BDynamics%2BTool.html">How to Use the Inverse Dynamics Tool</a>). Note that the <strong>Applied to</strong> setting has no effect on visualization, but does affect applied External Loads. The Component selection used for visualization does not affect applied External Loads–all components selected are applied in Inverse Dynamics and other tools.</p></td></tr></table></div><h2 id="AssociatingDatawithaMotion-ColoringMusclesfromFile">Coloring Muscles from File</h2><p>As of OpenSim 3.2, you can also associate a file with to dictate muscle coloring. This is useful, for example to visualize the activation results from Static Optimization.</p><p>The color data muscle be included in an OpenSim storage (.sto) file. The file should have columns with the muscles names of interest, with values (e.g., activations) ranging from 0 to 1. Muscles with a value of zero will appear blue. Muscles with a value of one or great will appear red. The file should have an overlapping time range.</p><p>As with Associate Motion Data above, you must first load a motion. Then you can <strong>right click</strong> on the motion, select <strong>Color Muscles From File...</strong> and choose the storage file with muscle color data. Now, when you playback the motion the muscles will be colored according to your storage file.</p><p> </p><div class="panel" style="background-color: white;border-color: gray;border-style: solid;border-width: 5px;"><div class="panelContent" style="background-color: white;">
+<p><span>Next: <a href="Previewing%2BMotion%2BCapture%2B%2528Mocap%2529%2BData.html">Previewing Motion Capture (Mocap) Data</a></span></p><p>Previous: <a href="Loading%2BMotions.html">Loading Motions</a></p><p>Home: <a href="Loading%2Band%2BSaving%2BModels%2Band%2BMotions.html">Loading and Saving Models and Motions</a></p>
+</div></div>
+                    </div>
+
+                                        <div class="pageSection group">
+                        <div class="pageSectionHeader">
+                            <h2 id="attachments" class="pageSectionTitle">Attachments:</h2>
+                        </div>
+
+                        <div class="greybox" align="left">
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/3376147/3736915.png">assocmotion-1.png</a> (image/png)
+                                <br/>
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/3376147/3736914.png">assocmotion-2.png</a> (image/png)
+                                <br/>
+                                                    </div>
+                    </div>
+                    
+                                                      
+                </div>             </div> 
+            <div id="footer" style="background: url(http://simtk-confluence.stanford.edu:8080/images/border/border_bottom.gif) repeat-x;">
+                <p><small>Document generated by Confluence on Feb 24, 2014 09:27</small></p>
+            </div>
+        </div>     </body>
+</html>

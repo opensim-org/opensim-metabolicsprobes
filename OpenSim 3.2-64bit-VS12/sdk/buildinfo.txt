@@ -1,0 +1,3 @@
+Product Version=3.2
+Compiler=Visual Studio 10 Win64-MSVC
+Platform=Windows-x64

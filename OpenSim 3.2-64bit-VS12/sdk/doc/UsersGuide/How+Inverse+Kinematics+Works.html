@@ -1,0 +1,154 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+    <head>
+        <title>OpenSim Documentation : How Inverse Kinematics Works</title>
+        <link rel="stylesheet" href="styles/site.css" type="text/css" />
+        <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    </head>
+
+    <body>
+        <div id="page">
+            <div id="main">
+                <div id="main-header" class="pageSectionHeader">
+                    <h1 id="title-heading" class="pagetitle">
+                                                <span id="title-text">
+                            OpenSim Documentation : How Inverse Kinematics Works
+                        </span>
+                    </h1>
+
+                    <div class="page-metadata">
+                        <p>This page last changed on Jul 17, 2013 by <font color="#0050B2">chrisdembia</font>.</p>
+                    </div>
+                </div>
+
+                <div id="content" class="view">
+                    <div id="main-content" class="wiki-content group">
+                    <p>The IK tool goes through each time step (frame) of motion and computes generalized coordinate values which positions the model in a pose that &quot;best matches&quot; experimental marker and coordinate values for that time step. Mathematically, the &quot;best match&quot; is expressed as a weighted least squares problem, whose solution aims to minimize both marker and coordinate errors.  The topics covered in this section include:</p><p><div>
+<ul>
+    <li><a href='#HowInverseKinematicsWorks-Toc174781341MarkerErrors'><span class="confluence-anchor-link" id="HowInverseKinematicsWorks-Toc174781341" />Marker Errors</a></li>
+    <li><a href='#HowInverseKinematicsWorks-Toc174781342CoordinateErrors'><span class="confluence-anchor-link" id="HowInverseKinematicsWorks-Toc174781342" />Coordinate Errors</a></li>
+    <li><a href='#HowInverseKinematicsWorks-Toc174781343WeightedLeastSquaresEquation'><span class="confluence-anchor-link" id="HowInverseKinematicsWorks-Toc174781343" />Weighted Least Squares Equation</a></li>
+    <li><a href='#HowInverseKinematicsWorks-Toc174781344ImportantNoteaboutUnits'><span class="confluence-anchor-link" id="HowInverseKinematicsWorks-Toc174781344" />Important Note about Units</a></li>
+</ul></div></p><h1 id="HowInverseKinematicsWorks-Toc174781341MarkerErrors"><span class="confluence-anchor-link" id="HowInverseKinematicsWorks-Toc174781341"></span>Marker Errors</h1><p>A <span style="color: rgb(128,0,0);"><em>marker error</em></span> is the distance between an experimental marker and the corresponding marker on the model when it is positioned using the generalized coordinates computed by the IK solver. Each marker has a weight associated with it, specifying how strongly that marker's error term should be minimized.</p><h1 id="HowInverseKinematicsWorks-Toc174781342CoordinateErrors"><span class="confluence-anchor-link" id="HowInverseKinematicsWorks-Toc174781342"></span>Coordinate Errors</h1><p>A <span style="color: rgb(128,0,0);"><em>coordinate error</em></span> is the difference between an experimental coordinate value and the coordinate value computed by IK.</p><p>What are &quot;experimental coordinate values?&quot; These can be joint angles obtained directly from a motion capture system (i.e., built-in mocap inverse kinematics capabilities), or may be computed from experimental data by various specialized algorithms (e.g., defining anatomical coordinate frames and using them to specify joint frames that, in turn, describe joint angles) or by other measurement techniques that involve other measurement devices (e.g., a goniometer). A fixed desired value for a coordinate can also be specified (e.g., if you know a specific joint's angle should stay at 0˚). The inclusion of experimental coordinate values is optional; the IK tool can solve for the motion trajectories using marker matching alone.</p><p>A distinction should be made between <span style="color: rgb(128,0,0);"><em>prescribed</em></span> and <span style="color: rgb(128,0,0);"><em>unprescribed coordinates</em></span>. A prescribed coordinate (also referred to as a <span style="color: rgb(128,0,0);"><em>locked coordinate</em></span>) is a generalized coordinate whose trajectory is known and which will not be computed using IK. It will get set to its exact trajectory value instead. This can be useful when you have enough confidence in some generalized coordinate value that you don't want the IK solver to change it.</p><p>An <span style="color: rgb(128,0,0);"><em>unprescribed coordinate</em></span> is a coordinate which is not prescribed, and whose value is computed using IK.<br /> Using these definitions, only <span style="color: rgb(128,0,0);"><em>unprescribed coordinates</em></span> can vary and so only they appear in the least squares equation solved by IK. Each unprescribed coordinate being compared to an experimental coordinate must have a weight associated with it, specifying how strongly that coordinate's error should be minimized.</p><h1 id="HowInverseKinematicsWorks-Toc174781343WeightedLeastSquaresEquation"><span class="confluence-anchor-link" id="HowInverseKinematicsWorks-Toc174781343"></span>Weighted Least Squares Equation</h1><p>The weighted least squares problem solved by IK is<br /><img class="confluence-embedded-image" src="attachments/3376169/3737034.png" data-image-src="attachments/3376169/3737034.png" title="Picture 17.png"><br /> where <strong>q</strong> is the vector of generalized coordinates being solved for, <strong>x<sub>i</sub></strong><sup>exp</sup> is the experimental position of marker i, <strong>x<sub>i</sub></strong>(<strong>q</strong>) is the position of the corresponding marker on the model (which depends on the coordinate values), q<sub>j</sub><sup>exp</sup> is the experimental value for coordinate j. Prescribed coordinates are set to their experimental values. For instance, in the gait2354 and gait2392 examples, the subtalar and metatarsophalangeal (mtp) joints are locked and during IK they are assigned the prescribed value of 0˚.</p><p>The marker weights (<em>w</em><sub>i</sub>'s) and coordinate weights (<em>ω</em><sub>j</sub>'s) are specified in the <span style="color: rgb(0,0,255);">&lt;</span><span style="color: rgb(128,0,0);">IKMarkerTask</span><span style="color: rgb(0,0,255);">&gt;</span> and <span style="color: rgb(0,0,255);">&lt;</span><span style="color: rgb(128,0,0);">IKCoordinateTask</span><span style="color: rgb(0,0,255);">&gt;</span> tags, respectively. These are all specified within a single <span style="color: rgb(0,0,255);">&lt;</span><span style="color: rgb(128,0,0);">IKTaskSet</span><span style="color: rgb(0,0,255);">&gt;</span> tag, as will be outlined in <a href="How%2Bto%2BUse%2Bthe%2BIK%2BTool.html">How to Use the IK Tool</a>. This least squares problem is solved using a general quadratic programming solver, with a convergence criterion of 0.0001 and a limit of 1000 iterations. These are currently fixed values that cannot be changed in the XML files.</p><h1 id="HowInverseKinematicsWorks-Toc174781344ImportantNoteaboutUnits"><span class="confluence-anchor-link" id="HowInverseKinematicsWorks-Toc174781344"></span>Important Note about Units</h1><p>The least squares solution is affected by the choice of length and angle units. The units used by IK are the model's units, which are <strong>meters</strong> for length and <strong>radians</strong> for angles. This is important, for example, if you wish to compare these results to a different IK solver that uses degrees for measuring coordinate errors. In order to get similar results using OpenSim's choice of radians as units, you should alter the weightings accordingly: scale each coordinate's weight by
+ 
+ 
+<style>
+    #math1849428977 .typeset {
+        color: black
+    }
+    #math1849428977 {
+        font-size: 100%;
+        margin: 1em 0px;
+    }
+    #jsMath_button, #jsMath_message, #jsMath_Warning {
+        display: none;
+    }
+</style>
+ 
+<script type="text/javascript" src="/includes/js/jsMath/plugins/noImageFonts.js">//<![CDATA[
+
+
+//]]>
+</script>
+<script type="text/javascript" src="/includes/js/jsMath/jsMath.js">//<![CDATA[
+
+
+//]]>
+</script>
+ 
+<span id="math1849428977" class="math">
+  \displaystyle\left(\frac{180}{\pi}\right)^2
+</span>
+ 
+<script type="text/javascript">//<![CDATA[
+
+//check for use of this macro elsewhere on the page so that we only call jsMath once
+ if (typeof mathFormulaDetected == 'undefined') {
+    var mathFormulaDetected = false;
+}
+jQuery(document).ready(function() {
+    if (!mathFormulaDetected) {
+        jsMath.ProcessBeforeShowing();
+        mathFormulaDetected = true;
+    }
+});
+
+//]]>
+</script>(so to achieve a weight of 1 with a degrees-based IK solver, use
+ 
+ 
+<style>
+    #math1112947918 .typeset {
+        color: black
+    }
+    #math1112947918 {
+        font-size: 100%;
+        margin: 1em 0px;
+    }
+    #jsMath_button, #jsMath_message, #jsMath_Warning {
+        display: none;
+    }
+</style>
+ 
+<script type="text/javascript" src="/includes/js/jsMath/plugins/noImageFonts.js">//<![CDATA[
+
+
+//]]>
+</script>
+<script type="text/javascript" src="/includes/js/jsMath/jsMath.js">//<![CDATA[
+
+
+//]]>
+</script>
+ 
+<span id="math1112947918" class="math">
+  \displaystyle\left(\frac{180}{\pi}\right)^2
+</span>
+ 
+<script type="text/javascript">//<![CDATA[
+
+//check for use of this macro elsewhere on the page so that we only call jsMath once
+ if (typeof mathFormulaDetected == 'undefined') {
+    var mathFormulaDetected = false;
+}
+jQuery(document).ready(function() {
+    if (!mathFormulaDetected) {
+        jsMath.ProcessBeforeShowing();
+        mathFormulaDetected = true;
+    }
+});
+
+//]]>
+</script> for the weight in the IKTool in OpenSim, which is radian-based).</p><div class="panel" style="background-color: white;border-color: gray;border-style: solid;border-width: 5px;"><div class="panelContent" style="background-color: white;">
+<p>Next: <a href="How%2Bto%2BUse%2Bthe%2BIK%2BTool.html">How to Use the IK Tool</a></p><p>Previous: <a href="Getting%2BStarted%2Bwith%2BInverse%2BKinematics.html">Getting Started with Inverse Kinematics</a></p><p>Home: <a href="Inverse%2BKinematics.html">Inverse Kinematics</a></p>
+</div></div>
+                    </div>
+
+                                        <div class="pageSection group">
+                        <div class="pageSectionHeader">
+                            <h2 id="attachments" class="pageSectionTitle">Attachments:</h2>
+                        </div>
+
+                        <div class="greybox" align="left">
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/3376169/3737035.docx">InverseKinematicsEquations.docx</a> (application/vnd.openxmlformats)
+                                <br/>
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/3376169/3737034.png">Picture 17.png</a> (image/png)
+                                <br/>
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/3376169/3737033.png">Picture 18.png</a> (image/png)
+                                <br/>
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/3376169/3737032.png">Picture 19.png</a> (image/png)
+                                <br/>
+                                                    </div>
+                    </div>
+                    
+                                                      
+                </div>             </div> 
+            <div id="footer" style="background: url(http://simtk-confluence.stanford.edu:8080/images/border/border_bottom.gif) repeat-x;">
+                <p><small>Document generated by Confluence on Feb 24, 2014 09:27</small></p>
+            </div>
+        </div>     </body>
+</html>

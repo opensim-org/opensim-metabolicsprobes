@@ -1,0 +1,873 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=9"/>
+<title>OpenSim: OpenSim::XMLDocument Class Reference</title>
+<link href="opensim.css" rel="stylesheet" type="text/css" />
+<link href="lightbox.css" rel="stylesheet" type="text/css" />
+<link href="bootstrap3/css/bootstrap.min.css" rel="stylesheet">
+<script src="jquery-2.1.0.min.js"></script>
+<script src="bootstrap3/js/bootstrap.min.js"></script>
+<script src="lightbox.js"></script>
+<script type="text/javascript" src="typeahead.min.js"></script>
+<script src="hogan-2.0.0.js"></script>
+<script type="text/javascript">
+  window.onhashchange = function() {
+  if (window.location.hash)
+      window.scrollBy(0, -50);
+  }
+  if (window.location.hash)
+  {
+    window.scrollBy(0, -50);
+  }
+$( document ).ready(function() {
+  $("#MSearchBox").hide();
+  $("div.headertitle").addClass("page-header");
+  $("div.title").addClass("h1");
+  $('li > a[href="index.html"] > span').before("<i class='fa fa-cog'></i> ");
+  $('li > a[href="index.html"] > span').text("OpenSim");
+  $('li > a[href="modules.html"] > span').before("<i class='fa fa-square'></i> ");
+  $('li > a[href="namespaces.html"] > span').before("<i class='fa fa-bars'></i> ");
+  $('li > a[href="annotated.html"] > span').before("<i class='fa fa-list-ul'></i> ");
+  $('li > a[href="classes.html"] > span').before("<i class='fa fa-book'></i> ");
+  $('li > a[href="inherits.html"] > span').before("<i class='fa fa-sitemap'></i> ");
+  $('li > a[href="functions.html"] > span').before("<i class='fa fa-list'></i> ");
+  $('li > a[href="functions_func.html"] > span').before("<i class='fa fa-list'></i> ");
+  $('li > a[href="functions_vars.html"] > span').before("<i class='fa fa-list'></i> ");
+  $('li > a[href="functions_enum.html"] > span').before("<i class='fa fa-list'></i> ");
+  $('li > a[href="functions_eval.html"] > span').before("<i class='fa fa-list'></i> ");
+  $('img[src="ftv2ns.png"]').replaceWith('<span class="label label-danger">N</span> ');
+  $('img[src="ftv2cl.png"]').replaceWith('<span class="label label-danger">C</span> ');
+  $("ul.tablist").addClass("nav nav-pills nav-justified");
+  $("ul.tablist").css("margin-top", "0.5em");
+  $("ul.tablist").css("margin-bottom", "0.5em");
+  $("li.current").addClass("active");
+  $("iframe").attr("scrolling", "yes");
+  $("#nav-path > ul").addClass("breadcrumb");
+  $("table.params").addClass("table");
+  $("div.ingroups").wrapInner("<small></small>");
+  $("div.levels").css("margin", "0.5em");
+  $("div.levels > span").addClass("btn btn-default btn-xs");
+  $("div.levels > span").css("margin-right", "0.25em");
+  $("table.directory").addClass("table table-striped");
+  $("div.summary > a").addClass("btn btn-default btn-xs");
+  $("table.fieldtable").addClass("table");
+  $(".fragment").addClass("well");
+  $(".memitem").addClass("panel panel-default");
+  $(".memproto").addClass("panel-heading");
+  $(".memdoc").addClass("panel-body");
+  $("span.mlabel").addClass("label label-info");
+  $("table.memberdecls").addClass("table");
+  $("[class^=memitem]").addClass("active");
+  $("div.ah").addClass("btn btn-default");
+  $("span.mlabels").addClass("pull-right");
+  $("table.mlabels").css("width", "100%")
+  $("td.mlabels-right").addClass("pull-right");
+  $("div.ttc").addClass("panel panel-info");
+  $("div.ttname").addClass("panel-heading");
+  $("div.ttdef,div.ttdoc,div.ttdeci").addClass("panel-body");
+$("#search").typeahead([
+    {
+      name: 'opensim-search',
+      valueKey: 'title',
+      remote: { url: 'query?q=%QUERY&teaser=body&pagesize=1000',
+      filter: function(p) {
+        dat = [];
+        for(i=0; i < p.hits.length; i++)
+        {
+          var pn = p.hits[i].document;
+          pn.href = p.hits[i].id;
+          dat.push(pn);
+        }
+        return dat;
+      }
+    },
+      template: '<strong>{{title}}</strong><p>{{{teaser}}}</p>',
+      engine: Hogan,
+      limit: 1000
+    }
+    ]).on("typeahead:selected", (function (e, datum){
+      window.location = datum.href;
+    }));
+    $('.typeahead.input-sm').siblings('input.tt-hint').addClass('hint-small');
+    $('.typeahead.input-lg').siblings('input.tt-hint').addClass('hint-large');
+  $.ajax({url : "ping", type: "GET", error : function() {
+    var prt = $("#MSearchBox").parent();
+    $(".twitter-typeahead").replaceWith($("#MSearchBox").show());
+    prt.remove();
+  }, success: function() {
+    $("#MSearchBox").parent().remove();
+    $(".nav>li").css("width", "266.667px");
+  }   });
+});
+var initNavTree = function(a,b) { } 
+function toggleVisibility(linkObj)
+{
+ var base = $(linkObj).attr('id');
+ var summary = $('#'+base+'-summary');
+ var content = $('#'+base+'-content');
+ var trigger = $('#'+base+'-trigger');
+ var src=$(trigger).attr('src');
+ if (content.is(':visible')===true) {
+   content.hide();
+   summary.show();
+   $(linkObj).addClass('closed').removeClass('opened');
+   $(trigger).attr('src',src.substring(0,src.length-8)+'closed.png');
+ } else {
+   content.show();
+   summary.hide();
+   $(linkObj).removeClass('closed').addClass('opened');
+   $(trigger).attr('src',src.substring(0,src.length-10)+'open.png');
+ } 
+ return false;
+}
+function updateStripes()
+{
+  $('table.directory tr').
+       removeClass('even').filter(':visible:even').addClass('even');
+}
+function toggleLevel(level)
+{
+  $('table.directory tr').each(function(){ 
+    var l = this.id.split('_').length-1;
+    var i = $('#img'+this.id.substring(3));
+    var a = $('#arr'+this.id.substring(3));
+    if (l<level+1) {
+      i.attr('src','ftv2folderopen.png');
+      a.attr('src','ftv2mnode.png');
+      $(this).show();
+    } else if (l==level+1) {
+      i.attr('src','ftv2folderclosed.png');
+      a.attr('src','ftv2pnode.png');
+      $(this).show();
+    } else {
+      $(this).hide();
+    }
+  });
+  updateStripes();
+}
+function toggleFolder(id)
+{
+  //The clicked row
+  var currentRow = $('#row_'+id);
+  var currentRowImages = currentRow.find("img");
+  //All rows after the clicked row
+  var rows = currentRow.nextAll("tr");
+  //Only match elements AFTER this one (can't hide elements before)
+  var childRows = rows.filter(function() {
+    var re = new RegExp('^row_'+id+'\\d+_$', "i"); //only one sub
+    return this.id.match(re);
+  });
+  //First row is visible we are HIDING
+  if (childRows.filter(':first').is(':visible')===true) {
+    currentRowImages.filter("[id^=arr]").attr('src', 'ftv2pnode.png');
+    currentRowImages.filter("[id^=img]").attr('src', 'ftv2folderclosed.png');
+    rows.filter("[id^=row_"+id+"]").hide();
+  } else { //We are SHOWING
+    //All sub images
+    var childImages = childRows.find("img");
+    var childImg = childImages.filter("[id^=img]");
+    var childArr = childImages.filter("[id^=arr]");
+    currentRow.find("[id^=arr]").attr('src', 'ftv2mnode.png'); //open row
+    currentRow.find("[id^=img]").attr('src', 'ftv2folderopen.png'); //open row
+    childImg.attr('src','ftv2folderclosed.png'); //children closed
+    childArr.attr('src','ftv2pnode.png'); //children closed
+    childRows.show(); //show all children
+  }
+  updateStripes();
+}
+function toggleInherit(id)
+{
+  var rows = $('tr.inherit.'+id);
+  var img = $('tr.inherit_header.'+id+' img');
+  var src = $(img).attr('src');
+  if (rows.filter(':first').is(':visible')===true) {
+    rows.css('display','none');
+    $(img).attr('src',src.substring(0,src.length-8)+'closed.png');
+  } else {
+    rows.css('display','table-row'); // using show() causes jump in firefox
+    $(img).attr('src',src.substring(0,src.length-10)+'open.png');
+  }
+}
+$(function() {
+$(".dyncontent img").each(function () {
+  $(this).wrap("<a href='" + $(this).attr("src") + "'></a>");
+  $(".dyncontent a").click(function(e) { e.preventDefault(); $(this).ekkoLightbox();  });
+} );
+  diag = $("map").parent().children("a").children("img");
+  if (diag != 'undefined')
+  {
+      diag.clone().load(function() { 
+      ratio = diag.width() / this.width;
+      $("area").each(function () {
+          cr = $(this).attr("coords").split(",");
+          for(l=0; l < cr.length; l++) {
+            cr[l] = parseInt(cr[l]) * ratio;
+          }
+          $(this).attr("coords", cr.join(','));
+      })
+      console.log(ratio); 
+    });
+  }
+});
+</script>
+<style type="text/css">
+  body
+  {
+    width: 800px;
+    margin: 0 auto;
+  }
+  img
+  {
+    max-width: 800px;
+  }
+  #container
+  {
+    margin-top: 70px;
+  }
+.twitter-typeahead .tt-hint
+{
+    display: block;
+    height: 34px;
+    padding: 6px 12px;
+    font-size: 14px;
+    line-height: 1.428571429;
+    border: 1px solid transparent;
+    border-radius:4px;
+}
+.twitter-typeahead .hint-small
+{
+    height: 30px;
+    padding: 5px 10px;
+    font-size: 12px;
+    border-radius: 3px;
+    line-height: 1.5;
+}
+.twitter-typeahead .hint-large
+{
+    height: 45px;
+    padding: 10px 16px;
+    font-size: 18px;
+    border-radius: 6px;
+    line-height: 1.33;
+}
+.twitter-typeahead {
+    width: 100%;
+    position: relative;
+}
+.twitter-typeahead .tt-query,
+.twitter-typeahead .tt-hint {
+    margin-bottom: 0;
+    width:100%;
+    height: 34px;
+    position: absolute;
+    top:0;
+    left:0;
+}
+.twitter-typeahead .tt-hint {
+    color:#a1a1a1;
+    z-index: 1;
+    padding: 6px 12px;
+    border:1px solid transparent;
+}
+.twitter-typeahead .tt-query {
+    z-index: 2;
+    border-radius: 4px!important;
+}
+.tt-dropdown-menu {
+    left: auto !important;
+    right: 0px !important;
+    overflow-y: auto;
+    max-height: 400px;
+    min-width: 160px;
+    margin-top: 2px;
+    padding: 5px 0;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border: 1px solid rgba(0,0,0,.2);
+    *border-right-width: 2px;
+    *border-bottom-width: 2px;
+    -webkit-border-radius: 6px;
+    -moz-border-radius: 6px;
+    border-radius: 6px;
+    -webkit-box-shadow: 0 5px 10px rgba(0,0,0,.2);
+    -moz-box-shadow: 0 5px 10px rgba(0,0,0,.2);
+    box-shadow: 0 5px 10px rgba(0,0,0,.2);
+    -webkit-background-clip: padding-box;
+    -moz-background-clip: padding;
+    background-clip: padding-box;
+}
+.tt-suggestion {
+    display: block;
+    padding: 3px 20px;
+}
+.tt-suggestion.tt-is-under-cursor {
+    color: #fff;
+    background-color: #0081c2;
+    background-image: -moz-linear-gradient(top, #0088cc, #0077b3);
+    background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#0088cc), to(#0077b3));
+    background-image: -webkit-linear-gradient(top, #0088cc, #0077b3);
+    background-image: -o-linear-gradient(top, #0088cc, #0077b3);
+    background-image: linear-gradient(to bottom, #0088cc, #0077b3);
+    background-repeat: repeat-x;
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff0088cc', endColorstr='#ff0077b3', GradientType=0)
+}
+.tt-suggestion.tt-is-under-cursor a {
+    color: #fff;
+}
+.tt-suggestion p {
+    margin: 0;
+}
+.sc-em
+{
+  font-weight: bold;
+}
+#MSearchResultsWindow
+{
+  top: 51px !important;
+  position: fixed !important;
+}
+</style>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/search.js"></script>
+<script type="text/javascript">
+  $(document).ready(function() { searchBox.OnSelectItem(0); });
+</script>
+</head>
+<body>
+    <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <a class="navbar-brand" href="index.html">OpenSim Documentation</a>
+        </div>
+          <form class="navbar-form navbar-right">
+              <input type="search" placeholder="Search" class="form-control" id="search">
+          </form>
+      </div>
+    </div>
+  <div id="container">
+<!-- Generated by Doxygen 1.8.6 -->
+<script type="text/javascript">
+var searchBox = new SearchBox("searchBox", "search",false,'Search');
+</script>
+  <div id="navrow1" class="tabs">
+    <ul class="tablist">
+      <li><a href="index.html"><span>Main&#160;Page</span></a></li>
+      <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
+      <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
+      <li>
+        <div id="MSearchBox" class="MSearchBoxInactive">
+        <span class="left">
+          <img id="MSearchSelect" src="search/mag_sel.png"
+               onmouseover="return searchBox.OnSearchSelectShow()"
+               onmouseout="return searchBox.OnSearchSelectHide()"
+               alt=""/>
+          <input type="text" id="MSearchField" value="Search" accesskey="S"
+               onfocus="searchBox.OnSearchFieldFocus(true)" 
+               onblur="searchBox.OnSearchFieldFocus(false)" 
+               onkeyup="searchBox.OnSearchFieldChange(event)"/>
+          </span><span class="right">
+            <a id="MSearchClose" href="javascript:searchBox.CloseResultsWindow()"><img id="MSearchCloseImg" border="0" src="search/close.png" alt=""/></a>
+          </span>
+        </div>
+      </li>
+    </ul>
+  </div>
+  <div id="navrow2" class="tabs2">
+    <ul class="tablist">
+      <li><a href="annotated.html"><span>Class&#160;List</span></a></li>
+      <li><a href="hierarchy.html"><span>Class&#160;Hierarchy</span></a></li>
+      <li><a href="functions.html"><span>Class&#160;Members</span></a></li>
+    </ul>
+  </div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+$(document).ready(function(){initNavTree('classOpenSim_1_1XMLDocument.html','');});
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Namespaces</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Enumerator</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Friends</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(9)"><span class="SelectionMark">&#160;</span>Pages</a></div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<iframe src="javascript:void(0)" frameborder="0" 
+        name="MSearchResults" id="MSearchResults">
+</iframe>
+</div>
+
+<div class="header">
+  <div class="summary">
+<a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pub-static-methods">Static Public Member Functions</a> &#124;
+<a href="#pub-static-attribs">Static Public Attributes</a> &#124;
+<a href="classOpenSim_1_1XMLDocument-members.html">List of all members</a>  </div>
+  <div class="headertitle">
+<div class="title">OpenSim::XMLDocument Class Reference</div>  </div>
+</div><!--header-->
+<div class="contents">
+
+<p><code>#include &lt;XMLDocument.h&gt;</code></p>
+<div class="dynheader">
+Inheritance diagram for OpenSim::XMLDocument:</div>
+<div class="dyncontent">
+ <div class="center">
+  <img src="classOpenSim_1_1XMLDocument.png" usemap="#OpenSim::XMLDocument_map" alt=""/>
+  <map id="OpenSim::XMLDocument_map" name="OpenSim::XMLDocument_map">
+</map>
+ </div></div>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
+Public Member Functions</h2></td></tr>
+<tr class="memitem:a35eafff3fb281434f2e7fe79f12a7623"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classOpenSim_1_1XMLDocument.html#a35eafff3fb281434f2e7fe79f12a7623">~XMLDocument</a> ()</td></tr>
+<tr class="separator:a35eafff3fb281434f2e7fe79f12a7623"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a54c5d53b830d6d4c046100628c6c398b"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classOpenSim_1_1XMLDocument.html#a54c5d53b830d6d4c046100628c6c398b">XMLDocument</a> ()</td></tr>
+<tr class="separator:a54c5d53b830d6d4c046100628c6c398b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac9a4890e2685c82bea07d0f1d25d07a8"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classOpenSim_1_1XMLDocument.html#ac9a4890e2685c82bea07d0f1d25d07a8">XMLDocument</a> (const std::string &amp;aFileName)</td></tr>
+<tr class="separator:ac9a4890e2685c82bea07d0f1d25d07a8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a62f58da282ff74e4dc9de5016db018ca"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classOpenSim_1_1XMLDocument.html#a62f58da282ff74e4dc9de5016db018ca">XMLDocument</a> (const <a class="el" href="classOpenSim_1_1XMLDocument.html">XMLDocument</a> &amp;aDocument)</td></tr>
+<tr class="separator:a62f58da282ff74e4dc9de5016db018ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9f9628891083c2e402cd8a132cf2e624"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classOpenSim_1_1XMLDocument.html#a9f9628891083c2e402cd8a132cf2e624">copyDefaultObjects</a> (const <a class="el" href="classOpenSim_1_1XMLDocument.html">XMLDocument</a> &amp;aDocument)</td></tr>
+<tr class="separator:a9f9628891083c2e402cd8a132cf2e624"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a899fe1166aad9282276ee64183e041ad"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classOpenSim_1_1XMLDocument.html#a899fe1166aad9282276ee64183e041ad">writeDefaultObjects</a> (SimTK::Xml::Element &amp;elmt)</td></tr>
+<tr class="separator:a899fe1166aad9282276ee64183e041ad"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9d1d3cb966fa06a1e97b9242f8bb9b39"><td class="memItemLeft" align="right" valign="top">const int &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classOpenSim_1_1XMLDocument.html#a9d1d3cb966fa06a1e97b9242f8bb9b39">getDocumentVersion</a> () const </td></tr>
+<tr class="separator:a9d1d3cb966fa06a1e97b9242f8bb9b39"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8b52ad361ce7c13836f1b5d398bb789b"><td class="memItemLeft" align="right" valign="top">Xml::Element&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classOpenSim_1_1XMLDocument.html#a8b52ad361ce7c13836f1b5d398bb789b">getRootDataElement</a> ()</td></tr>
+<tr class="separator:a8b52ad361ce7c13836f1b5d398bb789b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0312074f49ad3dc0f2baf5fd40f2981f"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classOpenSim_1_1XMLDocument.html#a0312074f49ad3dc0f2baf5fd40f2981f">isEqualTo</a> (<a class="el" href="classOpenSim_1_1XMLDocument.html">XMLDocument</a> &amp;aOtherDocument, double toleranceForDoubles=1e-6, bool compareDefaults=false, bool compareVersionNumbers=false)</td></tr>
+<tr class="separator:a0312074f49ad3dc0f2baf5fd40f2981f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acc3d9adf147731db4089f4a37a80f94d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classOpenSim_1_1XMLDocument.html#acc3d9adf147731db4089f4a37a80f94d">setFileName</a> (const std::string &amp;aFileName)</td></tr>
+<tr class="separator:acc3d9adf147731db4089f4a37a80f94d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a26ec25329331284169b4feab2f1b3c51"><td class="memItemLeft" align="right" valign="top">const std::string &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classOpenSim_1_1XMLDocument.html#a26ec25329331284169b4feab2f1b3c51">getFileName</a> () const </td></tr>
+<tr class="separator:a26ec25329331284169b4feab2f1b3c51"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a46b3a4a92065cf6bc058518e40cef1b0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classOpenSim_1_1XMLDocument.html#a46b3a4a92065cf6bc058518e40cef1b0">addDefaultObject</a> (<a class="el" href="classOpenSim_1_1Object.html">OpenSim::Object</a> *aDefaultObject)</td></tr>
+<tr class="separator:a46b3a4a92065cf6bc058518e40cef1b0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a894b6b86e7115070744b134c58eeb640"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classOpenSim_1_1XMLDocument.html#a894b6b86e7115070744b134c58eeb640">hasDefaultObjects</a> () const </td></tr>
+<tr class="separator:a894b6b86e7115070744b134c58eeb640"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac31f09b044a90531b8877d2fd8415cf5"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classOpenSim_1_1XMLDocument.html#ac31f09b044a90531b8877d2fd8415cf5">print</a> (const std::string &amp;aFileName=NULL)</td></tr>
+<tr class="separator:ac31f09b044a90531b8877d2fd8415cf5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
+Static Public Member Functions</h2></td></tr>
+<tr class="memitem:ac881c11a701ba0a18ef17e7027e50f89"><td class="memItemLeft" align="right" valign="top">static const int &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classOpenSim_1_1XMLDocument.html#ac881c11a701ba0a18ef17e7027e50f89">getLatestVersion</a> ()</td></tr>
+<tr class="separator:ac881c11a701ba0a18ef17e7027e50f89"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae69278614fa4e0fbb3f976f9bbb28966"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classOpenSim_1_1XMLDocument.html#ae69278614fa4e0fbb3f976f9bbb28966">renameChildNode</a> (SimTK::Xml::Element &amp;aNode, std::string oldElementName, std::string newElementName)</td></tr>
+<tr class="separator:ae69278614fa4e0fbb3f976f9bbb28966"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9b4e85a06d4b33f8986c374cbf0c1664"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classOpenSim_1_1XMLDocument.html#a9b4e85a06d4b33f8986c374cbf0c1664">getVersionAsString</a> (const int aVersion, std::string &amp;aString)</td></tr>
+<tr class="separator:a9b4e85a06d4b33f8986c374cbf0c1664"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-attribs"></a>
+Static Public Attributes</h2></td></tr>
+<tr class="memitem:ade4b849bd5ffa9ebfaa176655255cb9e"><td class="memItemLeft" align="right" valign="top">static const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classOpenSim_1_1XMLDocument.html#ade4b849bd5ffa9ebfaa176655255cb9e">LatestVersion</a></td></tr>
+<tr class="memdesc:ade4b849bd5ffa9ebfaa176655255cb9e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Latest version of the code encoded as an int xxyyzz where x: major release, y: minor, z: patch.  <a href="#ade4b849bd5ffa9ebfaa176655255cb9e">More...</a><br/></td></tr>
+<tr class="separator:ade4b849bd5ffa9ebfaa176655255cb9e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+<h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a class="anchor" id="a35eafff3fb281434f2e7fe79f12a7623"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual OpenSim::XMLDocument::~XMLDocument </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a54c5d53b830d6d4c046100628c6c398b"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">OpenSim::XMLDocument::XMLDocument </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="ac9a4890e2685c82bea07d0f1d25d07a8"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">OpenSim::XMLDocument::XMLDocument </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>aFileName</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a62f58da282ff74e4dc9de5016db018ca"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">OpenSim::XMLDocument::XMLDocument </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classOpenSim_1_1XMLDocument.html">XMLDocument</a> &amp;&#160;</td>
+          <td class="paramname"><em>aDocument</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a class="anchor" id="a46b3a4a92065cf6bc058518e40cef1b0"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void OpenSim::XMLDocument::addDefaultObject </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classOpenSim_1_1Object.html">OpenSim::Object</a> *&#160;</td>
+          <td class="paramname"><em>aDefaultObject</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a9f9628891083c2e402cd8a132cf2e624"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void OpenSim::XMLDocument::copyDefaultObjects </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classOpenSim_1_1XMLDocument.html">XMLDocument</a> &amp;&#160;</td>
+          <td class="paramname"><em>aDocument</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a9d1d3cb966fa06a1e97b9242f8bb9b39"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const int&amp; OpenSim::XMLDocument::getDocumentVersion </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a26ec25329331284169b4feab2f1b3c51"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const std::string&amp; OpenSim::XMLDocument::getFileName </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="ac881c11a701ba0a18ef17e7027e50f89"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static const int&amp; OpenSim::XMLDocument::getLatestVersion </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a8b52ad361ce7c13836f1b5d398bb789b"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">Xml::Element OpenSim::XMLDocument::getRootDataElement </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a9b4e85a06d4b33f8986c374cbf0c1664"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static void OpenSim::XMLDocument::getVersionAsString </td>
+          <td>(</td>
+          <td class="paramtype">const int&#160;</td>
+          <td class="paramname"><em>aVersion</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::string &amp;&#160;</td>
+          <td class="paramname"><em>aString</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a894b6b86e7115070744b134c58eeb640"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool OpenSim::XMLDocument::hasDefaultObjects </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a0312074f49ad3dc0f2baf5fd40f2981f"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool OpenSim::XMLDocument::isEqualTo </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classOpenSim_1_1XMLDocument.html">XMLDocument</a> &amp;&#160;</td>
+          <td class="paramname"><em>aOtherDocument</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>toleranceForDoubles</em> = <code>1e-6</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>compareDefaults</em> = <code>false</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>compareVersionNumbers</em> = <code>false</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="ac31f09b044a90531b8877d2fd8415cf5"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool OpenSim::XMLDocument::print </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>aFileName</em> = <code>NULL</code></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="ae69278614fa4e0fbb3f976f9bbb28966"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static void OpenSim::XMLDocument::renameChildNode </td>
+          <td>(</td>
+          <td class="paramtype">SimTK::Xml::Element &amp;&#160;</td>
+          <td class="paramname"><em>aNode</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::string&#160;</td>
+          <td class="paramname"><em>oldElementName</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::string&#160;</td>
+          <td class="paramname"><em>newElementName</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="acc3d9adf147731db4089f4a37a80f94d"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void OpenSim::XMLDocument::setFileName </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>aFileName</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a899fe1166aad9282276ee64183e041ad"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void OpenSim::XMLDocument::writeDefaultObjects </td>
+          <td>(</td>
+          <td class="paramtype">SimTK::Xml::Element &amp;&#160;</td>
+          <td class="paramname"><em>elmt</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<h2 class="groupheader">Member Data Documentation</h2>
+<a class="anchor" id="ade4b849bd5ffa9ebfaa176655255cb9e"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const int OpenSim::XMLDocument::LatestVersion</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Latest version of the code encoded as an int xxyyzz where x: major release, y: minor, z: patch. </p>
+
+</div>
+</div>
+<hr/>The documentation for this class was generated from the following file:<ul>
+<li>C:/ReleaseEnv/src/OpenSim32Branch/OpenSim/Common/XMLDocument.h</li>
+</ul>
+</div><!-- contents -->
+</div><!-- doc-content -->
+</div>
+</body>
+</html>

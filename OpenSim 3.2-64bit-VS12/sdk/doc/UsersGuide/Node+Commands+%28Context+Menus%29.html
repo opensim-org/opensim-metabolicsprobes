@@ -1,0 +1,42 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+    <head>
+        <title>OpenSim Documentation : Node Commands (Context Menus)</title>
+        <link rel="stylesheet" href="styles/site.css" type="text/css" />
+        <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    </head>
+
+    <body>
+        <div id="page">
+            <div id="main">
+                <div id="main-header" class="pageSectionHeader">
+                    <h1 id="title-heading" class="pagetitle">
+                                                <span id="title-text">
+                            OpenSim Documentation : Node Commands (Context Menus)
+                        </span>
+                    </h1>
+
+                    <div class="page-metadata">
+                        <p>This page last changed on Oct 10, 2012 by <font color="#0050B2">jenhicks</font>.</p>
+                    </div>
+                </div>
+
+                <div id="content" class="view">
+                    <div id="main-content" class="wiki-content group">
+                    <p>This section describes the commands that are accessible through the different tree nodes. You can select the commands by right-mouse-clicking on a tree node to bring up the associated context menu. </p><p>Since multiple nodes, potentially representing objects of different types, can be selected, OpenSim decides what commands make sense for the combination of selected nodes and only displays those. </p><p>The sections below describe commands common to most objects, while the section about <a href="Object-Specific%2BCommands.html">Object-Specific Commands</a> details object-specific commands:</p><p><div>
+<ul>
+    <li><a href='#NodeCommandsContextMenus-DisplayMenu'>Display Menu</a></li>
+    <li><a href='#NodeCommandsContextMenus-Edit'>Edit</a></li>
+</ul></div></p><h2 id="NodeCommandsContextMenus-DisplayMenu">Display Menu</h2><p>The Display menu includes a set of commands that controls whether objects corresponding to selected tree nodes are shown in the 3D View window, and if shown what representation to use for them. Objects presented in the Navigator tree may not have a corresponding visual representation in the 3D View window, in which case, the nodes for these objects would not have a Display Menu.</p><p>If the user selects a combination of nodes that contains some objects that do not have a visual representation, the Display Menu is not available. It is possible, however, to pick multiple objects that have visual representations in the 3D View window and change their visual properties together using the commands in Display Menu.</p><p>The following commands in the Display Menu control what objects appear in the 3D View window: </p><ul><li><strong>Show</strong>: This option is dimmed out if the object is shown already in the 3D View window; otherwise executing the command shows the representation of the object(s) in the 3D View window.</li></ul><ul><li><strong>Show Only</strong>: Same as &quot;<strong>Show</strong>&quot; except that it hides all other objects of the same type from the 3D View window. Multiple objects can be selected to show only a few bodies or a collection of muscle groups or individual muscles.</li></ul><ul><li><strong>Hide</strong>: This option is dimmed out if the object is already hidden in the 3D View window; otherwise it hides the representation of the selected object(s) from the 3D View window.</li></ul><p>The remaining commands in the Display Menu control the visual display of the object(s) in the 3D View window: </p><ul><li><strong>Flat-Shaded:</strong> This option changes the visual representation of the selected objects to flat shaded representation. Rendered geometry is polyhedral in general. In the flat shaded representation, a color is used for each face of the polyhedron based on normals at all the vertices of the face. Edges would still show since neighboring faces may not have the same normal at the edges.</li></ul><ul><li><strong>Smooth-Shaded:</strong> This option changes the visual representation of the selected objects to smooth shaded representation. Rendered geometry is polyhedral in general. Smooth shading averages the normals at the polyhedral edges and vertices of different faces, so the shading appears smooth and continuous.</li></ul><ul><li><strong>Wireframe:</strong> This option changes the visual representation of the selected objects to a wireframe representation. Rendered geometry is polyhedral in general. The wireframe mode only displays the edges of the polyhedron.</li></ul><ul><li><strong>Color…:</strong> This option brings up a color chooser window. Selected colors are applied after the color chooser window is closed.</li></ul><ul><li><strong>Opacity...:</strong> This option brings up a window with a slider displaying the current value of Opacity for the selected object. You can change this value to control how transparent or opaque an object is. The changes are applied instantly to the selected objects and can be cancelled by pressing the <strong>Cancel</strong> button in the window.</li></ul><p>Some navigator tree nodes have additional commands that appear under their Display Menu. These are unique to the specific object and are explained in <a href="http://simtk-confluence.stanford.edu:8080/display/OpenSim/Object-Specific+Commands" rel="nofollow">Object-Specific Commands</a>.</p><h2 id="NodeCommandsContextMenus-Edit">Edit</h2><p>If the <a href="Property%2BEditor.html">Property Editor</a> window is open, when you select any object in the Navigator window, it will appear in the Properties window, which lists all of the properties of the current object. You can edit almost all of these properties live in the GUI.</p><p> </p><div class="panel" style="background-color: white;border-color: gray;border-style: solid;border-width: 5px;"><div class="panelContent" style="background-color: white;">
+<p><span>Next: </span><a href="Object-Specific%2BCommands.html">Object-Specific Commands</a><span> </span></p><p>Previous: <a href="Navigator%2BTree%2BNodes.html">Navigator Tree Nodes</a></p><p>Home: <a href="Navigator%2BWindow.html">Navigator Window</a></p>
+</div></div>
+                    </div>
+
+                    
+                                                      
+                </div>             </div> 
+            <div id="footer" style="background: url(http://simtk-confluence.stanford.edu:8080/images/border/border_bottom.gif) repeat-x;">
+                <p><small>Document generated by Confluence on Feb 24, 2014 09:27</small></p>
+            </div>
+        </div>     </body>
+</html>

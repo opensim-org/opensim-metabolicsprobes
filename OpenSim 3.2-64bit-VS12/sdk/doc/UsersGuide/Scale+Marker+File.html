@@ -1,0 +1,80 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+    <head>
+        <title>OpenSim Documentation : Scale Marker File</title>
+        <link rel="stylesheet" href="styles/site.css" type="text/css" />
+        <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    </head>
+
+    <body>
+        <div id="page">
+            <div id="main">
+                <div id="main-header" class="pageSectionHeader">
+                    <h1 id="title-heading" class="pagetitle">
+                                                <span id="title-text">
+                            OpenSim Documentation : Scale Marker File
+                        </span>
+                    </h1>
+
+                    <div class="page-metadata">
+                        <p>This page last changed on Mar 29, 2013 by <font color="#0050B2">jenhicks</font>.</p>
+                    </div>
+                </div>
+
+                <div id="content" class="view">
+                    <div id="main-content" class="wiki-content group">
+                    <p>The topics covered in this section include:</p><p><div>
+<ul>
+    <li><a href='#ScaleMarkerFile-SpecifyingaListofMarkers'>Specifying a List of Markers</a></li>
+    <li><a href='#ScaleMarkerFile-SpecifyingaMarkerfortheGenericModel'>Specifying a Marker for the Generic Model</a></li>
+</ul></div></p><p>The scale marker file contains a list of the virtual markers that are placed on the body segments of the model. An example of a marker file is shown below.<br class="atl-forced-newline" /> <br class="atl-forced-newline" /><strong>Example</strong><strong>: XML file for a scale marker file</strong></p><div class="code panel" style="border-width: 1px;"><div class="codeHeader panelHeader" style="border-bottom-width: 1px;"><b>gait2354_Scale_MarkerSet.xml</b></div><div class="codeContent panelContent">
+<div id="root">
+		<pre class="theme: Confluence; brush: html/xml; gutter: false">&lt;?xml version="1.0" encoding="UTF-8"?&gt; 
+
+&lt;MarkerSet name="gait2354_Scale"&gt; 
+
+   &lt;objects&gt; 
+
+      &lt;Marker name="Sternum"&gt; 
+         &lt;location&gt; 0.07 0.3 0 &lt;/location&gt; 
+         &lt;body&gt; torso &lt;/body&gt; 
+         &lt;fixed&gt; false &lt;/fixed&gt; 
+      &lt;/Marker&gt; 
+
+      &lt;Marker name="R.Acromium"&gt; 
+         &lt;location&gt; -0.03 0.44 0.15 &lt;/location&gt; 
+         &lt;body&gt; torso &lt;/body&gt; 
+         &lt;fixed&gt; false &lt;/fixed&gt; 
+      &lt;/Marker&gt; 
+
+      &lt;Marker name="L.Acromium"&gt; 
+         &lt;location&gt; -0.03 0.44 -0.15 &lt;/location&gt; 
+         &lt;body&gt; torso &lt;/body&gt; 
+         &lt;fixed&gt; false &lt;/fixed&gt; 
+      &lt;/Marker&gt; 
+
+      &lt;Marker name="Top.Head"&gt; 
+         &lt;location&gt;0.00084 0.657 0.0&lt;/location&gt; 
+         &lt;body&gt; torso &lt;/body&gt; 
+         &lt;fixed&gt; false &lt;/fixed&gt; 
+      &lt;/Marker&gt; 
+
+&lt;!– . . additional &lt;Marker&gt; tags cut for brevity . . –&gt; 
+
+   &lt;/objects&gt; 
+
+&lt;/MarkerSet&gt; </pre>
+		</div>
+</div></div><h2 id="ScaleMarkerFile-SpecifyingaListofMarkers">Specifying a List of Markers</h2><p>The list of markers are enclosed inside the opening and closing tags <span style="color: rgb(0,0,255);">&lt;</span><span style="color: rgb(128,0,0);">MarkerSet</span><span style="color: rgb(0,0,255);">&gt;</span> and <span style="color: rgb(0,0,255);">&lt;/</span><span style="color: rgb(128,0,0);">MarkerSet</span><span style="color: rgb(0,0,255);">&gt;</span>.</p><h2 id="ScaleMarkerFile-SpecifyingaMarkerfortheGenericModel">Specifying a Marker for the Generic Model</h2><p>Specifying a marker consists of specifying its <span style="color: rgb(0,0,255);">&lt;</span><span style="color: rgb(128,0,0);">location</span><span style="color: rgb(0,0,255);">&gt;</span> in Cartesian coordinates, as well as the <span style="color: rgb(0,0,255);">&lt;</span><span style="color: rgb(128,0,0);">body</span><span style="color: rgb(0,0,255);">&gt;</span> to which the marker is attached (i.e., which body its location is measured with respect to). The marker name is given by the <span style="color: rgb(255,0,0);"><strong>name</strong></span> attribute of the <span style="color: rgb(0,0,255);">&lt;</span><span style="color: rgb(128,0,0);">Marker</span><span style="color: rgb(0,0,255);">&gt;</span> tag (e.g., <span style="color: rgb(0,0,255);"><strong>Sternum</strong></span> for the first marker in the example above).</p><p>The <span style="color: rgb(0,0,255);">&lt;</span><span style="color: rgb(128,0,0);">fixed</span><span style="color: rgb(0,0,255);">&gt;</span> property is used in the marker placement step and can be set to either <span style="color: rgb(0,128,0);"><strong>true</strong></span> or <span style="color: rgb(0,128,0);"><strong>false</strong></span>. If it is set to <span style="color: rgb(0,128,0);"><strong>false</strong></span>, the marker will move during marker placement to match the position of its corresponding experimental marker. Otherwise it will stay fixed.</p><p> </p><div class="panel" style="background-color: white;border-color: gray;border-style: solid;border-width: 5px;"><div class="panelContent" style="background-color: white;">
+<p>Next: <a href="Manual%2BScaling%2BFactors.html">Manual Scaling Factors</a></p><p>Previous: <a href="Scale%2BSetup%2BFile.html">Scale Setup File</a></p><p>Home: <a href="Scaling.html">Scaling</a></p>
+</div></div>
+                    </div>
+
+                    
+                                                      
+                </div>             </div> 
+            <div id="footer" style="background: url(http://simtk-confluence.stanford.edu:8080/images/border/border_bottom.gif) repeat-x;">
+                <p><small>Document generated by Confluence on Feb 24, 2014 09:27</small></p>
+            </div>
+        </div>     </body>
+</html>

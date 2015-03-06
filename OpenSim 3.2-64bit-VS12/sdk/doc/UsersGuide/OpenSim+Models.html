@@ -1,0 +1,365 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+    <head>
+        <title>OpenSim Documentation : OpenSim Models</title>
+        <link rel="stylesheet" href="styles/site.css" type="text/css" />
+        <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    </head>
+
+    <body>
+        <div id="page">
+            <div id="main">
+                <div id="main-header" class="pageSectionHeader">
+                    <h1 id="title-heading" class="pagetitle">
+                                                <span id="title-text">
+                            OpenSim Documentation : OpenSim Models
+                        </span>
+                    </h1>
+
+                    <div class="page-metadata">
+                        <p>This page last changed on Jan 30, 2014 by <font color="#0050B2">jenhicks</font>.</p>
+                    </div>
+                </div>
+
+                <div id="content" class="view">
+                    <div id="main-content" class="wiki-content group">
+                    <p>The topics covered in this section include:</p><p><div>
+<ul>
+    <li><a href='#OpenSimModels-Overview'>Overview</a></li>
+    <li><a href='#OpenSimModels-OpenSimModelFileFormat'>OpenSim Model File Format</a></li>
+    <li><a href='#OpenSimModels-Bodies'>Bodies</a></li>
+<ul>
+    <li><a href='#OpenSimModels-BodyGeometry'><span style="color: rgb(34,34,34);">Body Geometry</span></a></li>
+<ul>
+    <li><a href='#OpenSimModels-VisibleObject'><span style="color: rgb(34,34,34);">VisibleObject</span></a></li>
+    <li><a href='#OpenSimModels-GeometrySetandDisplayGeometry'>GeometrySet and DisplayGeometry</a></li>
+</ul>
+</ul>
+    <li><a href='#OpenSimModels-Joints'>Joints</a></li>
+<ul>
+    <li><a href='#OpenSimModels-AvailableJointTypes'>Available Joint Types</a></li>
+    <li><a href='#OpenSimModels-TheCustomJointTransform'>The CustomJoint Transform</a></li>
+    <li><a href='#OpenSimModels-KinematicConstraintsinOpenSim'>Kinematic Constraints in OpenSim</a></li>
+</ul>
+    <li><a href='#OpenSimModels-Forces'>Forces</a></li>
+<ul>
+    <li><a href='#OpenSimModels-AvailableForces'>Available Forces</a></li>
+    <li><a href='#OpenSimModels-CommonActuators'>Common Actuators</a></li>
+    <li><a href='#OpenSimModels-TheMuscleActuator'>The Muscle Actuator</a></li>
+</ul>
+    <li><a href='#OpenSimModels-Markers'>Markers</a></li>
+    <li><a href='#OpenSimModels-ContactGeometry'>Contact Geometry</a></li>
+</ul></div></p><p>You can also find more information in the <a href="http://simtk-confluence.stanford.edu:8080/display/OpenSim/Example+-+Model+Editing">Example - Model Editing</a>.</p><div class='panelMacro'><table class='infoMacro'><colgroup><col width='24'><col></colgroup><tr><td valign='top'><img src="images/icons/emoticons/information.png" width="16" height="16" align="absmiddle" alt="" border="0"></td><td><p>Use the OpenSim GUI's XML Browser, under Help to find the XML mark-up for any OpenSim model component described below.</p></td></tr></table></div><h2 id="OpenSimModels-Overview">Overview</h2><p>An OpenSim model represents the dynamics of a system of rigid bodies and joints that are acted upon by forces to produce motion. The OpenSim model file is made up of components corresponding to parts of the physical system. These parts are: <strong>bodies, joints, forces, markers, constraints, contact geometry, and controllers.</strong> </p><p>In OpenSim, the skeletal part of a model is represented by rigid bodies interconnected by joints. Joints define how a body (e.g., bone segment) can move with respect to its parent body. In OpenSim, all bodies have a parent and are connected to its parent via a joint, except for ground. Constraints can also be applied to limit the motion of bodies. </p><p>Muscles are modeled as specialized force elements that act at muscle points (e.g., insertion and origin points) connected to rigid bodies. The force of a muscle is typically dependent on the path through muscle points comprised of muscle fiber and tendon lengths, the rate of change of the fiber lengths, and the level of muscle activation. OpenSim also has a variety of other forces, which represent externally applied forces (e.g. ground reaction forces), passive spring-dampers (e.g., ligaments), and controlled linear and torsional actuators.</p><p>The figure below shows a conceptual schematic of an OpenSim model. In the remainder of the chapter, we will discuss the OpenSim model file format used to describe these models.You can edit these properties using an XML editor, or you can view and edit the properties using the GUI <a href="Property%2BEditor.html">Property Editor</a>.</p><p><img class="confluence-embedded-image" src="attachments/3376228/3737332.png" data-image-src="attachments/3376228/3737332.png" title="image2011-11-29 11:49:4.png"></p><h2 id="OpenSimModels-OpenSimModelFileFormat">OpenSim Model File Format</h2><p>An OpenSim model is described by a file that utilizes the XML code structure to organize its contents. XML uses tags to identify and manage information, such as:</p><div class="code panel" style="border-width: 1px;"><div class="codeContent panelContent">
+<div id="root">
+		<pre class="theme: Confluence; brush: html/xml; gutter: false">&lt;body&gt; r_humerus &lt;/body&gt;</pre>
+		</div>
+</div></div><p>where <strong>&lt;</strong><span style="color: rgb(0,0,255);"><strong>body</strong></span><strong>&gt;</strong> signifies the opening of the tag, <strong>r_humerus</strong> is the name of a body in the model, and <strong>&lt;/</strong><span style="color: rgb(0,0,255);"><strong>body</strong></span><strong>&gt;</strong> signifies the end of the tag. The name of the tag identifies the type of information between described. When you edit an OpenSim model file, there are tags representing each part of the model, as shown in the figure below. </p><div class='panelMacro'><table class='infoMacro'><colgroup><col width='24'><col></colgroup><tr><td valign='top'><img src="images/icons/emoticons/information.png" width="16" height="16" align="absmiddle" alt="" border="0"></td><td>To view and edit XML files with colored tags, you can use <strong>Notepad++</strong> on PC or <strong>EditiX</strong> on Mac, both of which are freely available.</td></tr></table></div><p><strong>An OpenSim Model File (<em>arm26.osim)</em>.</strong>  The file below was opened in the XML editor Notepad++, which provides the color coding.  The sections have been collapsed to highlight the model components.  Clicking on the + icon to the left of a section would expand it, displaying the relevant tags for that section.</p><p><img class="confluence-embedded-image" width="800" src="attachments/3376228/3737324.png" data-image-src="attachments/3376228/3737324.png"></p><h2 id="OpenSimModels-Bodies">Bodies</h2><p>In formulating the equations-of-motion (i.e., the system dynamics), OpenSim employs Simbody which is an open-source multibody dynamics solver. In Simbody and OpenSim, the body is the primary building block of the model. Each body in turn owns a joint that connects it to an existing parent body. The joint defines the coordinates and kinematic transforms that govern the motion of that body with respect to its parent body. Within the model all bodies are contained in a BodySet. </p><p>Thus, to start our model, we need to define a set of rigid bodies that represent our system. In the <strong>&lt;</strong><span style="color: rgb(0,0,255);"><strong>BodySet</strong></span><strong>&gt;</strong> section, we define this group of bodies, with the name, mass properties, and visible objects associated with each body. The figure below shows an example of the <strong>r_humerus</strong> body in the <em>Arm26</em> model. Note the key tags, such as <strong>&lt;</strong><span style="color: rgb(0,0,255);"><strong>mass</strong></span><strong>&gt;, &lt;</strong><span style="color: rgb(0,0,255);"><strong>mass_center</strong></span><strong>&gt;</strong><strong>,</strong> and <strong>&lt;</strong><span style="color: rgb(0,0,255);"><strong>inertia_xx</strong></span><strong>&gt;</strong> <strong>(</strong>and similarly named tags for inertia in other directions).</p><p><strong>Example XML Code from Model <em>Arm26</em> to Represent a <em>Body</em></strong></p><div class="code panel" style="border-width: 1px;"><div class="codeContent panelContent">
+<div id="root">
+		<pre class="theme: Confluence; brush: html/xml; gutter: false">&lt;Body name="r_humerus"&gt;
+   &lt;mass&gt;1.864572&lt;/mass&gt;
+   &lt;mass_center&gt; 0 -0.180496 0&lt;/mass_center&gt;
+   &lt;inertia_xx&gt;0.01481&lt;/inertia_xx&gt;
+   &lt;inertia_yy&gt;0.004551&lt;/inertia_yy&gt;
+   &lt;inertia_zz&gt;0.013193&lt;/inertia_zz&gt;
+   &lt;inertia_xy&gt;0&lt;/inertia_xy&gt;
+   &lt;inertia_xz&gt;0&lt;/inertia_xz&gt;
+   &lt;inertia_yz&gt;0&lt;/inertia_yz&gt;
+&lt;Joint&gt;
+...</pre>
+		</div>
+</div></div><h3 id="OpenSimModels-BodyGeometry"><span style="color: rgb(34,34,34);">Body Geometry</span></h3><h4 id="OpenSimModels-VisibleObject"><span style="color: rgb(34,34,34);">VisibleObject</span></h4><div>The VisibleObject property of a body allows you to specify and position the geometry file(s) associated with a body. In OpenSim there's a distinction between the body/segment and the geometry attached to it. The geometry of a body is used only for visualization purposes. For example, it does not affect the wrapping of muscles or the articulation of joints.</div><h4 id="OpenSimModels-GeometrySetandDisplayGeometry">GeometrySet and DisplayGeometry</h4><div>You can use .vtp, .stl, or .obj files to visualize geometry. Check the units of your model and the units of the exported geometry (e.g. from Solidworks) if you are experiencing size/display issues.</div><div>In the model file you can specify not only the geometry, but also the color, texture (from .jpg or .bmp), display preferences, a transform, and scale factors. These properties can be specified for each DisplayGeometry object and/or for the GeometrySet as a whole. See the XML Browser in the GUI for the tags used for the VisibleObject, GeometrySet, and DisplayGeometry properties of a model. An example snippet from the model arm26.osim is shown below.</div><div>To have the geometry displayed in the GUI you need to have the Geometry files in one of these locations:<ol><li>Same directory as the model</li><li>&quot;Geometry&quot; directory underneath it.</li><li>In a directory included in the &quot;Geometry Path&quot; available using Edit-&gt;Preferences-&gt;Geometry Path.</li></ol></div><div class="code panel" style="border-width: 1px;"><div class="codeContent panelContent">
+<div id="root">
+		<pre class="theme: Confluence; brush: html/xml; gutter: false">&lt;VisibleObject&gt;
+  &lt;!--Set of geometry files and associated attributes, allow .vtp, .stl, .obj--&gt;
+  &lt;GeometrySet&gt;
+    &lt;objects&gt;
+      &lt;DisplayGeometry&gt;
+        &lt;!--Name of geometry file .vtp, .stl, .obj--&gt;
+        &lt;geometry_file&gt;arm_r_humerus.vtp&lt;/geometry_file&gt;
+        &lt;!--Color used to display the geometry when visible--&gt;
+        &lt;color&gt; 1 1 1&lt;/color&gt;
+        &lt;!--Name of texture file .jpg, .bmp--&gt;
+        &lt;texture_file /&gt;
+        &lt;!--in body transform specified as 3 rotations (rad) followed by 3 translations rX rY rZ tx ty tz--&gt;
+        &lt;transform&gt; -0 0 -0 0 0 0&lt;/transform&gt;
+        &lt;!--Three scale factors for display purposes: scaleX scaleY scaleZ--&gt;
+        &lt;scale_factors&gt; 1 1 1&lt;/scale_factors&gt;
+        &lt;!--Display Pref. 0:Hide 1:Wire 3:Flat 4:Shaded--&gt;
+        &lt;display_preference&gt;4&lt;/display_preference&gt;
+        &lt;!--Display opacity between 0.0 and 1.0--&gt;
+        &lt;opacity&gt;1&lt;/opacity&gt;
+      &lt;/DisplayGeometry&gt;
+    &lt;/objects&gt;
+    &lt;groups /&gt;
+  &lt;/GeometrySet&gt;
+  &lt;!--Three scale factors for display purposes: scaleX scaleY scaleZ--&gt;
+  &lt;scale_factors&gt; 1 1 1&lt;/scale_factors&gt;
+  &lt;!--transform relative to owner specified as 3 rotations (rad) followed by 3 translations rX rY rZ tx ty tz--&gt;
+  &lt;transform&gt; -0 0 -0 0 0 0&lt;/transform&gt;
+  &lt;!--Whether to show a coordinate frame--&gt;
+  &lt;show_axes&gt;false&lt;/show_axes&gt;
+  &lt;!--Display Pref. 0:Hide 1:Wire 3:Flat 4:Shaded Can be overriden for individual geometries--&gt;
+  &lt;display_preference&gt;4&lt;/display_preference&gt;
+&lt;/VisibleObject&gt;</pre>
+		</div>
+</div></div><h2 id="OpenSimModels-Joints">Joints</h2><p>In addition to the set of rigid bodies, we also need to define the relationship between those bodies (i.e., joint definitions).  In the figure below, a joint (in red) defines the kinematic relationship between two frames (B and P) each affixed to a rigid-body (the parent, P<sub>o</sub>, and the body being added, B<sub>o</sub>) parameterized by joint coordinates </p><p><img class="confluence-embedded-image" src="attachments/3376228/3737331.png" data-image-src="attachments/3376228/3737331.png" title="JointDefinitions.png"></p><p>A body is a moving reference frame (B<sub>o</sub>) in which its center-of-mass and inertia are defined, and the location of a joint frame (B) fixed to the body can be specified. Similarly, the joint frame (P) in the parent body frame (P<sub>o</sub>) can also be specified. Flexibility in specifying the joint is achieved by permitting joint frames that are not coincident with the body frame.</p><p>As an example, the <em>body</em> <strong>r_humerus</strong> contains the <em>joint</em> <strong>r_shoulder</strong>. The figure below shows an example from <em>Arm26</em> defining the <strong>r_shoulder</strong> joint. Note the key tags, such as <strong>&lt;</strong><span style="color: rgb(0,0,255);"><strong>parent_body</strong></span><strong>&gt;, &lt;</strong><span style="color: rgb(0,0,255);"><strong>location_in_parent</strong></span><strong>&gt;, &lt;</strong><span style="color: rgb(0,0,255);"><strong>orientation_in_parent</strong></span><strong>&gt;, &lt;</strong><span style="color: rgb(0,0,255);"><strong>location</strong></span><strong>&gt;, &lt;</strong><span style="color: rgb(0,0,255);"><strong>orientation</strong></span><strong>&gt;,</strong> and <strong>&lt;</strong><span style="color: rgb(0,0,255);"><strong>Coordinate</strong></span><strong>&gt;.</strong></p><p><strong><strong>Example XML Code from Model <em>Arm26</em> to Represent a <em>Joint:</em></strong></strong></p><p><img class="confluence-embedded-image" height="389" width="628" src="attachments/3376228/3737337.png" data-image-src="attachments/3376228/3737337.png" title="worddav8c20c9ce52195dc0d03d77459118cbfe.png [imported from a Word document]"></p><h3 id="OpenSimModels-AvailableJointTypes">Available Joint Types</h3><ol><li>WeldJoint: introduces no coordinates (degrees of freedom) and fuses bodies together</li><li>PinJoint: one coordinate about the common Z-axis of parent and child joint frames</li><li>SliderJoint: one coordinate along common X-axis of parent and child joint frames</li><li>BallJoint: three rotational coordinates that are about X, Y, Z of B in P</li><li>EllipsoidJoint: three rotational coordinates that are about X, Y, Z of B in P with coupled translations such that B traces and ellipsoid centered at P</li><li>FreeJoint: six coordinates with 3 rotational (like the ball) and 3 translations of B in P</li><li>CustomJoint: user specified 1-6 coordinates and user defined spatial transform to locate B with respect to P</li></ol><h3 id="OpenSimModels-TheCustomJointTransform">The CustomJoint Transform</h3><p>Most joints in an OpenSim model are custom joints since this is the most generic joint representation, which can be used to model both conventional (pins, slider, universal, etc…) as well as more complex biomechanical joints. The user must define the transform (rotation and translation) of the child in the parent (B and P, in the joint definition figure above) as a function of the generalized coordinates listed in the Joint’s CoordinateSet. Consider the spatial transform <img class="confluence-embedded-image" src="attachments/3376228/3737329.png" data-image-src="attachments/3376228/3737329.png" title="Models1.png"> :</p><p><img class="confluence-embedded-image" src="attachments/3376228/3737328.png" data-image-src="attachments/3376228/3737328.png" title="Models2.png"></p><p>where</p><p><img class="confluence-embedded-image" src="attachments/3376228/3737327.png" data-image-src="attachments/3376228/3737327.png" title="Models3.png"></p><p><em>q</em> are the joint coordinates, and <em>x</em> are the spatial coordinates for the rotations (<em>x<sub>1</sub>, x<sub>2</sub>, x<sub>3</sub></em>) and translations (<em>x<sub>4</sub>, x<sub>5</sub>, x<sub>6</sub></em>) along user-defined axes that specify a spatial transform (<strong>X</strong>) according to functions <em>f<sub>i</sub></em>. The behavior of a CustomJoint is specified by its SpatialTransform. A SpatialTransform is comprised of 6 TransformAxes (3 rotations and 3 translations) that define the spatial position of B in P as a function of coordinates. Each transform axis enables a function of joint coordinates to operate about or along its axis. The function of <em>q</em> is used to determine the displacement for that axis. The order of the spatial transform is fixed with rotations first followed by translations. Subsequently, coupled motion (i.e., describing motion of two degrees of freedom as a function of one coordinate) is easily handled. The example below (from the gait2354.osim model) describes coupled motion of the knee, with both tibial translation and knee flexion described as a function of knee angle: </p><p align="center" style="text-align: left;"><strong>Spatial transform of a custom joint that implements a translating knee joint:</strong></p><div class="code panel" style="border-width: 1px;"><div class="codeContent panelContent">
+<div id="root">
+		<pre class="theme: Confluence; brush: html/xml; gutter: false">&lt;SpatialTransform name=""&gt;
+  &lt;!--3 Axes for rotations are listed first.--&gt;
+  &lt;TransformAxis name="rotation1"&gt;
+    &lt;function&gt;
+      &lt;LinearFunction name=""&gt;
+        &lt;coefficients&gt; 1.00000000 0.0000000 &lt;/coefficients&gt;
+      &lt;/LinearFunction&gt;
+    &lt;/function&gt; 
+    &lt;coordinates&gt; knee_angle_r &lt;/coordinates&gt;
+    &lt;axis&gt; 0.00000000 0.00000000 1.00000000 &lt;/axis&gt;
+  &lt;TransformAxis&gt;
+ 
+  &lt;TransformAxis name="rotation2"&gt;
+    &lt;function&gt;
+      &lt;Constant name=""&gt;
+        &lt;value&gt; 0.00000000 &lt;/value&gt; 
+      &lt;/Constant&gt;
+    &lt;/function&gt;
+    &lt;coordinates&gt; &lt;/coordinates&gt;
+    &lt;axis&gt; 0.00000000 1.00000000 0.00000000 &lt;/axis&gt;
+  &lt;/TransformAxis&gt;
+ 
+  &lt;TransformAxis name="rotation3"&gt; ...
+ 
+  &lt;!--3 Axes for translations are listed next.--&gt;
+  &lt;TransformAxis name="translation1"&gt;
+    &lt;function&gt;
+      &lt;NaturalCubicSpline name=""&gt; ...
+    &lt;/function&gt;
+    &lt;coordinates&gt; knee_angle_r &lt;/coordinates&gt;
+    &lt;axis&gt; 1.00000000 0.00000000 0.00000000 &lt;/axis&gt;
+   &lt;/TransformAxis&gt;
+ 
+  &lt;TransformAxis name="translation2"&gt;
+    &lt;function&gt;
+      &lt;NaturalCubicSpline name=""&gt; ... 
+    &lt;/function&gt;
+    &lt;coordinates&gt; knee_angle_r &lt;/coordinates&gt;
+    &lt;axis&gt; 0.00000000 1.00000000 0.00000000 &lt;/axis&gt;
+  &lt;/TransformAxis&gt;
+ 
+  &lt;TransformAxis name="translation3"&gt; ...
+&lt;/SpatialTransform&gt;
+&lt;/CustomJoint&gt;
+&lt;/Joint&gt;</pre>
+		</div>
+</div></div><h3 id="OpenSimModels-KinematicConstraintsinOpenSim" style="text-align: left;">Kinematic Constraints in OpenSim</h3><p>OpenSim currently supports three types of built-in constraints: PointConstraint WeldConstraint and CoordinateCouplerConstraint. A point constraint fixes a point defined with respect to two bodies (i.e., no relative translations). A weld constraint fixes the relative location and orientation of two bodies (i.e., no translations or rotations). A coordinate coupler relates the generalized coordinate of a given joint (the dependent coordinate) to any other coordinates in the model (independent coordinates). The user must supply a function that returns a dependent value based on independent values. The following example implements coordinate coupler constraint for the motion of the patella as a function of the knee ankle and also welds the foot to ground.</p><p><strong>Example of constraints in OpenSim:</strong></p><div class="code panel" style="border-width: 1px;"><div class="codeContent panelContent">
+<div id="root">
+		<pre class="theme: Confluence; brush: html/xml; gutter: false">&lt;!--Constraints in the model.--&gt;
+&lt;ConstraintSet name=""&gt;
+	&lt;objects&gt;
+		&lt;!-- Constrain the translation of the patella in the x-direction as a function of the knee_angle --&gt;
+		&lt;CoordinateCouplerConstraint name="pat_tx_r"&gt;
+			&lt;isDisabled&gt; false &lt;/isDisabled&gt;
+				&lt;coupled_coordinates_function&gt;
+					&lt;SimmSpline name=""&gt;
+						&lt;x&gt;  -2.09439510  -1.39626340  -1.04719755  -0.69813170  -0.34906585  -0.17453293  ...  &lt;/x&gt;
+						&lt;y&gt;   0.01710145   0.03202815   0.03766273   0.04250649   0.04636173   0.04784451  ...  &lt;/y&gt;
+					&lt;/SimmSpline&gt;
+                &lt;/coupled_coordinates_function&gt;
+				&lt;!-- coordinates involved in the constraint must be defined by joints in this model --&gt;
+                &lt;independent_coordinate_names&gt; knee_angle_r &lt;/independent_coordinate_names&gt;
+                &lt;dependent_coordinate_name&gt; pat_tx_r &lt;/dependent_coordinate_name&gt;
+		&lt;/CoordinateCouplerConstraint&gt;
+
+		&lt;!-- Constrain the translation of the patella in the y-direction as a function of the knee_angle --&gt;
+        &lt;CoordinateCouplerConstraint name="pat_ty_r"&gt; ...
+		
+		&lt;!-- Constrain the rotation of the patella as a function of the knee_angle --&gt;        
+		&lt;CoordinateCouplerConstraint name="pat_angle_r"&gt; ...
+  
+		&lt;!-- Constrain a foot to the floor with a weld. A weld specifies a location and orientation of two frames
+			 on separate bodies that must remain spatially coincident and aligned. --&gt; 
+    	&lt;WeldConstraint&gt;
+			&lt;isDisabled&gt;false&lt;/isDisabled&gt;
+			&lt;body_1&gt; foot_r &lt;/body_1&gt;
+			&lt;body_2&gt; ground &lt;/body_2&gt;
+			&lt;location_body_1&gt; 0.05 -0.02 0  &lt;/location_body_1&gt;
+			&lt;orientation_body_1&gt;  0 0 0 &lt;/orientation_body_1&gt;
+			&lt;location_body_2&gt;  0 0 0.084 &lt;/location_body_2&gt;
+			&lt;orientation_body_2&gt; 0 0 0 &lt;/orientation_body_2&gt;
+		&lt;/WeldConstraint&gt;
+	&lt;/objects&gt;
+	&lt;groups/&gt;
+&lt;/ConstraintSet&gt;</pre>
+		</div>
+</div></div><h2 id="OpenSimModels-Forces">Forces</h2><p>In order to actuate our model, we need to define the <em>forces</em> that will be applied to the model. Just like bodies are defined within the <strong>&lt;</strong><span style="color: rgb(0,0,255);"><strong>BodySet</strong></span><strong>&gt;</strong> section, forces are defined in the <strong>&lt;</strong><span style="color: rgb(0,0,255);"><strong>ForceSet</strong></span><strong>&gt;</strong> section of the model file. Forces come in two varieties: <em>passive</em> forces like springs, dampers, and contact and <em>active</em> forces like springs, idealized linear or torque actuators, and muscles. Active forces that require input (controls) supplied by the user or by a controller are called Actuators and are a subset of the ForceSet. </p><h3 id="OpenSimModels-AvailableForces">Available Forces</h3><p>OpenSim has several built-in forces that include: PrescribedForce, SpringGeneralizedForce, BushingForce, as well as HuntCrossleyForce and ElasticFoundationForce to model forces due to contact (Note: contact forces also require defining contact geometry). Below is an example of a bushing force used to model passive structures surrounding a single lumbar joint that connects a torso body to a pelvis body.</p><p><strong>Example of a passive BushingForce:</strong></p><div class="code panel" style="border-width: 1px;"><div class="codeContent panelContent">
+<div id="root">
+		<pre class="theme: Confluence; brush: html/xml; gutter: false">&lt;!-- Generate a force proportional to the separation of two frames in terms of both relative rotational and translational displacement (stiffness) and velocity and velocity (damping) --&gt;
+&lt;BushingForce name="BackJointBushing"&gt;
+ &lt;body_1&gt; pelvis &lt;/body_1&gt;
+ &lt;body_2&gt; torso &lt;/body_2&gt;
+ &lt;location_body_1&gt; -0.1007 0.0815 0.0000 &lt;/location_body_1&gt;
+ &lt;orientation_body_1&gt; 0.0000 0.0000 0.0000 &lt;/orientation_body_1&gt;
+ &lt;location_body_2&gt; 0.0000 0.0000 0.0000 &lt;/location_body_2&gt;
+ &lt;orientation_body_2&gt; 0.0000 0.0000 0.0000 &lt;/orientation_body_2&gt;
+ &lt;rotational_stiffness&gt; 10.000 10.000 10.000 &lt;/rotational_stiffness&gt;
+ &lt;translational_stiffness&gt; 0.0000 0.000 0.000 &lt;/translational_stiffness&gt;
+ &lt;rotational_damping&gt; 0.0000 0.0000 0.0000 &lt;/rotational_damping&gt;
+ &lt;translational_damping&gt; 0.0000 0.000 0.000 &lt;/translational_damping&gt;
+&lt;/BushingForce&gt;</pre>
+		</div>
+</div></div><h3 id="OpenSimModels-CommonActuators">Common Actuators</h3><p>OpenSim also includes “ideal” actuators which apply pure forces or torques that are directly proportional to the input control (i.e., excitation) via its optimal force (i.e., a gain). Forces and torques are applied between bodies, while generalized forces are applied along the axis of a generalized coordinate (i.e., a joint axis).</p><p><strong>Sample of linear and torque actuators in a model’s ForceSet:</strong></p><p> </p><p><strong><br /></strong></p><div class="code panel" style="border-width: 1px;"><div class="codeContent panelContent">
+<div id="root">
+		<pre class="theme: Confluence; brush: html/xml; gutter: false">&lt;!--Apply a force at a point in the direction specified in the body frame --&gt;
+&lt;PointActuator name="FY_residual"&gt;
+ &lt;!--Name of Body to which this actuator is applied.--&gt;
+ &lt;body&gt; pelvis &lt;/body&gt;
+ &lt;!--Location of application point; in body frame unless point_is_global=true--&gt;
+ &lt;point&gt; 0 0 0&lt;/point&gt;
+ &lt;!--Interpret point in Ground frame if true; otherwise, body frame.--&gt;
+ &lt;point_is_global&gt; false &lt;/point_is_global&gt;
+ &lt;!--Force application direction; in body frame unless force_is_global=true.--&gt;
+ &lt;direction&gt; 1 0 0&lt;/direction&gt;
+ &lt;!--Interpret direction in Ground frame if true; otherwise, body frame.--&gt;
+ &lt;force_is_global&gt; true &lt;/force_is_global&gt;
+ &lt;!--The maximum force produced by this actuator when fully activated.--&gt;
+ &lt;optimal_force&gt; 8.0 &lt;/optimal_force&gt;
+&lt;/PointActuator&gt;
+  
+ &lt;!--Apply an equal and opposite torque on two bodies about the axis defined in the the first body --&gt;
+&lt;TorqueActuator name="MZ_residual"&gt;
+ &lt;optimal_force&gt; 1000.0 &lt;/optimal_force&gt;
+ &lt;bodyA&gt; ground &lt;/bodyA&gt;
+ &lt;axis&gt; 0.000 0.000 -1.000 &lt;/axis&gt;
+ &lt;bodyB&gt; pelvis &lt;/bodyB&gt;
+&lt;/TorqueActuator &gt;
+ 
+&lt;!--Apply a generalized force along (force) or about (torque) the axis of a generalized coordinate. Positive force increases the coordinate --&gt;
+&lt;CoordinateActuator name="knee_reserve"&gt;
+ &lt;optimal_force&gt; 300.0 &lt;/optimal_force&gt;
+ &lt;coordinate&gt; knee_angle_r &lt;/coordinate&gt;
+&lt;/CoordinateActuator&gt;</pre>
+		</div>
+</div></div><p><strong><br /></strong></p><p> </p><h3 id="OpenSimModels-TheMuscleActuator">The Muscle Actuator</h3><p>There are several muscle models in OpenSim. All muscles include a set of muscle points where the muscle is connected to bones (bodies) and provide utilities for calculating muscle-actuator lengths and velocities. Internally muscle models may differ in the number and type of parameters. Muscles typically include muscle activation and contraction dynamics and their own states (for example activation and muscle fiber length). The control values are typically bounded excitations (ranging from 0 to 1) which lead to a change in activation and then force. Below is an example of a muscle model, as described by Thelen (2003), from an OpenSim model. </p><p>In addition to the muscle properties, we need to define its geometry. In this example, a <em>geometry path</em> is defined for the <em>muscle</em> using a set of <em>path points</em>.</p><p><strong>Sample muscle actuator from a model’s ForceSet:</strong></p><div class="code panel" style="border-width: 1px;"><div class="codeContent panelContent">
+<div id="root">
+		<pre class="theme: Confluence; brush: html/xml; gutter: false">&lt;Thelen2003Muscle name="soleus_r"&gt;
+ &lt;GeometryPath name=""&gt;
+   &lt;!—- points on bodies that define the path of the muscle --&gt;
+   &lt;PathPointSet name=""&gt;
+     &lt;objects&gt;
+       &lt;PathPoint name="soleus_r-P1"&gt;
+         &lt;location&gt; -0.00240000 -0.15330000 0.00710000 &lt;/location&gt;
+         &lt;body&gt; tibia_r &lt;/body&gt;
+       &lt;/PathPoint&gt;
+       
+       &lt;PathPoint name="soleus_r-P2"&gt;
+         &lt;location&gt; 0.00000000 0.03100000 -0.00530000 &lt;/location&gt;
+         &lt;body&gt; calcn_r &lt;/body&gt;
+       &lt;/PathPoint&gt;
+     &lt;/objects&gt;
+   &lt;/PathPointSet&gt;
+   &lt;PathWrapSet name=""&gt; ...
+ &lt;/GeometryPath&gt;
+ 
+ &lt;!--maximum isometric force of the muscle fibers--&gt;
+ &lt;max_isometric_force&gt; 4000.00000000 &lt;/max_isometric_force&gt;
+ &lt;!--optimal length of the muscle fibers--&gt;
+ &lt;optimal_fiber_length&gt; 0.08000000 &lt;/optimal_fiber_length&gt;
+ &lt;!--resting length of the tendon--&gt;
+ &lt;tendon_slack_length&gt; 0.22000000 &lt;/tendon_slack_length&gt;
+ &lt;!--angle between tendon and fibers at optimal fiber length--&gt;
+ &lt;pennation_angle&gt; 0.43633231 &lt;/pennation_angle&gt;
+ &lt;!--time constant for ramping up of muscle activation--&gt;
+ &lt;activation_time_constant&gt; 0.01000000 &lt;/activation_time_constant&gt;
+ &lt;!--time constant for ramping down of muscle activation--&gt;
+ &lt;deactivation_time_constant&gt; 0.04000000 &lt;/deactivation_time_constant&gt;
+ &lt;!--maximum contraction velocity at full activation (fiber length/s)--&gt;
+ &lt;Vmax&gt; 10.00000000 &lt;/Vmax&gt;
+ &lt;!--maximum contraction velocity at low activation (fiber lengths/s)--&gt;
+ &lt;Vmax0&gt; 5.00000000 &lt;/Vmax0&gt;
+ &lt;!--tendon strain due to maximum isometric muscle force--&gt;
+ &lt;FmaxTendonStrain&gt; 0.03300000 &lt;/FmaxTendonStrain&gt;
+ &lt;!--passive muscle strain due to maximum isometric muscle force--&gt;
+ &lt;FmaxMuscleStrain&gt; 0.60000000 &lt;/FmaxMuscleStrain&gt;
+ &lt;!--shape factor for Gaussian active muscle force-length relationship--&gt;
+ &lt;KshapeActive&gt; 0.50000000 &lt;/KshapeActive&gt;
+ &lt;!--exponential shape factor for passive force-length relationship--&gt;
+ &lt;KshapePassive&gt; 4.00000000 &lt;/KshapePassive&gt;
+ &lt;!--passive damping in the force-velocity relationship--&gt;
+ &lt;damping&gt; 0.05000000 &lt;/damping&gt;
+ &lt;!--force-velocity shape factor--&gt;
+ &lt;Af&gt; 0.30000000 &lt;/Af&gt;
+ &lt;!--maximum normalized lengthening force--&gt;
+ &lt;Flen&gt; 1.80000000 &lt;/Flen&gt;
+&lt;/Thelen2003Muscle&gt;</pre>
+		</div>
+</div></div><h2 id="OpenSimModels-Markers">Markers</h2><p>In order to perform Inverse Kinematics, you will need to define a virtual <em>marker set</em> that matches the experimental marker set used to collect motion capture data. Markers are defined in a <strong>&lt;</strong><span style="color: rgb(0,0,255);"><strong>MarkerSet</strong></span><strong>&gt;</strong>. The figure below (<a href="OpenSim%2BModels.html">Example XML Marker</a>) shows an example from <em>Arm26</em> defining a <strong>&lt;</strong><span style="color: rgb(0,0,255);"><strong>Marker</strong></span><strong>&gt;</strong>. Note tags that define the marker, such as <strong>&lt;</strong><span style="color: rgb(0,0,255);"><strong>body</strong></span><strong>&gt;</strong> and <strong>&lt;</strong><span style="color: rgb(0,0,255);"><strong>location</strong></span><strong>&gt;</strong>. Additionally, the marker <span style="color: rgb(255,0,0);"><strong>name</strong></span> is important, as it must match the name of the corresponding experimental marker.</p><p><strong><span class="confluence-anchor-link" id="OpenSimModels-ExampleXMLMarker"></span>E</strong><strong>xample XML Code from Model <em>Arm26</em> to Represent a <em>Marker</em></strong></p><p><img class="confluence-embedded-image" height="317" width="629" src="attachments/3376228/3737334.png" data-image-src="attachments/3376228/3737334.png" title="worddav2a210b55f930e9766884921e2044a00d.png [imported from a Word document]"><br /><strong><br /></strong></p><h2 id="OpenSimModels-ContactGeometry">Contact Geometry</h2><p>A model may have some specific contact geometry that is associated with a model. In OpenSim, contact geometry can be an analytical shape, such as a half-place, sphere, or cube, or a user-defined shape represented by an object (<em><strong>.obj</strong></em><strong>)</strong> file<strong>. </strong>The figure below shows an example defining contact for the ground (half-space) and a user-defined block from the <em>tugOfWar</em> model. Note tags that define the contact object, such as<strong> *&lt;</strong><span style="color: rgb(0,0,255);"><strong>body_name</strong></span><strong>&gt;</strong>, <strong>&lt;</strong><span style="color: rgb(0,0,255);"><strong>location</strong></span><strong>&gt;</strong>, <strong>&lt;</strong><span style="color: rgb(0,0,255);"><strong>orientation</strong></span><strong>&gt;</strong>, and <strong>&lt;</strong><span style="color: rgb(0,0,255);"><strong>filename</strong></span><strong>&gt;</strong>.</p><p><strong>Example XML Code from Model <em>tugOfWar</em> to Represent <em>Contact Geometry</em></strong></p><p><img class="confluence-embedded-image" height="256" width="629" src="attachments/3376228/3737333.png" data-image-src="attachments/3376228/3737333.png" title="worddavf6e2aab4900543a36105d8e147e74a03.png [imported from a Word document]"></p><div class="panel" style="background-color: white;border-color: gray;border-style: solid;border-width: 5px;"><div class="panelContent" style="background-color: white;">
+<p>Next: <a href="Command%2BLine%2BUtilities.html">Command Line Utilities</a></p><p>Previous: <a href="Probes.html">Probes</a></p>
+</div></div><p><strong><br /></strong></p>
+                    </div>
+
+                                        <div class="pageSection group">
+                        <div class="pageSectionHeader">
+                            <h2 id="attachments" class="pageSectionTitle">Attachments:</h2>
+                        </div>
+
+                        <div class="greybox" align="left">
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/3376228/3737340.png">worddav705cbca12360a2140d21bf26ad59f7fe.png</a> (image/png)
+                                <br/>
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/3376228/3737339.png">worddav74e7ed7523229889ad33c5e9b6e3603b.png</a> (image/png)
+                                <br/>
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/3376228/3737338.png">worddav8817551a79ec508c1bc96e46bf0acc65.png</a> (image/png)
+                                <br/>
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/3376228/3737337.png">worddav8c20c9ce52195dc0d03d77459118cbfe.png</a> (image/png)
+                                <br/>
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/3376228/3737336.png">worddav614b91d56878b9fa14350c9b273d4436.png</a> (image/png)
+                                <br/>
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/3376228/3737335.png">worddav2df620d3068ef48fe4da8af8f2e79288.png</a> (image/png)
+                                <br/>
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/3376228/3737334.png">worddav2a210b55f930e9766884921e2044a00d.png</a> (image/png)
+                                <br/>
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/3376228/3737333.png">worddavf6e2aab4900543a36105d8e147e74a03.png</a> (image/png)
+                                <br/>
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/3376228/3737332.png">image2011-11-29 11:49:4.png</a> (image/png)
+                                <br/>
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/3376228/3737331.png">JointDefinitions.png</a> (image/png)
+                                <br/>
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/3376228/3737330.png">Kinematic Constraints.png</a> (image/png)
+                                <br/>
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/3376228/3737329.png">Models1.png</a> (image/png)
+                                <br/>
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/3376228/3737328.png">Models2.png</a> (image/png)
+                                <br/>
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/3376228/3737327.png">Models3.png</a> (image/png)
+                                <br/>
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/3376228/3737326.png">image2012-10-11 10:10:20.png</a> (image/png)
+                                <br/>
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/3376228/3737325.png">image2012-10-11 10:18:41.png</a> (image/png)
+                                <br/>
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/3376228/3737324.png">image2012-10-11 10:21:55.png</a> (image/png)
+                                <br/>
+                                                    </div>
+                    </div>
+                    
+                                                      
+                </div>             </div> 
+            <div id="footer" style="background: url(http://simtk-confluence.stanford.edu:8080/images/border/border_bottom.gif) repeat-x;">
+                <p><small>Document generated by Confluence on Feb 24, 2014 09:28</small></p>
+            </div>
+        </div>     </body>
+</html>

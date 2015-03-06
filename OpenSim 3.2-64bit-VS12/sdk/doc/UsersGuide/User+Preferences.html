@@ -1,0 +1,49 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+    <head>
+        <title>OpenSim Documentation : User Preferences</title>
+        <link rel="stylesheet" href="styles/site.css" type="text/css" />
+        <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    </head>
+
+    <body>
+        <div id="page">
+            <div id="main">
+                <div id="main-header" class="pageSectionHeader">
+                    <h1 id="title-heading" class="pagetitle">
+                                                <span id="title-text">
+                            OpenSim Documentation : User Preferences
+                        </span>
+                    </h1>
+
+                    <div class="page-metadata">
+                        <p>This page last changed on Jan 30, 2014 by <font color="#0050B2">jenhicks</font>.</p>
+                    </div>
+                </div>
+
+                <div id="content" class="view">
+                    <div id="main-content" class="wiki-content group">
+                    <p>You can alter display preferences for the 3D View window and other parameters in the GUI. </p><div class="table-wrap"><table class="confluenceTable"><tbody><tr><th class="nohighlight confluenceTh"><img class="confluence-embedded-image" width="300" src="attachments/3376139/3736881.png" data-image-src="attachments/3376139/3736881.png"></th><th class="nohighlight confluenceTh"><ol><li><p>Selecting <strong>Edit</strong> → <strong>Preferences…</strong> from the main OpenSim menu bar. </p></li><li><p>In the Preferences window that appears, <strong>double click</strong> on the value of the option you want to change and enter the new value. To save changes to the preferences, click <strong>OK.</strong></p></li></ol><p> </p></th></tr></tbody></table></div><div class="table-wrap"><table class="confluenceTable"><tbody><tr><th class="confluenceTh"><p><strong>Option</strong>  <strong>Name</strong></p></th><th class="confluenceTh"><p><strong>Default Value</strong></p></th><th class="confluenceTh"><p><strong>Description</strong></p></th><th class="confluenceTh"><p><strong>When Applied</strong></p></th></tr><tr><td class="confluenceTd"><p>BackgroundColor</p></td><td class="confluenceTd"><p>0.0, 0.0, 0.0</p></td><td class="confluenceTd"><p>RGB (red, green, blue) values for the color to be used for the 3D View window background. Values range from 0.0 to 1.0.</p></td><td class="confluenceTd"><p>When a new 3D View is created. Can be changed either here or using the Toolbar of the 3D View window.</p></td></tr><tr><td class="confluenceTd"><p>Markers Color</p></td><td class="confluenceTd"><p>1.0, 0.6, 0.8</p></td><td class="confluenceTd"><p>RGB (red, green, blue) values of the color used for the virtual markers in the model. Values range from 0.0 to 1.0.</p></td><td class="confluenceTd"><p>When a new model is created or loaded</p></td></tr><tr><td class="confluenceTd"><p>Geometry Path</p></td><td class="confluenceTd"><p><span>&lt;OpenSim Install Directory&gt;</span>/Geometry</p></td><td class="confluenceTd"><p>A list of directories separated by a semi-colon that specify where OpenSim should look for geometry files (.vtp, .stl files). When a model is loaded, the directory containing the .osim file is searched for geometry files, as well as a directory with the name &quot;Geometry&quot; that lives underneath it if exists. If a file is not found in these 2 locations, the directories specified in &quot;Geomerty Path&quot; are searched in order. The paths are specified using the Unix format and are absolute (rathert than relative).</p></td><td class="confluenceTd"><p>Instantly, as well as to subsequently loaded models</p></td></tr><tr><td colspan="1" class="confluenceTd">Scripts Path</td><td colspan="1" class="confluenceTd">&lt;OpenSim Install Directory&gt;/Scripts</td><td colspan="1" class="confluenceTd">Directory containing OpenSim GUI scripts. These scripts will appear in the scripts drop down menu. See <a href="Scripting.html">Scripting</a> for more information.</td><td colspan="1" class="confluenceTd"><span>Exit/Re-entry into the application to see the Scripts list updated.</span></td></tr><tr><td class="confluenceTd"><p>DisplayOffsetDir</p></td><td class="confluenceTd"><p>X</p></td><td class="confluenceTd"><p>Direction to offset display of models after the first one is loaded (X, Y or Z)</p></td><td class="confluenceTd"><p>Applied when the next model is loaded</p></td></tr><tr><td class="confluenceTd"><p>AntiAliasingFrames</p></td><td class="confluenceTd"><p>0</p></td><td class="confluenceTd"><p>An integer number between 0 and 4 indicating how many frames are overlaid to achieve the impression of anti-aliasing (blurring of edges to reduce jaggies on straight lines)</p></td><td class="confluenceTd"><p>When a new View window is opened. Be aware that a value of 2 or higher slows the display significantly.</p></td></tr><tr><td colspan="1" class="confluenceTd"><p>Debug</p></td><td colspan="1" class="confluenceTd"><p>0</p></td><td colspan="1" class="confluenceTd"><p>Debug level. Setting a value greater than 0 (max =3) outputs verbose text to the Messages window,helpful for troubleshooting but slows operations down due to I/O.</p></td><td colspan="1" class="confluenceTd"><p>instantly</p></td></tr><tr><td colspan="1" class="confluenceTd">Experimental Marker Size</td><td colspan="1" class="confluenceTd">1.0</td><td colspan="1" class="confluenceTd">Display size of experimental markers</td><td colspan="1" class="confluenceTd">When a new data set that contains markers is loaded.</td></tr><tr><td colspan="1" class="confluenceTd">Joint Frame Scale</td><td colspan="1" class="confluenceTd">1.0</td><td colspan="1" class="confluenceTd">Scaling factor for the joint frames when displayed (Parent/Child frames). useful only in cases where model units are too large or too small.</td><td colspan="1" class="confluenceTd">Next time the Joint frame is hidden/shown</td></tr><tr><td colspan="1" class="confluenceTd">Marker Display Radius</td><td colspan="1" class="confluenceTd">.01</td><td colspan="1" class="confluenceTd">Radius of the sphere representing one model marker</td><td colspan="1" class="confluenceTd">Next time a model is loaded.</td></tr><tr><td colspan="1" class="confluenceTd">Muscle Display Radius</td><td colspan="1" class="confluenceTd">.005</td><td colspan="1" class="confluenceTd"><span>Radius of the sphere representing muscle points and cylinders representing muscles in the 3D view window</span></td><td colspan="1" class="confluenceTd"><span>Next time a model is loaded.</span></td></tr><tr><td class="confluenceTd">NonCurrentModelOpacity </td><td class="confluenceTd"><p>0.4</p></td><td class="confluenceTd"><p>A number between 0 and 1.0 indicating the opacity of models that are not designated the current model. A value of 1.0 means that non-current models are opaque, so current and non-current models look the same. A value of 0.0 makes non-current models completely transparent, so only the current model shows in the 3D View window.</p></td><td class="confluenceTd"><p>Effective the first time the current model changes after setting this value</p></td></tr><tr><td class="confluenceTd"><p>Persist Models</p></td><td class="confluenceTd"><p>On</p></td><td class="confluenceTd"><p>Whether to keep track of open models, motions and camera views so that they are restored on opening the application.</p></td><td class="confluenceTd"><p>Exit/Re-entry into the application.</p></td></tr><tr><td colspan="1" class="confluenceTd">RefreshRate(ms.)</td><td colspan="1" class="confluenceTd">100</td><td colspan="1" class="confluenceTd">How often to refresh the display while running any of the tools.</td><td colspan="1" class="confluenceTd">Next time a tool is run.</td></tr><tr><td colspan="1" class="confluenceTd">Save Movie Frames</td><td colspan="1" class="confluenceTd">Off</td><td colspan="1" class="confluenceTd">When set to off, using the movie creation feature will create a standard .avi file. When set to On, movie creation will result in a set of still frames (.tiff) in a common folder. This preference is a workaround for 64-bit machines, which do not allow the creation of .avi movies.</td><td colspan="1" class="confluenceTd">Next time a movie is created.</td></tr></tbody></table></div><div class="panel" style="background-color: white;border-color: gray;border-style: solid;border-width: 5px;"><div class="panelContent" style="background-color: white;">
+<p><span>Next: <a href="Windows.html">Windows</a></span></p><p>Previous: <a href="Menus.html">Menus</a></p><p>Home: <a href="Graphical%2BUser%2BInterface.html">Graphical User Interface</a></p>
+</div></div><p> </p><p><span style="color: rgb(255,255,255);"><strong>6</strong></span></p>
+                    </div>
+
+                                        <div class="pageSection group">
+                        <div class="pageSectionHeader">
+                            <h2 id="attachments" class="pageSectionTitle">Attachments:</h2>
+                        </div>
+
+                        <div class="greybox" align="left">
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/3376139/3736881.png">Preference-1.png</a> (image/png)
+                                <br/>
+                                                    </div>
+                    </div>
+                    
+                                                      
+                </div>             </div> 
+            <div id="footer" style="background: url(http://simtk-confluence.stanford.edu:8080/images/border/border_bottom.gif) repeat-x;">
+                <p><small>Document generated by Confluence on Feb 24, 2014 09:27</small></p>
+            </div>
+        </div>     </body>
+</html>

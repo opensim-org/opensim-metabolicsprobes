@@ -1,0 +1,43 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+    <head>
+        <title>OpenSim Documentation : Getting Started with Analyses</title>
+        <link rel="stylesheet" href="styles/site.css" type="text/css" />
+        <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    </head>
+
+    <body>
+        <div id="page">
+            <div id="main">
+                <div id="main-header" class="pageSectionHeader">
+                    <h1 id="title-heading" class="pagetitle">
+                                                <span id="title-text">
+                            OpenSim Documentation : Getting Started with Analyses
+                        </span>
+                    </h1>
+
+                    <div class="page-metadata">
+                        <p>This page last changed on Sep 24, 2012 by <font color="#0050B2">jenhicks</font>.</p>
+                    </div>
+                </div>
+
+                <div id="content" class="view">
+                    <div id="main-content" class="wiki-content group">
+                    <div class="wiki-content" style="margin-left: 0.0px;"><p>The topics covered in this section include:</p><p><div>
+<ul>
+    <li><a href='#GettingStartedwithAnalyses-HowitWorks'>How it Works</a></li>
+    <li><a href='#GettingStartedwithAnalyses-InputsandOutputs'>Inputs and Outputs</a></li>
+    <li><a href='#GettingStartedwithAnalyses-References'>References</a></li>
+</ul></div></p><h2 id="GettingStartedwithAnalyses-HowitWorks">How it Works</h2><p>The Analyze Tool steps in time through a set of input data specifying the state of a model; at each time step, the tool runs a set of analyses on the model. Available analyses include:</p><ul><li><span style="color: rgb(0,0,128);"><strong>Kinematics</strong></span><strong>:</strong> Records the generalized coordinates (q's), generalized speeds (u's), and the accelerations (i.e., derivatives of the generalized speeds: du/dt)</li></ul><ul><li><span style="color: rgb(0,0,128);"><strong>BodyKinematics</strong></span><strong>:</strong> Records the configuration (center of mass position and orientation) of each body, as well as their velocities (linear and angular) and accelerations (linear and angular). Additionally, it records the overall center of mass of the model, as well as the velocity and acceleration of this center of mass.</li></ul><ul><li><span style="color: rgb(0,0,128);"><strong>Actuation</strong></span><strong>:</strong> Records the generalized force, speed, and power developed by each actuator of the model. The generalized force can either be a force (with units N) or a torque (with units Nm). The actuator speed is the rate at which the actuator shortens. Depending on the actuator, a speed can be either a translational speed (m/s) or an angular speed (deg/s). An actuator power (Watts) is the rate at which an actuator does work. Positive work means that the actuator is delivering energy to the model; negative power means that the actuator is absorbing energy from the model.</li></ul><ul><li><span style="color: rgb(0,0,128);"><strong>JointReaction:</strong></span> Reports the joint reaction loads from a model. For a given joint, the reaction load is calculated as the forces and moments required to constrain the body motions to satisfy the joint as if the joint did not exist. The reaction load acts at the joint center (mobilizer frame) of both the parent and child bodies and either force can be reported and expressed in either the child, parent or ground frames. The default behavior is to express the force on the child in the ground frame.</li></ul><p><br class="atl-forced-newline" />The analyses can be added to the list to run via the GUI or by editing a setup file. The input data typically are loaded from files, and may come from experiments or simulations. The results are collected and written to file, usually storage (.sto) files, which you can open with other programs, such as Matlab or Microsoft Excel, for further analysis or plotting. Any analysis available in OpenSim can be included in the list of analyses to run.</p><p>Depending on the analyses you would like to run, there are four types of input that may be needed to analyze a model. These are described below.</p><p><span style="color: rgb(128,0,0);"><strong>states </strong></span>States are the variables of a model that are governed by differential equations and thus are integrated during a simulation. The most common examples of states are the generalized coordinates (q; e.g., joint angles) and speeds (u; e.g., joint angular velocities) that specify the configuration of a model. Every model has them. The states are not limited to the coordinates and speeds, however. Muscles frequently have states. Muscle activation and fiber length are common examples of muscle states. [1]</p><p><span style="color: rgb(128,0,0);"><strong>controls</strong></span> Controls are independent variables used to control the behavior of a model. Muscle excitations are an example. They are not governed by differential equations, but typically are free to take on any value between zero (no excitation) and one (full excitation). The controls of a model are frequently the variables used as the control parameters in optimization problems.</p><p><span style="color: rgb(128,0,0);"><strong>external loads</strong></span> External loads are forces or torques applied between the ground (or world) and the bodies of a model. For example, you might have force plate data that were recorded during a gait experiment. The recorded forces and moments can be applied to the right and left feet of the model by inputting the data as external loads. In OpenSim 1.5, external loads can be applied to at most two bodies.</p><h2 id="GettingStartedwithAnalyses-InputsandOutputs">Inputs and Outputs</h2><p>The Analyze Tool has the same inputs and outputs as the Forward Dynamics Tool. Refer to <a href="How%2Bto%2BUse%2Bthe%2BForward%2BDynamics%2BTool.html">How to Use the Forward Dynamics Tool</a> for more information about the input and output files.</p><h2 id="GettingStartedwithAnalyses-References">References</h2><p>[1] Schutte, L.M., Rodgers, M.M., Zajac, F.E., &quot;Improving the efficacy of electrical stimulation-induced leg cycle ergometry: an analysis based on a dynamic musculoskeletal model,&quot; IEEE Transactions on Rehabilitation Engineering, 1993, 1: 109-125. </p></div><div class="pageSection group"><p> </p><div class="panel" style="background-color: white;border-color: gray;border-style: solid;border-width: 5px;"><div class="panelContent" style="background-color: white;">
+<p>Next: <a href="How%2Bto%2BUse%2Bthe%2BAnalysis%2BTool.html">How to Use the Analysis Tool</a></p><p>Home: <a href="Analyses.html">Analyses</a></p>
+</div></div></div>
+                    </div>
+
+                    
+                                                      
+                </div>             </div> 
+            <div id="footer" style="background: url(http://simtk-confluence.stanford.edu:8080/images/border/border_bottom.gif) repeat-x;">
+                <p><small>Document generated by Confluence on Feb 24, 2014 09:28</small></p>
+            </div>
+        </div>     </body>
+</html>

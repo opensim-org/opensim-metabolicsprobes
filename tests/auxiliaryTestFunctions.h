@@ -83,6 +83,7 @@ do { \
     } \
 } while(false) 
 
+/*
 static OpenSim::Object* randomize(OpenSim::Object* obj)
 {
     if (obj==NULL) return 0; // maybe empty tag
@@ -159,5 +160,6 @@ static OpenSim::Object* randomize(OpenSim::Object* obj)
      }
      return obj;
 }
+*/
 
 #endif // OPENSIM_AUXILIARY_TEST_FUNCTIONS_H_

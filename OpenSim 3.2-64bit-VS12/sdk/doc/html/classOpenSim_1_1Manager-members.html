@@ -1,0 +1,469 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=9"/>
+<title>OpenSim: Member List</title>
+<link href="opensim.css" rel="stylesheet" type="text/css" />
+<link href="lightbox.css" rel="stylesheet" type="text/css" />
+<link href="bootstrap3/css/bootstrap.min.css" rel="stylesheet">
+<script src="jquery-2.1.0.min.js"></script>
+<script src="bootstrap3/js/bootstrap.min.js"></script>
+<script src="lightbox.js"></script>
+<script type="text/javascript" src="typeahead.min.js"></script>
+<script src="hogan-2.0.0.js"></script>
+<script type="text/javascript">
+  window.onhashchange = function() {
+  if (window.location.hash)
+      window.scrollBy(0, -50);
+  }
+  if (window.location.hash)
+  {
+    window.scrollBy(0, -50);
+  }
+$( document ).ready(function() {
+  $("#MSearchBox").hide();
+  $("div.headertitle").addClass("page-header");
+  $("div.title").addClass("h1");
+  $('li > a[href="index.html"] > span').before("<i class='fa fa-cog'></i> ");
+  $('li > a[href="index.html"] > span').text("OpenSim");
+  $('li > a[href="modules.html"] > span').before("<i class='fa fa-square'></i> ");
+  $('li > a[href="namespaces.html"] > span').before("<i class='fa fa-bars'></i> ");
+  $('li > a[href="annotated.html"] > span').before("<i class='fa fa-list-ul'></i> ");
+  $('li > a[href="classes.html"] > span').before("<i class='fa fa-book'></i> ");
+  $('li > a[href="inherits.html"] > span').before("<i class='fa fa-sitemap'></i> ");
+  $('li > a[href="functions.html"] > span').before("<i class='fa fa-list'></i> ");
+  $('li > a[href="functions_func.html"] > span').before("<i class='fa fa-list'></i> ");
+  $('li > a[href="functions_vars.html"] > span').before("<i class='fa fa-list'></i> ");
+  $('li > a[href="functions_enum.html"] > span').before("<i class='fa fa-list'></i> ");
+  $('li > a[href="functions_eval.html"] > span').before("<i class='fa fa-list'></i> ");
+  $('img[src="ftv2ns.png"]').replaceWith('<span class="label label-danger">N</span> ');
+  $('img[src="ftv2cl.png"]').replaceWith('<span class="label label-danger">C</span> ');
+  $("ul.tablist").addClass("nav nav-pills nav-justified");
+  $("ul.tablist").css("margin-top", "0.5em");
+  $("ul.tablist").css("margin-bottom", "0.5em");
+  $("li.current").addClass("active");
+  $("iframe").attr("scrolling", "yes");
+  $("#nav-path > ul").addClass("breadcrumb");
+  $("table.params").addClass("table");
+  $("div.ingroups").wrapInner("<small></small>");
+  $("div.levels").css("margin", "0.5em");
+  $("div.levels > span").addClass("btn btn-default btn-xs");
+  $("div.levels > span").css("margin-right", "0.25em");
+  $("table.directory").addClass("table table-striped");
+  $("div.summary > a").addClass("btn btn-default btn-xs");
+  $("table.fieldtable").addClass("table");
+  $(".fragment").addClass("well");
+  $(".memitem").addClass("panel panel-default");
+  $(".memproto").addClass("panel-heading");
+  $(".memdoc").addClass("panel-body");
+  $("span.mlabel").addClass("label label-info");
+  $("table.memberdecls").addClass("table");
+  $("[class^=memitem]").addClass("active");
+  $("div.ah").addClass("btn btn-default");
+  $("span.mlabels").addClass("pull-right");
+  $("table.mlabels").css("width", "100%")
+  $("td.mlabels-right").addClass("pull-right");
+  $("div.ttc").addClass("panel panel-info");
+  $("div.ttname").addClass("panel-heading");
+  $("div.ttdef,div.ttdoc,div.ttdeci").addClass("panel-body");
+$("#search").typeahead([
+    {
+      name: 'opensim-search',
+      valueKey: 'title',
+      remote: { url: 'query?q=%QUERY&teaser=body&pagesize=1000',
+      filter: function(p) {
+        dat = [];
+        for(i=0; i < p.hits.length; i++)
+        {
+          var pn = p.hits[i].document;
+          pn.href = p.hits[i].id;
+          dat.push(pn);
+        }
+        return dat;
+      }
+    },
+      template: '<strong>{{title}}</strong><p>{{{teaser}}}</p>',
+      engine: Hogan,
+      limit: 1000
+    }
+    ]).on("typeahead:selected", (function (e, datum){
+      window.location = datum.href;
+    }));
+    $('.typeahead.input-sm').siblings('input.tt-hint').addClass('hint-small');
+    $('.typeahead.input-lg').siblings('input.tt-hint').addClass('hint-large');
+  $.ajax({url : "ping", type: "GET", error : function() {
+    var prt = $("#MSearchBox").parent();
+    $(".twitter-typeahead").replaceWith($("#MSearchBox").show());
+    prt.remove();
+  }, success: function() {
+    $("#MSearchBox").parent().remove();
+    $(".nav>li").css("width", "266.667px");
+  }   });
+});
+var initNavTree = function(a,b) { } 
+function toggleVisibility(linkObj)
+{
+ var base = $(linkObj).attr('id');
+ var summary = $('#'+base+'-summary');
+ var content = $('#'+base+'-content');
+ var trigger = $('#'+base+'-trigger');
+ var src=$(trigger).attr('src');
+ if (content.is(':visible')===true) {
+   content.hide();
+   summary.show();
+   $(linkObj).addClass('closed').removeClass('opened');
+   $(trigger).attr('src',src.substring(0,src.length-8)+'closed.png');
+ } else {
+   content.show();
+   summary.hide();
+   $(linkObj).removeClass('closed').addClass('opened');
+   $(trigger).attr('src',src.substring(0,src.length-10)+'open.png');
+ } 
+ return false;
+}
+function updateStripes()
+{
+  $('table.directory tr').
+       removeClass('even').filter(':visible:even').addClass('even');
+}
+function toggleLevel(level)
+{
+  $('table.directory tr').each(function(){ 
+    var l = this.id.split('_').length-1;
+    var i = $('#img'+this.id.substring(3));
+    var a = $('#arr'+this.id.substring(3));
+    if (l<level+1) {
+      i.attr('src','ftv2folderopen.png');
+      a.attr('src','ftv2mnode.png');
+      $(this).show();
+    } else if (l==level+1) {
+      i.attr('src','ftv2folderclosed.png');
+      a.attr('src','ftv2pnode.png');
+      $(this).show();
+    } else {
+      $(this).hide();
+    }
+  });
+  updateStripes();
+}
+function toggleFolder(id)
+{
+  //The clicked row
+  var currentRow = $('#row_'+id);
+  var currentRowImages = currentRow.find("img");
+  //All rows after the clicked row
+  var rows = currentRow.nextAll("tr");
+  //Only match elements AFTER this one (can't hide elements before)
+  var childRows = rows.filter(function() {
+    var re = new RegExp('^row_'+id+'\\d+_$', "i"); //only one sub
+    return this.id.match(re);
+  });
+  //First row is visible we are HIDING
+  if (childRows.filter(':first').is(':visible')===true) {
+    currentRowImages.filter("[id^=arr]").attr('src', 'ftv2pnode.png');
+    currentRowImages.filter("[id^=img]").attr('src', 'ftv2folderclosed.png');
+    rows.filter("[id^=row_"+id+"]").hide();
+  } else { //We are SHOWING
+    //All sub images
+    var childImages = childRows.find("img");
+    var childImg = childImages.filter("[id^=img]");
+    var childArr = childImages.filter("[id^=arr]");
+    currentRow.find("[id^=arr]").attr('src', 'ftv2mnode.png'); //open row
+    currentRow.find("[id^=img]").attr('src', 'ftv2folderopen.png'); //open row
+    childImg.attr('src','ftv2folderclosed.png'); //children closed
+    childArr.attr('src','ftv2pnode.png'); //children closed
+    childRows.show(); //show all children
+  }
+  updateStripes();
+}
+function toggleInherit(id)
+{
+  var rows = $('tr.inherit.'+id);
+  var img = $('tr.inherit_header.'+id+' img');
+  var src = $(img).attr('src');
+  if (rows.filter(':first').is(':visible')===true) {
+    rows.css('display','none');
+    $(img).attr('src',src.substring(0,src.length-8)+'closed.png');
+  } else {
+    rows.css('display','table-row'); // using show() causes jump in firefox
+    $(img).attr('src',src.substring(0,src.length-10)+'open.png');
+  }
+}
+$(function() {
+$(".dyncontent img").each(function () {
+  $(this).wrap("<a href='" + $(this).attr("src") + "'></a>");
+  $(".dyncontent a").click(function(e) { e.preventDefault(); $(this).ekkoLightbox();  });
+} );
+  diag = $("map").parent().children("a").children("img");
+  if (diag != 'undefined')
+  {
+      diag.clone().load(function() { 
+      ratio = diag.width() / this.width;
+      $("area").each(function () {
+          cr = $(this).attr("coords").split(",");
+          for(l=0; l < cr.length; l++) {
+            cr[l] = parseInt(cr[l]) * ratio;
+          }
+          $(this).attr("coords", cr.join(','));
+      })
+      console.log(ratio); 
+    });
+  }
+});
+</script>
+<style type="text/css">
+  body
+  {
+    width: 800px;
+    margin: 0 auto;
+  }
+  img
+  {
+    max-width: 800px;
+  }
+  #container
+  {
+    margin-top: 70px;
+  }
+.twitter-typeahead .tt-hint
+{
+    display: block;
+    height: 34px;
+    padding: 6px 12px;
+    font-size: 14px;
+    line-height: 1.428571429;
+    border: 1px solid transparent;
+    border-radius:4px;
+}
+.twitter-typeahead .hint-small
+{
+    height: 30px;
+    padding: 5px 10px;
+    font-size: 12px;
+    border-radius: 3px;
+    line-height: 1.5;
+}
+.twitter-typeahead .hint-large
+{
+    height: 45px;
+    padding: 10px 16px;
+    font-size: 18px;
+    border-radius: 6px;
+    line-height: 1.33;
+}
+.twitter-typeahead {
+    width: 100%;
+    position: relative;
+}
+.twitter-typeahead .tt-query,
+.twitter-typeahead .tt-hint {
+    margin-bottom: 0;
+    width:100%;
+    height: 34px;
+    position: absolute;
+    top:0;
+    left:0;
+}
+.twitter-typeahead .tt-hint {
+    color:#a1a1a1;
+    z-index: 1;
+    padding: 6px 12px;
+    border:1px solid transparent;
+}
+.twitter-typeahead .tt-query {
+    z-index: 2;
+    border-radius: 4px!important;
+}
+.tt-dropdown-menu {
+    left: auto !important;
+    right: 0px !important;
+    overflow-y: auto;
+    max-height: 400px;
+    min-width: 160px;
+    margin-top: 2px;
+    padding: 5px 0;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border: 1px solid rgba(0,0,0,.2);
+    *border-right-width: 2px;
+    *border-bottom-width: 2px;
+    -webkit-border-radius: 6px;
+    -moz-border-radius: 6px;
+    border-radius: 6px;
+    -webkit-box-shadow: 0 5px 10px rgba(0,0,0,.2);
+    -moz-box-shadow: 0 5px 10px rgba(0,0,0,.2);
+    box-shadow: 0 5px 10px rgba(0,0,0,.2);
+    -webkit-background-clip: padding-box;
+    -moz-background-clip: padding;
+    background-clip: padding-box;
+}
+.tt-suggestion {
+    display: block;
+    padding: 3px 20px;
+}
+.tt-suggestion.tt-is-under-cursor {
+    color: #fff;
+    background-color: #0081c2;
+    background-image: -moz-linear-gradient(top, #0088cc, #0077b3);
+    background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#0088cc), to(#0077b3));
+    background-image: -webkit-linear-gradient(top, #0088cc, #0077b3);
+    background-image: -o-linear-gradient(top, #0088cc, #0077b3);
+    background-image: linear-gradient(to bottom, #0088cc, #0077b3);
+    background-repeat: repeat-x;
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff0088cc', endColorstr='#ff0077b3', GradientType=0)
+}
+.tt-suggestion.tt-is-under-cursor a {
+    color: #fff;
+}
+.tt-suggestion p {
+    margin: 0;
+}
+.sc-em
+{
+  font-weight: bold;
+}
+#MSearchResultsWindow
+{
+  top: 51px !important;
+  position: fixed !important;
+}
+</style>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/search.js"></script>
+<script type="text/javascript">
+  $(document).ready(function() { searchBox.OnSelectItem(0); });
+</script>
+</head>
+<body>
+    <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <a class="navbar-brand" href="index.html">OpenSim Documentation</a>
+        </div>
+          <form class="navbar-form navbar-right">
+              <input type="search" placeholder="Search" class="form-control" id="search">
+          </form>
+      </div>
+    </div>
+  <div id="container">
+<!-- Generated by Doxygen 1.8.6 -->
+<script type="text/javascript">
+var searchBox = new SearchBox("searchBox", "search",false,'Search');
+</script>
+  <div id="navrow1" class="tabs">
+    <ul class="tablist">
+      <li><a href="index.html"><span>Main&#160;Page</span></a></li>
+      <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
+      <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
+      <li>
+        <div id="MSearchBox" class="MSearchBoxInactive">
+        <span class="left">
+          <img id="MSearchSelect" src="search/mag_sel.png"
+               onmouseover="return searchBox.OnSearchSelectShow()"
+               onmouseout="return searchBox.OnSearchSelectHide()"
+               alt=""/>
+          <input type="text" id="MSearchField" value="Search" accesskey="S"
+               onfocus="searchBox.OnSearchFieldFocus(true)" 
+               onblur="searchBox.OnSearchFieldFocus(false)" 
+               onkeyup="searchBox.OnSearchFieldChange(event)"/>
+          </span><span class="right">
+            <a id="MSearchClose" href="javascript:searchBox.CloseResultsWindow()"><img id="MSearchCloseImg" border="0" src="search/close.png" alt=""/></a>
+          </span>
+        </div>
+      </li>
+    </ul>
+  </div>
+  <div id="navrow2" class="tabs2">
+    <ul class="tablist">
+      <li><a href="annotated.html"><span>Class&#160;List</span></a></li>
+      <li><a href="hierarchy.html"><span>Class&#160;Hierarchy</span></a></li>
+      <li><a href="functions.html"><span>Class&#160;Members</span></a></li>
+    </ul>
+  </div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+$(document).ready(function(){initNavTree('classOpenSim_1_1Manager.html','');});
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Namespaces</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Enumerator</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Friends</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(9)"><span class="SelectionMark">&#160;</span>Pages</a></div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<iframe src="javascript:void(0)" frameborder="0" 
+        name="MSearchResults" id="MSearchResults">
+</iframe>
+</div>
+
+<div class="header">
+  <div class="headertitle">
+<div class="title">OpenSim::Manager Member List</div>  </div>
+</div><!--header-->
+<div class="contents">
+
+<p>This is the complete list of members for <a class="el" href="classOpenSim_1_1Manager.html">OpenSim::Manager</a>, including all inherited members.</p>
+<table class="directory">
+  <tr class="even"><td class="entry"><a class="el" href="classOpenSim_1_1Manager.html#aa94090dc52a3f2314798cf98daaf1041">checkHalt</a>()</td><td class="entry"><a class="el" href="classOpenSim_1_1Manager.html">OpenSim::Manager</a></td><td class="entry"></td></tr>
+  <tr><td class="entry"><a class="el" href="classOpenSim_1_1Manager.html#a2e03e5f65360f3b39b162fce60718a8f">clearHalt</a>()</td><td class="entry"><a class="el" href="classOpenSim_1_1Manager.html">OpenSim::Manager</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classOpenSim_1_1Manager.html#a38c14f83fa34d5474f63afdbc9762485">doIntegration</a>(SimTK::State &amp;s, int step, double dtFirst)</td><td class="entry"><a class="el" href="classOpenSim_1_1Manager.html">OpenSim::Manager</a></td><td class="entry"></td></tr>
+  <tr><td class="entry"><a class="el" href="classOpenSim_1_1Manager.html#ae30d24b4da0069854c8ba4d2fbf99a3a">finalize</a>(SimTK::State &amp;s)</td><td class="entry"><a class="el" href="classOpenSim_1_1Manager.html">OpenSim::Manager</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classOpenSim_1_1Manager.html#af15a5e5b26ed048584368f32306e887e">getDTArray</a>()</td><td class="entry"><a class="el" href="classOpenSim_1_1Manager.html">OpenSim::Manager</a></td><td class="entry"></td></tr>
+  <tr><td class="entry"><a class="el" href="classOpenSim_1_1Manager.html#a4447a4e01681278e0d8710c1746e41e7">getDTArrayDT</a>(int aStep)</td><td class="entry"><a class="el" href="classOpenSim_1_1Manager.html">OpenSim::Manager</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classOpenSim_1_1Manager.html#a094555d6631df6371cbd531a63c0b3fc">getFinalTime</a>() const </td><td class="entry"><a class="el" href="classOpenSim_1_1Manager.html">OpenSim::Manager</a></td><td class="entry"></td></tr>
+  <tr><td class="entry"><a class="el" href="classOpenSim_1_1Manager.html#ada2ed94d9bd6652c6b58f1780bf3d46c">getFirstDT</a>() const </td><td class="entry"><a class="el" href="classOpenSim_1_1Manager.html">OpenSim::Manager</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classOpenSim_1_1Manager.html#a5460ac272944999b27528be4e25684dc">getFixedStepSize</a>(int tArrayStep) const </td><td class="entry"><a class="el" href="classOpenSim_1_1Manager.html">OpenSim::Manager</a></td><td class="entry"></td></tr>
+  <tr><td class="entry"><a class="el" href="classOpenSim_1_1Manager.html#ad5c045e37dab8f0786a67ddfaf998ad8">getInitialTime</a>() const </td><td class="entry"><a class="el" href="classOpenSim_1_1Manager.html">OpenSim::Manager</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classOpenSim_1_1Manager.html#a7a5c666df2c603ea1e609e856599e511">getIntegrator</a>() const </td><td class="entry"><a class="el" href="classOpenSim_1_1Manager.html">OpenSim::Manager</a></td><td class="entry"></td></tr>
+  <tr><td class="entry"><a class="el" href="classOpenSim_1_1Manager.html#ab6c6515f8dc1ab2926d2c64d4acddbb2">getNextTimeArrayTime</a>(double aTime)</td><td class="entry"><a class="el" href="classOpenSim_1_1Manager.html">OpenSim::Manager</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classOpenSim_1_1Manager.html#a05039bf09c76069d22c99fae74dfb274">getSessionName</a>() const </td><td class="entry"><a class="el" href="classOpenSim_1_1Manager.html">OpenSim::Manager</a></td><td class="entry"></td></tr>
+  <tr><td class="entry"><a class="el" href="classOpenSim_1_1Manager.html#a4f82f1d12d227f04e62b70f7801a060c">getStateStorage</a>() const </td><td class="entry"><a class="el" href="classOpenSim_1_1Manager.html">OpenSim::Manager</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classOpenSim_1_1Manager.html#a81e8e1eb80846f42bd8223e0bdb2e3fd">getTimeArray</a>()</td><td class="entry"><a class="el" href="classOpenSim_1_1Manager.html">OpenSim::Manager</a></td><td class="entry"></td></tr>
+  <tr><td class="entry"><a class="el" href="classOpenSim_1_1Manager.html#af85ff23b034b0241a0bf0df00cb423b3">getTimeArrayStep</a>(double aTime)</td><td class="entry"><a class="el" href="classOpenSim_1_1Manager.html">OpenSim::Manager</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classOpenSim_1_1Manager.html#a81d3baac9abe3ce619115749cffa9c7c">getTimeArrayTime</a>(int aStep)</td><td class="entry"><a class="el" href="classOpenSim_1_1Manager.html">OpenSim::Manager</a></td><td class="entry"></td></tr>
+  <tr><td class="entry"><a class="el" href="classOpenSim_1_1Manager.html#a0834b221b403f2454163370d188cf040">getUseConstantDT</a>() const </td><td class="entry"><a class="el" href="classOpenSim_1_1Manager.html">OpenSim::Manager</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classOpenSim_1_1Manager.html#a448c2ddc9878674649831b21dccb3128">getUseSpecifiedDT</a>() const </td><td class="entry"><a class="el" href="classOpenSim_1_1Manager.html">OpenSim::Manager</a></td><td class="entry"></td></tr>
+  <tr><td class="entry"><a class="el" href="classOpenSim_1_1Manager.html#a5f31836d2fd8b80e15bb3c6b6aec776b">halt</a>()</td><td class="entry"><a class="el" href="classOpenSim_1_1Manager.html">OpenSim::Manager</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classOpenSim_1_1Manager.html#add1f9ca2c1557715c0a5fb16187cbfcc">hasStateStorage</a>() const </td><td class="entry"><a class="el" href="classOpenSim_1_1Manager.html">OpenSim::Manager</a></td><td class="entry"></td></tr>
+  <tr><td class="entry"><a class="el" href="classOpenSim_1_1Manager.html#ae9addb8af31e9e03049547a50f329351">initialize</a>(SimTK::State &amp;s, double dt)</td><td class="entry"><a class="el" href="classOpenSim_1_1Manager.html">OpenSim::Manager</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classOpenSim_1_1Manager.html#a33f8bd7195444bf0eab89358d67dccb1">integrate</a>(SimTK::State &amp;s, double dtFirst=1.0e-6)</td><td class="entry"><a class="el" href="classOpenSim_1_1Manager.html">OpenSim::Manager</a></td><td class="entry"></td></tr>
+  <tr><td class="entry"><a class="el" href="classOpenSim_1_1Manager.html#a66d61c7d4868f9acf4d75642c8a0ed3a">Manager</a>(Model &amp;, SimTK::Integrator &amp;)</td><td class="entry"><a class="el" href="classOpenSim_1_1Manager.html">OpenSim::Manager</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classOpenSim_1_1Manager.html#ab2f56a9d5f1a9912ecf6414a81b93a4e">Manager</a>(Model &amp;aModel)</td><td class="entry"><a class="el" href="classOpenSim_1_1Manager.html">OpenSim::Manager</a></td><td class="entry"></td></tr>
+  <tr><td class="entry"><a class="el" href="classOpenSim_1_1Manager.html#a76141fc53ff841a82b3b76c2dc6114bb">Manager</a>()</td><td class="entry"><a class="el" href="classOpenSim_1_1Manager.html">OpenSim::Manager</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classOpenSim_1_1Manager.html#ae3d572f2b422b9b29766ccaf7dfa7b34">printDTArray</a>(const char *aFileName=NULL)</td><td class="entry"><a class="el" href="classOpenSim_1_1Manager.html">OpenSim::Manager</a></td><td class="entry"></td></tr>
+  <tr><td class="entry"><a class="el" href="classOpenSim_1_1Manager.html#a0583cbd1d846dea500e60985ee07d5a9">printTimeArray</a>(const char *aFileName=NULL)</td><td class="entry"><a class="el" href="classOpenSim_1_1Manager.html">OpenSim::Manager</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classOpenSim_1_1Manager.html#a6197c465c161b00c94672948a6d93858">resetTimeAndDTArrays</a>(double aTime)</td><td class="entry"><a class="el" href="classOpenSim_1_1Manager.html">OpenSim::Manager</a></td><td class="entry"></td></tr>
+  <tr><td class="entry"><a class="el" href="classOpenSim_1_1Manager.html#a7ca754b043fa92460832437de4bfa93e">setDTArray</a>(int aN, const double aDT[], double aTI=0.0)</td><td class="entry"><a class="el" href="classOpenSim_1_1Manager.html">OpenSim::Manager</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classOpenSim_1_1Manager.html#a2f01fe83f82f3007867309bf714784ea">setFinalTime</a>(double aTF)</td><td class="entry"><a class="el" href="classOpenSim_1_1Manager.html">OpenSim::Manager</a></td><td class="entry"></td></tr>
+  <tr><td class="entry"><a class="el" href="classOpenSim_1_1Manager.html#a2ff64affc44f1596a2dbfdfc0b79579d">setFirstDT</a>(double aDT)</td><td class="entry"><a class="el" href="classOpenSim_1_1Manager.html">OpenSim::Manager</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classOpenSim_1_1Manager.html#acae6f942bf3084170bdbe15c864d1b51">setInitialTime</a>(double aTI)</td><td class="entry"><a class="el" href="classOpenSim_1_1Manager.html">OpenSim::Manager</a></td><td class="entry"></td></tr>
+  <tr><td class="entry"><a class="el" href="classOpenSim_1_1Manager.html#af3fa53f71ca82577a839b8bfe39ef292">setIntegrator</a>(SimTK::Integrator *)</td><td class="entry"><a class="el" href="classOpenSim_1_1Manager.html">OpenSim::Manager</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classOpenSim_1_1Manager.html#aa2b55aed9a34fcc52ad1f773a966e914">setModel</a>(Model &amp;aModel)</td><td class="entry"><a class="el" href="classOpenSim_1_1Manager.html">OpenSim::Manager</a></td><td class="entry"></td></tr>
+  <tr><td class="entry"><a class="el" href="classOpenSim_1_1Manager.html#afe90e5d28de53e98a3c111c284bdd34e">setPerformAnalyses</a>(bool performAnalyses)</td><td class="entry"><a class="el" href="classOpenSim_1_1Manager.html">OpenSim::Manager</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classOpenSim_1_1Manager.html#a0988f1f43acd8884c75c4c568bdbe520">setSessionName</a>(const std::string &amp;name)</td><td class="entry"><a class="el" href="classOpenSim_1_1Manager.html">OpenSim::Manager</a></td><td class="entry"></td></tr>
+  <tr><td class="entry"><a class="el" href="classOpenSim_1_1Manager.html#a81ac6dfdafbae5af2d89599a83226e3d">setStateStorage</a>(Storage &amp;aStorage)</td><td class="entry"><a class="el" href="classOpenSim_1_1Manager.html">OpenSim::Manager</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classOpenSim_1_1Manager.html#a24db53b0713cc75743d66ca863d81c27">setSystem</a>(SimTK::System *system)</td><td class="entry"><a class="el" href="classOpenSim_1_1Manager.html">OpenSim::Manager</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
+  <tr><td class="entry"><a class="el" href="classOpenSim_1_1Manager.html#ac0ee2f9e32417362e1c5d6cb0efec83f">setUseConstantDT</a>(bool aTrueFalse)</td><td class="entry"><a class="el" href="classOpenSim_1_1Manager.html">OpenSim::Manager</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classOpenSim_1_1Manager.html#a276f365323ad4dc59f5f3a889eda851d">setUseSpecifiedDT</a>(bool aTrueFalse)</td><td class="entry"><a class="el" href="classOpenSim_1_1Manager.html">OpenSim::Manager</a></td><td class="entry"></td></tr>
+  <tr><td class="entry"><a class="el" href="classOpenSim_1_1Manager.html#a55e7478cffb40d0782cd9a231918c585">setWriteToStorage</a>(bool writeToStorage)</td><td class="entry"><a class="el" href="classOpenSim_1_1Manager.html">OpenSim::Manager</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classOpenSim_1_1Manager.html#ab5eb9b3cd703d0bbc1e09a1cd5af5479">toString</a>() const </td><td class="entry"><a class="el" href="classOpenSim_1_1Manager.html">OpenSim::Manager</a></td><td class="entry"></td></tr>
+  <tr><td class="entry"><a class="el" href="classOpenSim_1_1Manager.html#a566cad592419e0c0c35fb11aa58e4360">~Manager</a>()</td><td class="entry"><a class="el" href="classOpenSim_1_1Manager.html">OpenSim::Manager</a></td><td class="entry"><span class="mlabel">virtual</span></td></tr>
+</table></div><!-- contents -->
+</div><!-- doc-content -->
+</div>
+</body>
+</html>

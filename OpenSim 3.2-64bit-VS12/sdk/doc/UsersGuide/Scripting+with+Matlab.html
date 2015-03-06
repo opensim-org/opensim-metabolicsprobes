@@ -1,0 +1,81 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+    <head>
+        <title>OpenSim Documentation : Scripting with Matlab</title>
+        <link rel="stylesheet" href="styles/site.css" type="text/css" />
+        <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    </head>
+
+    <body>
+        <div id="page">
+            <div id="main">
+                <div id="main-header" class="pageSectionHeader">
+                    <h1 id="title-heading" class="pagetitle">
+                                                <span id="title-text">
+                            OpenSim Documentation : Scripting with Matlab
+                        </span>
+                    </h1>
+
+                    <div class="page-metadata">
+                        <p>This page last changed on Feb 04, 2014 by <font color="#0050B2">dunne.jimmy</font>.</p>
+                    </div>
+                </div>
+
+                <div id="content" class="view">
+                    <div id="main-content" class="wiki-content group">
+                    <div class='panelMacro'><table class='noteMacro'><colgroup><col width='24'><col></colgroup><tr><td valign='top'><img src="images/icons/emoticons/warning.png" width="16" height="16" align="absmiddle" alt="" border="0"></td><td><p>The system architecture of Matlab &amp; OpenSim must match (install 64-bit OpenSim if you use 64-bit Matlab). Matlab setup and configuration instructions are below.</p></td></tr></table></div><p><br /><div>
+<ul>
+    <li><a href='#ScriptingwithMatlab-WhatsAvailable'>What's Available?</a></li>
+    <li><a href='#ScriptingwithMatlab-Limitations'>Limitations</a></li>
+    <li><a href='#ScriptingwithMatlab-AvailableExampleScripts'>Available Example Scripts</a></li>
+    <li><a href='#ScriptingwithMatlab-SettingupyourMatlabScriptingEnvironment'>Setting up your Matlab Scripting Environment</a></li>
+<ul>
+    <li><a href='#ScriptingwithMatlab-AutomatedSetup'><span style="color: rgb(0,0,0);">Automated Setup</span></a></li>
+    <li><a href='#ScriptingwithMatlab-ManualSetup'>Manual Setup</a></li>
+<ul>
+    <li><a href='#ScriptingwithMatlab-LaunchMatlabasanAdministrator'>Launch Matlab as an Administrator</a></li>
+    <li><a href='#ScriptingwithMatlab-TellMatlababoutOpenSimsJavalibraryjar'>Tell Matlab about OpenSim's Java library (.jar)</a></li>
+    <li><a href='#ScriptingwithMatlab-TellMatlababoutOpenSimsClibrarieswhichtheJavalibrarydependson'>Tell Matlab about OpenSim's C++ libraries, which the Java library depends on</a></li>
+    <li><a href='#ScriptingwithMatlab-AddOpenSimClibrariestoMatlabsPATHvariable'>Add OpenSim C++ libraries to Matlab's PATH variable</a></li>
+    <li><a href='#ScriptingwithMatlab-Wrapitup'>Wrap it up</a></li>
+</ul>
+</ul>
+    <li><a href='#ScriptingwithMatlab-HandlingJavaExceptions'>Handling Java Exceptions</a></li>
+    <li><a href='#ScriptingwithMatlab-Troubleshooting'>Troubleshooting</a></li>
+</ul></div></p><h2 id="ScriptingwithMatlab-WhatsAvailable">What's Available?</h2><ul><li>Access to the OpenSim API to create and simulate models (e.g. OpenSimCreateTugOfWarModel.m) </li><li>Users can instantiate and run tools from setup files or programmatically (e.g. TugOfWar_CompleteRunVisualize.m)</li><li>Repeated/batch runs of tools</li><li>Users can write &quot;main&quot; programs similar to those written by C++ developers, while taking advantage of the Matlab environment and tools </li><li>A visualizer for API users that can be invoked through Matlab</li></ul><h2 id="ScriptingwithMatlab-Limitations">Limitations</h2><div><ul><li>In this mode, there’s no access to the plotter (you can use Matlab’s native plotter) or the graphics window (use the model visualizer instead).</li><li>Some internal Simtk classes (that belong to the SimTK namespace and simbody internals) are not available for construction, but the most commonly used classes are available as of version 3.1 (SimTK::Vec3, Vector, Mat33, State, Inertia).</li></ul></div><div><h2 id="ScriptingwithMatlab-AvailableExampleScripts">Available Example Scripts</h2><div class="table-wrap"><table class="confluenceTable"><tbody><tr><th class="confluenceTh">Script Name</th><th class="confluenceTh">Description</th></tr><tr><td colspan="1" class="confluenceTd">OpenSimCreateTugofWarModel.m and TugofWar_CompleteRunVisualize.m</td><td colspan="1" class="confluenceTd">These scripts generate a simple tug of war model, run a simulation, and visualize the results.</td></tr><tr><td colspan="1" class="confluenceTd"><span>prescribeMotionInModel.m</span></td><td colspan="1" class="confluenceTd">Script to create an OpenSim model with coordinates prescribed according to an input motion file. It uses a helper function defined in the script createPrescribedMotionModel.</td></tr><tr><td colspan="1" class="confluenceTd"><span>setupAndRunAnalyzeBatchExample.m</span></td><td colspan="1" class="confluenceTd"><p>This is a Matlab function that generates OpenSim Setup Files for the Analyze&gt;MuscleAnalysis tool and runs the Analyze tool. You must run setupAndRunIKBatchExample first to generate the motion files used in this example.</p></td></tr><tr><td class="confluenceTd"><span>setupAndRunIKBatchExample.m</span></td><td class="confluenceTd">Runs multiple inverse kinematics trials for the model Subject01 located in the subfolder &quot;testData\subject01&quot;. User must specify the results directory (e.g. &quot;IKResults&quot;), the .osim model (e.g. &quot;subject01_gait2392_scaled.osim&quot;), and the .trc files (e.g. in folder &quot;MarkerData&quot;). To see the results, load the model and IK output in the GUI.</td></tr><tr><td class="confluenceTd"><span>simpleOptimizerExample.m</span></td><td class="confluenceTd">Runs a simple optimization to find the elbow flexion angle where the moment arm of the biceps femoris short head is maximized.</td></tr><tr><td colspan="1" class="confluenceTd">simpleOptimizerObjectiveFunction.m</td><td colspan="1" class="confluenceTd">Runs model simulation for gvien coefficients, returns integration</td></tr><tr><td class="confluenceTd"><span>strengthScaler.m</span></td><td class="confluenceTd">Function that loads a model and its muscles, then creates a new model where all muscles are scaled by a common scale factor. Takes 3 inputs: 1) the path and name of an existing OpenSim model, 2) the path and name of the new model to be outputted, and 3) the scale factor. If no input model names are given, the user is prompted to choose a model to scale and all muscle strengths are doubled.</td></tr></tbody></table></div><p>Learn more in the next section on <a href="Common%2BScripting%2BCommands.html">Common Scripting Commands</a>.</p></div><h2 id="ScriptingwithMatlab-SettingupyourMatlabScriptingEnvironment">Setting up your Matlab Scripting Environment</h2><p>These instructions assume that you've already installed the OpenSim, version 3.1 or later (see <a href="Installation%2BGuide.html">Installation Guide</a> for more info). As note above, the system architecture of OpenSim should match your version of Matlab (64-bit or 32-bit)</p><h3 id="ScriptingwithMatlab-AutomatedSetup"><span style="color: rgb(0,0,0);">Automated Setup</span></h3><p>From OpenSim 3.2 onward we have included a script which automates the steps described below. Navigate to the the folder where you installed OpenSim, then find the <strong>Scripts &gt; Matlab</strong> folder and use Matlab to run <em><strong>configureOpenSim.m. </strong></em>This script will update Maltab's system, class and library paths to include the OpenSim 3.2 libraries. Please note that this script will clean out any existing paths that contain the string 'opensim'. If you have existing paths containing this string that you would like to maintain, you will have to add OpenSim 3.2 libraries manually (see the steps below). </p><h3 id="ScriptingwithMatlab-ManualSetup">Manual Setup</h3><p>If you are running OpenSim 3.1, please refer to the manual configuration guide below. </p><h4 id="ScriptingwithMatlab-LaunchMatlabasanAdministrator">Launch Matlab as an Administrator</h4><p>Find the location where you installed OpenSim (e.g. C:\OpenSim3.0, C:\Program Files\OpenSim 3.0). We will refer to this directory as <strong>OPENSIM_INSTALL_DIRECTORY</strong>. Substitute your specific directory in the instructions below. In the images, we use C:\OpenSim 3.1.</p><table class="sectionMacro" border="0" cellpadding="5" cellspacing="0" width="100%"><tbody><tr><td valign="top" width="500px"> <img class="confluence-embedded-image" src="attachments/3376223/5964248.png" data-image-src="attachments/3376223/5964248.png"></td><td valign="top"><p>You'll be editing files in the Matlab installation itself, and to do this we'll need to run Matlab as an administrator. To do so, right-click Matlab in your Start menu, and select <strong>Run as administrator</strong>.</p></td></tr></tbody></table><h4 id="ScriptingwithMatlab-TellMatlababoutOpenSimsJavalibraryjar">Tell Matlab about OpenSim's Java library (.jar)</h4><table class="sectionMacro" border="0" cellpadding="5" cellspacing="0" width="100%"><tbody><tr><td valign="top" width="500px"> <img class="confluence-embedded-image" src="attachments/3376223/5964249.png" data-image-src="attachments/3376223/5964249.png"></td><td valign="top"> <ul><li>In the Matlab Command Window, type <strong>edit classpath.txt</strong>.</li><li>Add <strong>OPENSIM_INSTALL_DIRECTORY\opensim\modules\org-opensim-modeling.jar</strong> to the end of the file.</li></ul></td></tr></tbody></table><h4 id="ScriptingwithMatlab-TellMatlababoutOpenSimsClibrarieswhichtheJavalibrarydependson">Tell Matlab about OpenSim's C++ libraries, which the Java library depends on</h4><p>The remaining changes deal with <strong>OPENSIM_INSTALL_DIRECTORY\bin</strong>.</p><table class="sectionMacro" border="0" cellpadding="5" cellspacing="0" width="100%"><tbody><tr><td valign="top" width="500px"> <img class="confluence-embedded-image" src="attachments/3376223/5964250.png" data-image-src="attachments/3376223/5964250.png"></td><td valign="top"><ul><li> In the Matlab Command Window, type <strong>edit librarypath.txt</strong>.</li><li>Add <strong>OPENSIM_INSTALL_DIRECTORY\bin </strong>to the end of the file ensuring Matlab has the correct path to the DLL files in the opensim bin.</li></ul></td></tr></tbody></table><h4 id="ScriptingwithMatlab-AddOpenSimClibrariestoMatlabsPATHvariable">Add OpenSim C++ libraries to Matlab's PATH variable</h4><table class="sectionMacro" border="0" cellpadding="5" cellspacing="0" width="100%"><tbody><tr><td valign="top" width="500px"> <img class="confluence-embedded-image" src="attachments/3376223/5964251.png" data-image-src="attachments/3376223/5964251.png"></td><td valign="top"><ul><li> Type <strong>editpath</strong> in the command window (in newer versions, you'll use <strong>pathtool</strong> instead).</li><li>Add the OpenSim bin folder <strong>OPENSIM_INSTALL_DIRECTORY\bin </strong>by clicking on <strong>Add Folder</strong> and navigating to the OpenSim bin folder in the OpenSim install directory.</li></ul></td></tr></tbody></table><h4 id="ScriptingwithMatlab-Wrapitup">Wrap it up</h4><ul><li>Close and restart Matlab, because your changes are not recognized until doing so.</li><li>Test that everything is configured correctly: In the command window, type <strong>model = org.opensim.modeling.Model(); </strong>If there is no error, then it worked! You should see <strong>model</strong> in the Matlab Workspace.</li><li>Now try out one of the Matlab example scripts. You can find these in the folder <strong>OPENSIM_INSTALL_DIRECTORY\sdk\Matlab</strong> (SDK stands for <a href="http://en.wikipedia.org/wiki/Software_development_kit" class="external-link" rel="nofollow">Software Development Kit</a>).</li></ul><div><h2 id="ScriptingwithMatlab-HandlingJavaExceptions">Handling Java Exceptions</h2><p>By default, if Java exceptions occur, Matlab will exit and save debug information to a log file in the current workspace. If this happens please send us the stack trace or crash report to fix. You don't need to setDebugLevel as of version 3.1. For previous versions you can call</p><div class="code panel" style="border-width: 1px;"><div class="codeContent panelContent">
+<div id="root">
+		<pre class="theme: Confluence; brush: java; gutter: false">OpenSimObject.setDebugLevel(3);</pre>
+		</div>
+</div></div><h2 id="ScriptingwithMatlab-Troubleshooting">Troubleshooting</h2><ul><li>If you're seeing errors of osimJavaJNI not in path, add the OPENSIM_INSTALL_DIR\bin to your system PATH variable</li><li>If you're seeing errors saying failed dependencies with osimJavaJNI.dll, you would need to have Visual Studio redistribution package installed (which would come with any Visual Studio installation). You can just install the package files without Visual Studio on the Microsoft download site (For example 32-bit VS 2010 package is located <a href="http://www.microsoft.com/en-us/download/details.aspx?id=5555" class="external-link" rel="nofollow">here</a>).</li></ul><p> </p><div class="panel" style="background-color: white;border-color: gray;border-style: solid;border-width: 5px;"><div class="panelContent" style="background-color: white;">
+<p>Next: <a href="http://simtk-confluence.stanford.edu:8080/display/OpenSim/Scripting+in+Python">Scripting in Python</a></p><p>Previous: <a href="Scripting%2Bin%2Bthe%2BGUI.html">Scripting in the GUI</a></p><p>Home: <a href="http://simtk-confluence.stanford.edu:8080/display/OpenSim/Scripting+and+Development">Scripting and Development</a></p>
+</div></div><p> </p></div><p> </p><p> </p>
+                    </div>
+
+                                        <div class="pageSection group">
+                        <div class="pageSectionHeader">
+                            <h2 id="attachments" class="pageSectionTitle">Attachments:</h2>
+                        </div>
+
+                        <div class="greybox" align="left">
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/3376223/5964248.png">admin.png</a> (image/png)
+                                <br/>
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/3376223/5964249.png">classpath.png</a> (image/png)
+                                <br/>
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/3376223/5964250.png">librarypath.png</a> (image/png)
+                                <br/>
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/3376223/5964251.png">matlabpath.png</a> (image/png)
+                                <br/>
+                                                    </div>
+                    </div>
+                    
+                                                      
+                </div>             </div> 
+            <div id="footer" style="background: url(http://simtk-confluence.stanford.edu:8080/images/border/border_bottom.gif) repeat-x;">
+                <p><small>Document generated by Confluence on Feb 24, 2014 09:28</small></p>
+            </div>
+        </div>     </body>
+</html>

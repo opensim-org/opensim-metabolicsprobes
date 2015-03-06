@@ -1,0 +1,7 @@
+setup.py
+opensim/__init__.py
+opensim/opensim.py
+opensim.egg-info/PKG-INFO
+opensim.egg-info/SOURCES.txt
+opensim.egg-info/dependency_links.txt
+opensim.egg-info/top_level.txt

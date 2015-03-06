@@ -1,0 +1,55 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+    <head>
+        <title>OpenSim Documentation : Exporting and Printing</title>
+        <link rel="stylesheet" href="styles/site.css" type="text/css" />
+        <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    </head>
+
+    <body>
+        <div id="page">
+            <div id="main">
+                <div id="main-header" class="pageSectionHeader">
+                    <h1 id="title-heading" class="pagetitle">
+                                                <span id="title-text">
+                            OpenSim Documentation : Exporting and Printing
+                        </span>
+                    </h1>
+
+                    <div class="page-metadata">
+                        <p>This page last changed on Oct 09, 2012 by <font color="#0050B2">kevinxu</font>.</p>
+                    </div>
+                </div>
+
+                <div id="content" class="view">
+                    <div id="main-content" class="wiki-content group">
+                    <p>The topics covered in this section include:</p><p><div>
+<ul>
+    <li><a href='#ExportingandPrinting-WritingDatatoExternalFiles'>Writing Data to External Files</a></li>
+    <li><a href='#ExportingandPrinting-ExportingImages'>Exporting Images</a></li>
+    <li><a href='#ExportingandPrinting-ExportingtoPostScript'>Exporting to PostScript</a></li>
+    <li><a href='#ExportingandPrinting-Printing'>Printing</a></li>
+</ul></div></p><h2 id="ExportingandPrinting-WritingDatatoExternalFiles">Writing Data to External Files</h2><p>You can save the data representing the curves to use at a later time within OpenSim or to import into another application, such as Excel. The saved file uses the .sto format, text files that contain time-sequence data commonly encountered in motion capture systems. The data are arranged in columns with each column representing, for example, a joint angle or a component of the ground reaction force. Each row in a motion file corresponds to a different time point. These are very similar to SIMM motion files (.mot) from MusculoGraphics, Inc., except they have the added flexibility of handling non-uniform time spacing between rows.</p><p>There are two ways to save the curves. The first way is click the <strong>right mouse</strong> button in the <em>plot</em> panel and select <strong>Export Data…</strong> from the drop down menu that appears. The second way is to <strong>right click</strong> the root node of the tree in the <em>plot summary</em> panel and select <strong>Export Data…</strong> from the menu that appears. Picking this option causes a file browser to appear. Using the file browser, select the name of the file and the directory in which to save the file. Press <strong>Save</strong>.</p><p>The <strong>Export Data…</strong> option saves all the curves in the displayed plot to the file. Since multiple curves with different domains (x-axes) can be displayed concurrently in the same plot, it is possible that a single storage file would not be adequate to represent this data. In this scenario, a separate file is created for every distinct domain (x-axis). A domain is considered distinct if it has a different number of points.</p><h2 id="ExportingandPrinting-ExportingImages">Exporting Images</h2><p>You can save your plots as image files for example, for e-mailing or posting on websites. Currently, only the PNG image format is supported. Third-party software tools are freely available to convert PNG images to other formats.</p><p>To export a plot as a .png image file, <strong>right mouse click</strong> in the <em>plot</em> panel and select <strong>Export Image…</strong> from the drop down menu that appears. A file browser will appear and you will be prompted to select the name of the file and the directory in which to save the file. Press <strong>Save</strong>.</p><p>In cases where the image needs to be included in a publication, a better option would be to export the image to the PostScript format (see <a href="Preparing%2BYour%2BData.html">Preparing Your Data</a>), since advanced editing tools (e.g., Adobe Photoshop) can be used to modify the resulting files (e.g., changing line styles, labels and annotations).</p><h2 id="ExportingandPrinting-ExportingtoPostScript">Exporting to PostScript</h2><p>You can export your image file to the PostScript file format. This is particularly useful if you want to make changes to the plot (e.g., changing the line style or adding annotations) beyond the capabilities provided within OpenSim, since software tools like Adobe Photoshop are able to operate on individual components of a PostScript file.</p><p>To export your image file to PostScript, <strong>right mouse click</strong> in the <em>plot</em> panel and select <strong>Export PostScript…</strong> from the drop down menu that appears. A file browser will appear and you will be prompted to select the name of the file and the directory in which to save the file. Press <strong>Save</strong>.</p><h2 id="ExportingandPrinting-Printing">Printing</h2><p>You can print the plot to a printer by:</p><div class="table-wrap"><table class="confluenceTable"><tbody><tr><th class="nohighlight confluenceTh"><img class="confluence-embedded-image" src="attachments/3376236/3737367.png" data-image-src="attachments/3376236/3737367.png"></th><th class="nohighlight confluenceTh"><ol><li><p>Click the <strong>right mouse</strong> button in the <em>plot</em> panel and selecting <strong>Print…</strong> from the drop down menu that appears. </p></li><li><p>The <strong>Page Setup</strong> dialog box shown on left will appear. Use this to pick printing options (e.g., paper size, printing orientation, print margins). Then, press <strong>OK</strong>.</p></li></ol></th></tr></tbody></table></div><div class="panel" style="background-color: white;border-color: gray;border-style: solid;border-width: 5px;"><div class="panelContent" style="background-color: white;">
+<p><span>Next: </span><a href="Selection%2BFiltering%2BWindow.html">Selection Filtering Window</a><span> </span></p><p>Previous: <a href="Curve%2BCreation%2BPanel.html">Curve Creation Panel</a></p><p>Home: <a href="Plotting.html">Plotting</a></p>
+</div></div>
+                    </div>
+
+                                        <div class="pageSection group">
+                        <div class="pageSectionHeader">
+                            <h2 id="attachments" class="pageSectionTitle">Attachments:</h2>
+                        </div>
+
+                        <div class="greybox" align="left">
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/3376236/3737367.png">plot-11.PNG</a> (image/png)
+                                <br/>
+                                                    </div>
+                    </div>
+                    
+                                                      
+                </div>             </div> 
+            <div id="footer" style="background: url(http://simtk-confluence.stanford.edu:8080/images/border/border_bottom.gif) repeat-x;">
+                <p><small>Document generated by Confluence on Feb 24, 2014 09:27</small></p>
+            </div>
+        </div>     </body>
+</html>

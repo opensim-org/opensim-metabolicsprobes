@@ -1,0 +1,73 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+    <head>
+        <title>OpenSim Documentation : Toolbar</title>
+        <link rel="stylesheet" href="styles/site.css" type="text/css" />
+        <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    </head>
+
+    <body>
+        <div id="page">
+            <div id="main">
+                <div id="main-header" class="pageSectionHeader">
+                    <h1 id="title-heading" class="pagetitle">
+                                                <span id="title-text">
+                            OpenSim Documentation : Toolbar
+                        </span>
+                    </h1>
+
+                    <div class="page-metadata">
+                        <p>This page last changed on Jun 26, 2013 by <font color="#0050B2">kevinxu</font>.</p>
+                    </div>
+                </div>
+
+                <div id="content" class="view">
+                    <div id="main-content" class="wiki-content group">
+                    <p>The information about the OpenSim toolbar covered in this section includes:</p><p><div>
+<ul>
+    <li><a href='#Toolbar-PartsPartsoftheOpenSimToolbar'><span class="confluence-anchor-link" id="Toolbar-Parts" />Parts of the OpenSim Toolbar</a></li>
+<ul>
+    <li><a href='#Toolbar-RedoUndoRedoUndoButtons'><span class="confluence-anchor-link" id="Toolbar-RedoUndo" />Redo/Undo Buttons</a></li>
+    <li><a href='#Toolbar-SimulationControls'>Simulation Controls</a></li>
+    <li><a href='#Toolbar-MotionTextMotionTextbox'><span class="confluence-anchor-link" id="Toolbar-MotionText" />Motion Textbox</a></li>
+    <li><a href='#Toolbar-MotionSliderMotionSliderVideoControls'><span class="confluence-anchor-link" id="Toolbar-MotionSlider" />Motion Slider / Video Controls</a></li>
+</ul>
+</ul></div></p><h1 id="Toolbar-PartsPartsoftheOpenSimToolbar"><span class="confluence-anchor-link" id="Toolbar-Parts"></span>Parts of the OpenSim Toolbar</h1><p>The toolbar is located at the top of the GUI and contains the model drop down menu, the motion textbox, the motion slider, and the video controls. There are also redo/undo buttons for enabling and disabling forces and constraints.</p><div class="table-wrap"><table class="confluenceTable"><tbody><tr><th class="nohighlight confluenceTh"><img class="confluence-embedded-image" width="500" src="attachments/3376137/5046656.png" data-image-src="attachments/3376137/5046656.png"></th><th class="nohighlight confluenceTh"><ul><li><p>For more information on the Undo/Redo Buttons visit <a href="Toolbar.html">Redo/Undo Buttons</a></p></li><li><p>For more information on the Motion Textbox visit <a href="Toolbar.html">Motion Textbox</a></p></li><li><p>For more information on the Motion Slider/Video Controls visit <a href="Toolbar.html">Motion Slider/Video Controls</a></p></li></ul></th></tr></tbody></table></div><h2 id="Toolbar-RedoUndoRedoUndoButtons"><span class="confluence-anchor-link" id="Toolbar-RedoUndo"></span>Redo/Undo Buttons</h2><p>Redo/Undo buttons have been provided in the toolbar to make it easier to perform model editing. The history of edit actions is recorded.</p><div class="table-wrap"><table class="confluenceTable"><tbody><tr><th class="nohighlight confluenceTh"><img class="confluence-embedded-image" src="attachments/3376137/3736848.png" data-image-src="attachments/3376137/3736848.png"></th><th class="nohighlight confluenceTh"><ul><li><p>You can move backwards through this history (reverse the actions) by clicking the <strong>undo</strong> button (the left-pointing arrow) multiple times. </p></li><li><p>To move forward through the history and reinstate actions, click the <strong>redo</strong> button (the right-pointing arrow).</p></li></ul><div class='panelMacro'><table class='infoMacro'><colgroup><col width='24'><col></colgroup><tr><td valign='top'><img src="images/icons/emoticons/information.png" width="16" height="16" align="absmiddle" alt="" border="0"></td><td><p>For more information about editing see <a href="Model%2BEditing.html">Model Editing</a>.</p></td></tr></table></div><p> </p></th></tr></tbody></table></div><h2 id="Toolbar-SimulationControls">Simulation Controls</h2><p>As of OpenSim 3.1, the toolbar includes short cut buttons to run a forward simulation.</p><div class="table-wrap"><table class="confluenceTable"><tbody><tr><th class="nohighlight confluenceTh"><p><img class="confluence-embedded-image" src="attachments/3376137/5046657.png" data-image-src="attachments/3376137/5046657.png"></p><p><img class="confluence-embedded-image" width="300" src="attachments/3376137/5046658.png" data-image-src="attachments/3376137/5046658.png"></p></th><th class="nohighlight confluenceTh"><ul><li>Use the green run button to start a forward simulation for the current model in the GUI. The simulation will start from the current pose (see <a href="Coordinate%2BControls%2Band%2BPoses.html">Coordinate Controls and Poses</a>), after equilibrating the model.</li><li>The simulation will continue until you hit red stop button or until it reaches the end time (default end time = 1000s). You can find the current simulation time in the bottom right corner progress bar. The simulation may run faster or slower than real time, depending on the complexity of your model.</li><li>When the simulation stops, your results will be loaded in the GUI, so you can playback using the Motion Slider Controls described below.</li><li>Find the motion in the Navigator panel to change its name (Right Click -&gt; Rename...) or save (Right Click -&gt; Save As...)</li></ul><p>Read more about forward simulations in the chapter on <a href="Forward%2BDynamics.html">Forward Dynamics</a>.</p></th></tr></tbody></table></div><p> </p><h2 id="Toolbar-MotionTextMotionTextbox"><span class="confluence-anchor-link" id="Toolbar-MotionText"></span>Motion Textbox</h2><p>The motion textbox provides the name of the motion currently associated with a model.<br /> <img class="confluence-embedded-image" src="attachments/3376137/3736847.png" data-image-src="attachments/3376137/3736847.png"><br /><br /></p><h2 id="Toolbar-MotionSliderMotionSliderVideoControls"><span class="confluence-anchor-link" id="Toolbar-MotionSlider"></span>Motion Slider / Video Controls</h2><p>The motion slider and video controls are used for the animation of the model:  </p><div class="table-wrap"><table class="confluenceTable"><tbody><tr><th class="nohighlight confluenceTh"><img class="confluence-embedded-image" src="attachments/3376137/3736846.png" data-image-src="attachments/3376137/3736846.png"></th><th class="nohighlight confluenceTh"><ul><li><p>To animate the model use the video control buttons (e.g., play, pause, and loop). </p></li><li><p>The motion slider corresponds to the current time point in the motion file, which describes how the model moves.</p></li></ul><div class='panelMacro'><table class='infoMacro'><colgroup><col width='24'><col></colgroup><tr><td valign='top'><img src="images/icons/emoticons/information.png" width="16" height="16" align="absmiddle" alt="" border="0"></td><td><p><span style="color: rgb(0,51,102);">The value in the Speed textbox can be adjusted to change the playback speed of the animation</span></p></td></tr></table></div><p> </p></th></tr></tbody></table></div><div class="panel" style="background-color: white;border-color: gray;border-style: solid;border-width: 5px;"><div class="panelContent" style="background-color: white;">
+<p><span>Next: <a href="Creating%2Band%2BNaming%2B3D%2BViews.html">Creating and Naming 3D Views</a></span></p><p>Previous: <a href="Windows.html">Windows</a>  </p><p>Home: <a href="Graphical%2BUser%2BInterface.html">Graphical User Interface</a></p>
+</div></div>
+                    </div>
+
+                                        <div class="pageSection group">
+                        <div class="pageSectionHeader">
+                            <h2 id="attachments" class="pageSectionTitle">Attachments:</h2>
+                        </div>
+
+                        <div class="greybox" align="left">
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/3376137/3736848.png">Toolbar-2.PNG</a> (image/png)
+                                <br/>
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/3376137/3736847.png">Toolbar-3.PNG</a> (image/png)
+                                <br/>
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/3376137/3736846.png">Toolbar-4.PNG</a> (image/png)
+                                <br/>
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/3376137/5046657.png">Toolbar-5.PNG</a> (image/png)
+                                <br/>
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/3376137/5046656.png">Toolbar-1.PNG</a> (image/png)
+                                <br/>
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/3376137/5046658.png">Toolbar6.PNG</a> (image/png)
+                                <br/>
+                                                    </div>
+                    </div>
+                    
+                                                      
+                </div>             </div> 
+            <div id="footer" style="background: url(http://simtk-confluence.stanford.edu:8080/images/border/border_bottom.gif) repeat-x;">
+                <p><small>Document generated by Confluence on Feb 24, 2014 09:27</small></p>
+            </div>
+        </div>     </body>
+</html>

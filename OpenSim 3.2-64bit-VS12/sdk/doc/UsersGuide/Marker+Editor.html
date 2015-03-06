@@ -1,0 +1,56 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+    <head>
+        <title>OpenSim Documentation : Marker Editor</title>
+        <link rel="stylesheet" href="styles/site.css" type="text/css" />
+        <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    </head>
+
+    <body>
+        <div id="page">
+            <div id="main">
+                <div id="main-header" class="pageSectionHeader">
+                    <h1 id="title-heading" class="pagetitle">
+                                                <span id="title-text">
+                            OpenSim Documentation : Marker Editor
+                        </span>
+                    </h1>
+
+                    <div class="page-metadata">
+                        <p>This page last changed on Oct 10, 2012 by <font color="#0050B2">jenhicks</font>.</p>
+                    </div>
+                </div>
+
+                <div id="content" class="view">
+                    <div id="main-content" class="wiki-content group">
+                    <p>The Marker Editor gives you access to the currently selected Marker in the navigator view. Markers are used by the Scale Tool to scale a generic model to fit a particular subject, and by the Inverse Kinematics Tool to solve for coordinate values corresponding to experimentally recorded marker positions. Markers can also be used to place landmarks on the model. The Marker Editor allows you to change the names of markers, their offsets, and the bodies to which they are attached.</p><p>In most cases, you will want to store a model's markers in a separate file. This allows you to use one musculoskeletal model with different marker sets. The Marker Editor is useful when you are first defining a marker set for a project, and for adjusting markers after the Scale Tool has placed them on a model.  </p><div class="wiki-content" style="margin-left: 0.0px;"><p>The topics covered in this section include:</p><p><div>
+<ul>
+    <li><a href='#MarkerEditor-TheMarkerEditor'>The Marker Editor</a></li>
+    <li><a href='#MarkerEditor-EditingMarkers'>Editing Markers</a></li>
+    <li><a href='#MarkerEditor-MovingMarkers'>Moving Markers</a></li>
+    <li><a href='#MarkerEditor-AddingandDeletingMarkers'>Adding and Deleting Markers</a></li>
+    <li><a href='#MarkerEditor-SavingMarkerstoFileandLoadingfromFile'>Saving Markers to File and Loading from File</a></li>
+</ul></div></p><h2 id="MarkerEditor-TheMarkerEditor">The Marker Editor</h2><p>The Marker Editor utilizes the common <a href="Property%2BEditor.html">Property Editor</a> (as of version 3.0) to do marker editing. </p><div class="table-wrap"><table class="confluenceTable"><tbody><tr><th class="nohighlight confluenceTh"><img class="confluence-embedded-image" src="attachments/3376205/3737228.png" data-image-src="attachments/3376205/3737228.png"></th><th class="nohighlight confluenceTh"><p>The contents of the window when a marker &quot;r_acromion&quot; is selected (selection can be performed using any of the methods described in <a href="Property%2BEditor.html">Property Editor</a> ).</p><p>You can select and edit a single marker or multiple markers, as described in the previous section on the <a href="Property%2BEditor.html">Property Editor</a>. When a marker is selected, it is displayed in yellow on the 3D model, with a yellow line connecting it to the origin of the body to which it is attached.</p></th></tr></tbody></table></div><h2 id="MarkerEditor-EditingMarkers">Editing Markers</h2><p>To change the name of a marker, left click in the <strong>Name</strong> text field (right column) and enter a new name.  To change the body to which the marker is attached, left click on the <strong>Body</strong> drop-down list and choose a new body.</p><div class='panelMacro'><table class='infoMacro'><colgroup><col width='24'><col></colgroup><tr><td valign='top'><img src="images/icons/emoticons/information.png" width="16" height="16" align="absmiddle" alt="" border="0"></td><td><p>Make sure the new name is not being used by another marker.</p></td></tr></table></div><p>The Marker Editor does not have a mechanism for changing the weights of the markers because this functionality is provided by the various tools that use markers. For example, the Scale Tool and Inverse Kinematics Tool contain <strong>Weights</strong> panels for specifying the weight of each marker during the scaling or inverse kinematics process.</p><h2 id="MarkerEditor-MovingMarkers">Moving Markers</h2><p>There are two methods for moving markers. The first method is to move them interactively in the 3D View window.</p><ul><li>Select the markers you want to move first (visit the <a href="Property%2BEditor.html">Property Editor</a> section for more information on selecting markers). </li><li>Move the cursor over the selected marker, and press the <strong>left mouse</strong> button. While holding the button down, you can drag the marker within the plane of the screen. You will see the selected marker will move. </li><li>To move the marker in a different plane, release the left mouse button, rotate the model view as desired, and then press the left mouse button on the selected marker to resume dragging. You will see the location updates in the Properties window while the marker is being dragged in the 3D view window.</li></ul><p>The second method of moving markers is to type their exact XYZ offsets relative to the body that the Marker is attached to, into the number fields in the <strong><em>location</em> </strong>property. For this method, the markers do not need to be selected in the 3D view, but you can only modify the location of the marker displayed in the Properties window. Click on the appropriate field, and type in the desired value as three space separated numbers. These offsets are expressed in the reference frame of the body to which the marker is attached, which is shown above the <em>location</em> property.</p><p>One convenient function carried over from the old Marker Editor is that when you change the name of the body that a marker is attached to, it stays in the same location in 3D space. This provides for a convenient method to map a location in 3D specified in one body frame to another body frame.</p><h2 id="MarkerEditor-AddingandDeletingMarkers">Adding and Deleting Markers</h2><p>To add markers to the current model you need to use the Navigator window. Click on the <strong>plus <img class="emoticon emoticon-plus" src="s/en_GB/3281/1/_/images/icons/emoticons/add.png" data-emoticon-name="plus" alt="(plus)"/></strong> sign next to the name of the current model to display its components, then right-click on the <strong>Markers</strong> category and choose <strong>Add New</strong> from the drop-down menu. A new marker attached to the ground body will be added to the model and made selected in the &quot;Properties&quot; window. Then you can change the name of the new marker (Default NewMarker_xx), the location and/or the body that the marker is attached to.</p><p>To delete a marker,  select <strong>Delete</strong> from the popup menu of the marker in the Navigator window. This will delete only the current marker, not any other markers that are selected in the 3D model window.</p></div><h2 id="MarkerEditor-SavingMarkerstoFileandLoadingfromFile" class="wiki-content" style="margin-left: 0.0px;">Saving Markers to File and Loading from File</h2><div class="pageSection group"><p>You can save the current set of markers in the model into a separate .xml file for later use in tools or to use the marker set with a different model.</p><ul><li><strong>Right Click </strong>on the <strong>Markers</strong> node in the Navigator and select &quot;<strong>Save to file...</strong>&quot;. This will save the markers into a separate xml file.</li><li>Select <strong>Load from file...</strong> to add a marker set from an existing .xml file to the current model.</li></ul><div class="panel" style="background-color: white;border-color: gray;border-style: solid;border-width: 5px;"><div class="panelContent" style="background-color: white;">
+<p>Next: <a href="Muscle%2BEditor.html">Muscle Editor</a></p><p>Previous: <a href="Property%2BEditor.html">Property Editor</a></p><p>Home: <a href="Model%2BEditing.html">Model Editing</a></p>
+</div></div></div>
+                    </div>
+
+                                        <div class="pageSection group">
+                        <div class="pageSectionHeader">
+                            <h2 id="attachments" class="pageSectionTitle">Attachments:</h2>
+                        </div>
+
+                        <div class="greybox" align="left">
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/3376205/3737228.png">marker-1.PNG</a> (image/png)
+                                <br/>
+                                                    </div>
+                    </div>
+                    
+                                                      
+                </div>             </div> 
+            <div id="footer" style="background: url(http://simtk-confluence.stanford.edu:8080/images/border/border_bottom.gif) repeat-x;">
+                <p><small>Document generated by Confluence on Feb 24, 2014 09:27</small></p>
+            </div>
+        </div>     </body>
+</html>

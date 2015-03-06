@@ -1,0 +1,109 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+    <head>
+        <title>OpenSim Documentation : Static Optimization Settings Files and XML Tags</title>
+        <link rel="stylesheet" href="styles/site.css" type="text/css" />
+        <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    </head>
+
+    <body>
+        <div id="page">
+            <div id="main">
+                <div id="main-header" class="pageSectionHeader">
+                    <h1 id="title-heading" class="pagetitle">
+                                                <span id="title-text">
+                            OpenSim Documentation : Static Optimization Settings Files and XML Tags
+                        </span>
+                    </h1>
+
+                    <div class="page-metadata">
+                        <p>This page last changed on Jun 10, 2013 by <font color="#0050B2">jenhicks</font>.</p>
+                    </div>
+                </div>
+
+                <div id="content" class="view">
+                    <div id="main-content" class="wiki-content group">
+                    <p>The topics covered in this section include:</p><p><div>
+<ul>
+    <li><a href='#StaticOptimizationSettingsFilesandXMLTags-SetupFileandXMLTagDefinitions'>Setup File and XML Tag Definitions</a></li>
+<ul>
+    <li><a href='#StaticOptimizationSettingsFilesandXMLTags-ExampleXMLfileforastaticoptimizationsetupfile'><span style="color: rgb(0,0,0);">Example: XML file for a static optimization setup file</span></a></li>
+    <li><a href='#StaticOptimizationSettingsFilesandXMLTags-SpecifyinganExecutionName'>Specifying an Execution Name</a></li>
+    <li><a href='#StaticOptimizationSettingsFilesandXMLTags-SpecifyingtheModel'>Specifying the Model</a></li>
+    <li><a href='#StaticOptimizationSettingsFilesandXMLTags-SpecifyingtheForces'>Specifying the Forces</a></li>
+    <li><a href='#StaticOptimizationSettingsFilesandXMLTags-SpecifyingtheResultsDirectoryandPrecision'>Specifying the Results Directory and Precision</a></li>
+    <li><a href='#StaticOptimizationSettingsFilesandXMLTags-SpecifyingInitialandFinalTimes'>Specifying Initial and Final Times</a></li>
+    <li><a href='#StaticOptimizationSettingsFilesandXMLTags-SpecifyingaStaticOptimizationAnalysis'>Specifying a Static Optimization Analysis</a></li>
+    <li><a href='#StaticOptimizationSettingsFilesandXMLTags-SpecifyingCoordinatesandFiltering'>Specifying Coordinates and Filtering</a></li>
+    <li><a href='#StaticOptimizationSettingsFilesandXMLTags-SpecifyingExternalLoads'>Specifying External Loads</a></li>
+    <li><a href='#StaticOptimizationSettingsFilesandXMLTags-OptimizerParameters'>Optimizer Parameters.</a></li>
+</ul>
+</ul></div></p><h2 id="StaticOptimizationSettingsFilesandXMLTags-SetupFileandXMLTagDefinitions">Setup File and XML Tag Definitions</h2><p>The settings file is an XML file whose tags specify properties to be used by OpenSim for the static optimization analysis. The XML tags used are defined in the following sections.</p><div class='panelMacro'><table class='infoMacro'><colgroup><col width='24'><col></colgroup><tr><td valign='top'><img src="images/icons/emoticons/information.png" width="16" height="16" align="absmiddle" alt="" border="0"></td><td>The following setup file example can be found in examples/Gait2354_Simbody.</td></tr></table></div><h3 id="StaticOptimizationSettingsFilesandXMLTags-ExampleXMLfileforastaticoptimizationsetupfile"><span style="color: rgb(0,0,0);">Example: XML file for a static optimization setup file</span></h3><div class="code panel" style="border-width: 1px;"><div class="codeHeader panelHeader" style="border-bottom-width: 1px;"><b>subject01_Setup_StaticOptimization.xml</b></div><div class="codeContent panelContent">
+<div id="root">
+		<pre class="theme: Confluence; brush: html/xml; gutter: false">&lt;?xml version="1.0" encoding="UTF-8"?&gt; 
+
+&lt;AnalyzeTool name="subject01_walk1"&gt; 
+
+  &lt;!--Name of the .osim file used to construct a model.--&gt; 
+  &lt;model_file&gt; subject01_simbody.osim &lt;/model_file&gt; 
+
+  &lt;!--Replace the model's actuator set with sets specified in &lt;force_set_files&gt;? If false, the actuator set is appended.--&gt; 
+  &lt;replace_force_set&gt; false &lt;/replace_force_set&gt; 
+
+  &lt;!--Directory used for writing results.--&gt; 
+  &lt;results_directory&gt; ResultsStaticOptimization &lt;/results_directory&gt; 
+
+  &lt;!--Output precision. It is 8 by default.--&gt; 
+  &lt;output_precision&gt; 20 &lt;/output_precision&gt; 
+  
+  &lt;!--Initial time for the simulation.--&gt; 
+  &lt;initial_time&gt; 0.4 &lt;/initial_time&gt; 
+
+  &lt;!--Final time for the simulation.--&gt; 
+  &lt;final_time&gt; 1.6 &lt;/final_time&gt; 
+
+  &lt;!--Set of analyses to be run during the investigation.--&gt; 
+  &lt;AnalysisSet name="Analyses"&gt; 
+    &lt;objects&gt; 
+      &lt;StaticOptimization name="StaticOptimization"&gt; 
+		&lt;!--Flag (true or false) specifying whether whether on. True by default.--&gt;
+        &lt;on&gt;true&lt;/on&gt;
+        &lt;!--If true, the model's own force set will be used in the static optimization computation. --&gt;
+        &lt;use_model_force_set&gt;false&lt;/use_model_force_set&gt;
+        &lt;!--A double indicating the exponent to raise activations to when solving static optimization.  --&gt;
+        activation_exponent&gt;2&lt;/activation_exponent&gt;
+        &lt;!--If true muscle force-length curve is observed while running optimization.--&gt;
+        &lt;use_muscle_physiology&gt;true&lt;/use_muscle_physiology&gt;
+        &lt;!--Value used to determine when the optimization solution has converged--&gt;
+        &lt;optimizer_convergence_criterion&gt;0.0001&lt;/optimizer_convergence_criterion&gt;
+        &lt;!--An integer for setting the maximum number of iterations the optimizer can use at each time.  --&gt;
+        &lt;optimizer_max_iterations&gt;100&lt;/optimizer_max_iterations&gt;
+      &lt;/StaticOptimization&gt; 
+    &lt;/objects&gt; 
+  &lt;/AnalysisSet&gt; 
+
+  &lt;!--Motion file (.mot) containing the generalized coordinates for the model.--&gt; 
+  &lt;coordinates_file&gt; subject01_walk1_ik.mot &lt;/coordinates_file&gt; 
+ 
+  &lt;!--Low-pass cut-off frequency for filtering the model generalized coordinates. A negative value results in no filtering. The 
+      default value is 1.0, so no filtering.--&gt; 
+  &lt;lowpass_cutoff_frequency_for_coordinates&gt; 6 &lt;/lowpass_cutoff_frequency_for_coordinates&gt; 
+
+  &lt;!--XML file (.xml) containing the forces applied to the model as ExternalLoads --&gt; 
+  &lt;external_loads_file&gt; externalLoads.xml&lt;/external_loads_file&gt; 
+
+&lt;/AnalyzeTool&gt; </pre>
+		</div>
+</div></div><h3 id="StaticOptimizationSettingsFilesandXMLTags-SpecifyinganExecutionName">Specifying an Execution Name</h3><p>The properties for the analyze tool, which is responsible for performing the inverse dynamics analysis, are enclosed inside the opening and closing tags <span style="color: rgb(0,0,255);">&lt;</span><span style="color: rgb(128,0,0);">AnalyzeTool</span><span style="color: rgb(0,0,255);">&gt;</span> and <span style="color: rgb(0,0,255);">&lt;/</span><span style="color: rgb(128,0,0);">AnalyzeTool</span><span style="color: rgb(0,0,255);">&gt;</span>. The name attribute <span style="color: rgb(255,0,0);">name</span><span style="color: rgb(0,0,255);">=&quot;subject01_walk1&quot;</span> specifies the execution name. The name of the results file generated will be prefixed with this name.</p><h3 id="StaticOptimizationSettingsFilesandXMLTags-SpecifyingtheModel">Specifying the Model</h3><p>The <span style="color: rgb(0,0,255);">&lt;</span><span style="color: rgb(128,0,0);">model_file</span><span style="color: rgb(0,0,255);">&gt;</span> tag specifies the OpenSim .osim file used to construct a model. This file typically defines the OpenSim musculoskeletal model scaled to the dimensions of the subject by the Scale Tool.</p><h3 id="StaticOptimizationSettingsFilesandXMLTags-SpecifyingtheForces">Specifying the Forces</h3><p>The <span style="color: rgb(0,0,255);">&lt;</span><span style="color: rgb(128,0,0);">replace_force_set</span><span style="color: rgb(0,0,255);">&gt;</span> allows the modification of the actuators defined in the model file. If the value of <span style="color: rgb(0,0,255);">&lt;</span><span style="color: rgb(128,0,0);">replace_force_set</span><span style="color: rgb(0,0,255);">&gt;</span> is <span style="color: rgb(0,128,0);"><strong>true</strong></span>, then the actuators specified in any file listed under the property <span style="color: rgb(0,0,255);">&lt;</span><span style="color: rgb(128,0,0);">force_set_files</span><span style="color: rgb(0,0,255);">&gt;</span> will replace the corresponding model's actuators. If the value of <span style="color: rgb(0,0,255);">&lt;</span><span style="color: rgb(128,0,0);">replace_force_set</span><span style="color: rgb(0,0,255);">&gt;</span> is <span style="color: rgb(0,128,0);"><strong>false</strong></span>, then the actuators specified in the files listed under <span style="color: rgb(0,0,255);">&lt;</span><span style="color: rgb(128,0,0);">force_set_files</span><span style="color: rgb(0,0,255);">&gt;</span> will be added to the model's existing actuator set.</p><h3 id="StaticOptimizationSettingsFilesandXMLTags-SpecifyingtheResultsDirectoryandPrecision">Specifying the Results Directory and Precision</h3><p>The <span style="color: rgb(0,0,255);">&lt;</span><span style="color: rgb(128,0,0);">results_directory</span><span style="color: rgb(0,0,255);">&gt;</span> tag specifies the directory where results should be written. The <span style="color: rgb(0,0,255);">&lt;</span><span style="color: rgb(128,0,0);">output_precision</span><span style="color: rgb(0,0,255);">&gt;</span> tag specifies how many decimal places should be used when writing results. A value of 20 is sufficient to avoid round-off error.</p><h3 id="StaticOptimizationSettingsFilesandXMLTags-SpecifyingInitialandFinalTimes">Specifying Initial and Final Times</h3><p>The <span style="color: rgb(0,0,255);">&lt;</span><span style="color: rgb(128,0,0);">initial_time</span><span style="color: rgb(0,0,255);">&gt;</span> and <span style="color: rgb(0,0,255);">&lt;</span><span style="color: rgb(128,0,0);">final_time</span><span style="color: rgb(0,0,255);">&gt;</span> tags specify the time interval over which the inverse dynamics analysis is to be performed. The initial and final times may be adjusted to the nearest frames of data available.</p><h3 id="StaticOptimizationSettingsFilesandXMLTags-SpecifyingaStaticOptimizationAnalysis">Specifying a Static Optimization Analysis</h3><p>The properties for the analysis set used by the analyze tool are enclosed inside the opening and closing tags <span style="color: rgb(0,0,255);">&lt;</span><span style="color: rgb(128,0,0);">AnalysisSet</span><span style="color: rgb(0,0,255);">&gt;</span> and <span style="color: rgb(0,0,255);">&lt;/</span><span style="color: rgb(128,0,0);">AnalysisSet</span><span style="color: rgb(0,0,255);">&gt;</span>. The properties for the objects contained in the analysis set are enclosed inside the opening and closing tags <span style="color: rgb(0,0,255);">&lt;</span><span style="color: rgb(128,0,0);">objects</span><span style="color: rgb(0,0,255);">&gt;</span> and <span style="color: rgb(0,0,255);">&lt;/</span><span style="color: rgb(128,0,0);">objects</span> <span style="color: rgb(0,0,255);">&gt;</span>.</p><p>The properties for the static optimization analysis are enclosed inside the opening and closing tags <span style="color: rgb(0,0,255);">&lt;</span><span style="color: rgb(128,0,0);">StaticOptimization</span><span style="color: rgb(0,0,255);">&gt;</span> and <span style="color: rgb(0,0,255);">&lt;/</span><span style="color: rgb(128,0,0);">StaticOptimization</span><span style="color: rgb(0,0,255);">&gt;</span>. The name attribute <span style="color: rgb(255,0,0);">name</span><span style="color: rgb(0,0,255);">=&quot;StaticOptimization&quot;</span> specifies the analysis name. The name of the results file generated will include this name. The <span style="color: rgb(0,0,255);">&lt;</span><span style="color: rgb(128,0,0);">on</span><span style="color: rgb(0,0,255);">&gt;</span> tag specifies whether or not the static optimization analysis should be performed. The <span style="color: rgb(0,0,255);">&lt;</span><span style="color: rgb(128,0,0);">step_interval</span><span style="color: rgb(0,0,255);">&gt;</span> tag specifies how often to record results during the static optimization analysis. A value of 1 means results are recorded every 1 frame of motion data. The <span style="color: rgb(0,0,255);">&lt;</span><span style="color: rgb(128,0,0);">use_model_force_set</span><span style="color: rgb(0,0,255);">&gt;</span> tag specifies whether or not the model's actuator set will be used in the static optimization analysis. If not, generalized forces (e.g., net joint forces and torques) will be computed for all unconstrained degrees of freedom.</p><h3 id="StaticOptimizationSettingsFilesandXMLTags-SpecifyingCoordinatesandFiltering">Specifying Coordinates and Filtering</h3><p>The <span style="color: rgb(0,0,255);">&lt;</span><span style="color: rgb(128,0,0);">coordinates_file</span><span style="color: rgb(0,0,255);">&gt;</span> tag specifies the time histories of kinematics (e.g., generalized coordinates) that describe the movement of the model. For example, this file may be generated by the inverse kinematics tool. The <span style="color: rgb(0,0,255);">&lt;</span><span style="color: rgb(128,0,0);">lowpass_cutoff_frequency</span><span style="color: rgb(0,0,255);">&gt;</span> tag specifies the low-pass cutoff frequency for filtering the kinematics. If the kinematics have already been filtered, specify a negative cutoff frequency to prevent filtering.</p><h3 id="StaticOptimizationSettingsFilesandXMLTags-SpecifyingExternalLoads">Specifying External Loads</h3><p>The <span style="color: rgb(0,0,255);">&lt;</span><span style="color: rgb(128,0,0);">external_loads_file</span><span style="color: rgb(0,0,255);">&gt;</span> tag specifies the XML file containing the external loads applied to the model during a static optimization analysis. See <a href="How%2BInverse%2BDynamics%2BWorks.html">How Inverse Dynamics Works</a> for additional details for applying any number of external loads as point forces and/or body torques.</p><h3 id="StaticOptimizationSettingsFilesandXMLTags-OptimizerParameters">Optimizer Parameters.</h3><p>As of OpenSim 3.1, you can additionally specify the properties of the optimizer, including the &lt;optimizer_convergence_criterion&gt; and &lt;optimizer_max_iterations&gt;/</p><p> </p><div class="panel" style="background-color: white;border-color: gray;border-style: solid;border-width: 5px;"><div class="panelContent" style="background-color: white;">
+<p>Next: <a href="Forward%2BDynamics.html">Forward Dynamics</a></p><p>Previous: <a href="How%2Bto%2BUse%2Bthe%2BStatic%2BOptimization%2BTool.html">How to Use the Static Optimization Tool</a></p><p>Home: <a href="Static%2BOptimization.html">Static Optimization</a></p>
+</div></div>
+                    </div>
+
+                    
+                                                      
+                </div>             </div> 
+            <div id="footer" style="background: url(http://simtk-confluence.stanford.edu:8080/images/border/border_bottom.gif) repeat-x;">
+                <p><small>Document generated by Confluence on Feb 24, 2014 09:27</small></p>
+            </div>
+        </div>     </body>
+</html>

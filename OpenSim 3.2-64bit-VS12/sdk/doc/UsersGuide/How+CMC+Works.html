@@ -1,0 +1,988 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+    <head>
+        <title>OpenSim Documentation : How CMC Works</title>
+        <link rel="stylesheet" href="styles/site.css" type="text/css" />
+        <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    </head>
+
+    <body>
+        <div id="page">
+            <div id="main">
+                <div id="main-header" class="pageSectionHeader">
+                    <h1 id="title-heading" class="pagetitle">
+                                                <span id="title-text">
+                            OpenSim Documentation : How CMC Works
+                        </span>
+                    </h1>
+
+                    <div class="page-metadata">
+                        <p>This page last changed on Mar 20, 2013 by <font color="#0050B2">tkuchida</font>.</p>
+                    </div>
+                </div>
+
+                <div id="content" class="view">
+                    <div id="main-content" class="wiki-content group">
+                    <p>At user-specified time intervals during a simulation, the CMC tool computes muscle excitation levels that will drive the generalized coordinates (e.g., joint angles) of a dynamic musculoskeletal model towards a desired kinematic trajectory. CMC does this by using a combination of proportional-derivative (PD) control and static optimization (figure below).</p><p>Before starting the CMC algorithm, initial states for the model are computed. The states comprise the generalized coordinates (joint angles), generalized speeds (joint angular velocities), plus any muscle states (e.g., muscle activation levels and fiber lengths). While the initial values of the generalized coordinates and speeds can be taken from the desired kinematics that you specify, the initial values of the muscle states are generally unknown. To compute viable starting muscle states, CMC is applied to the first 0.030 seconds of the desired movement. Because the muscle states are generally out of equilibrium and muscle forces can change dramatically during this initial time interval, the simulation results during this interval are generally not valid. Therefore, you should be sure to start CMC at least 0.030 seconds prior to the interval of interest.</p><p><br class="atl-forced-newline" /> <img class="confluence-embedded-image" height="188" width="514" src="attachments/3376198/3737208.png" data-image-src="attachments/3376198/3737208.png" title="worddav97845c4519711d896ddee75a4165ad15.png [imported from a Word document]"></p><p><strong>Figure</strong><strong>: Schematic of the Computed Muscle Control Algorithm Applied to Gait</strong> [Thelen, D.G. and Anderson, F.C., &quot;Using computed muscle control to generate forward dynamic simulations of human walking from experimental data, J. Biomech., 2006, 39(6):1107-1115] </p><p>The first step in the CMC algorithm is to compute a set of desired accelerations (
+ 
+ 
+<style>
+    #math758991649 .typeset {
+        color: black
+    }
+    #math758991649 {
+        font-size: 150%;
+        margin: 1em 0px;
+    }
+    #jsMath_button, #jsMath_message, #jsMath_Warning {
+        display: none;
+    }
+</style>
+ 
+<script type="text/javascript" src="/includes/js/jsMath/plugins/noImageFonts.js">//<![CDATA[
+
+
+//]]>
+</script>
+<script type="text/javascript" src="/includes/js/jsMath/jsMath.js">//<![CDATA[
+
+
+//]]>
+</script>
+ 
+<span id="math758991649" class="math">
+  \ddot{\vec{q}}\,^*
+</span>
+ 
+<script type="text/javascript">//<![CDATA[
+
+//check for use of this macro elsewhere on the page so that we only call jsMath once
+ if (typeof mathFormulaDetected == 'undefined') {
+    var mathFormulaDetected = false;
+}
+jQuery(document).ready(function() {
+    if (!mathFormulaDetected) {
+        jsMath.ProcessBeforeShowing();
+        mathFormulaDetected = true;
+    }
+});
+
+//]]>
+</script>) which, when achieved, will drive the model coordinates (
+ 
+ 
+<style>
+    #math384217623 .typeset {
+        color: black
+    }
+    #math384217623 {
+        font-size: 150%;
+        margin: 1em 0px;
+    }
+    #jsMath_button, #jsMath_message, #jsMath_Warning {
+        display: none;
+    }
+</style>
+ 
+<script type="text/javascript" src="/includes/js/jsMath/plugins/noImageFonts.js">//<![CDATA[
+
+
+//]]>
+</script>
+<script type="text/javascript" src="/includes/js/jsMath/jsMath.js">//<![CDATA[
+
+
+//]]>
+</script>
+ 
+<span id="math384217623" class="math">
+  \vec{q}
+</span>
+ 
+<script type="text/javascript">//<![CDATA[
+
+//check for use of this macro elsewhere on the page so that we only call jsMath once
+ if (typeof mathFormulaDetected == 'undefined') {
+    var mathFormulaDetected = false;
+}
+jQuery(document).ready(function() {
+    if (!mathFormulaDetected) {
+        jsMath.ProcessBeforeShowing();
+        mathFormulaDetected = true;
+    }
+});
+
+//]]>
+</script>) toward the experimentally-derived coordinates (
+ 
+ 
+<style>
+    #math784005080 .typeset {
+        color: black
+    }
+    #math784005080 {
+        font-size: 150%;
+        margin: 1em 0px;
+    }
+    #jsMath_button, #jsMath_message, #jsMath_Warning {
+        display: none;
+    }
+</style>
+ 
+<script type="text/javascript" src="/includes/js/jsMath/plugins/noImageFonts.js">//<![CDATA[
+
+
+//]]>
+</script>
+<script type="text/javascript" src="/includes/js/jsMath/jsMath.js">//<![CDATA[
+
+
+//]]>
+</script>
+ 
+<span id="math784005080" class="math">
+  \vec{q}_{\mathit{exp}}
+</span>
+ 
+<script type="text/javascript">//<![CDATA[
+
+//check for use of this macro elsewhere on the page so that we only call jsMath once
+ if (typeof mathFormulaDetected == 'undefined') {
+    var mathFormulaDetected = false;
+}
+jQuery(document).ready(function() {
+    if (!mathFormulaDetected) {
+        jsMath.ProcessBeforeShowing();
+        mathFormulaDetected = true;
+    }
+});
+
+//]]>
+</script>). The desired accelerations are computed using the following PD control law:</p>
+ 
+ 
+<style>
+    #math1942193667 .typeset {
+        color: black
+    }
+    #math1942193667 {
+        font-size: 150%;
+        margin: 1em 0px;
+    }
+    #jsMath_button, #jsMath_message, #jsMath_Warning {
+        display: none;
+    }
+</style>
+ 
+<script type="text/javascript" src="/includes/js/jsMath/plugins/noImageFonts.js">//<![CDATA[
+
+
+//]]>
+</script>
+<script type="text/javascript" src="/includes/js/jsMath/jsMath.js">//<![CDATA[
+
+
+//]]>
+</script>
+ 
+<span id="math1942193667" class="math">
+  \ddot{\vec{q}}\,^* (t+T) = \ddot{\vec{q}}_{\mathit{exp}} (t+T) + \vec{k}_v \left[ \dot{\vec{q}}_{\mathit{exp}}(t) - \dot{\vec{q}}(t) \right] + \vec{k}_p \left[ \vec{q}_{\mathit{exp}}(t) - \vec{q}(t) \right]
+</span>
+ 
+<script type="text/javascript">//<![CDATA[
+
+//check for use of this macro elsewhere on the page so that we only call jsMath once
+ if (typeof mathFormulaDetected == 'undefined') {
+    var mathFormulaDetected = false;
+}
+jQuery(document).ready(function() {
+    if (!mathFormulaDetected) {
+        jsMath.ProcessBeforeShowing();
+        mathFormulaDetected = true;
+    }
+});
+
+//]]>
+</script><p>where 
+ 
+ 
+<style>
+    #math156467426 .typeset {
+        color: black
+    }
+    #math156467426 {
+        font-size: 150%;
+        margin: 1em 0px;
+    }
+    #jsMath_button, #jsMath_message, #jsMath_Warning {
+        display: none;
+    }
+</style>
+ 
+<script type="text/javascript" src="/includes/js/jsMath/plugins/noImageFonts.js">//<![CDATA[
+
+
+//]]>
+</script>
+<script type="text/javascript" src="/includes/js/jsMath/jsMath.js">//<![CDATA[
+
+
+//]]>
+</script>
+ 
+<span id="math156467426" class="math">
+  \vec{k}_v
+</span>
+ 
+<script type="text/javascript">//<![CDATA[
+
+//check for use of this macro elsewhere on the page so that we only call jsMath once
+ if (typeof mathFormulaDetected == 'undefined') {
+    var mathFormulaDetected = false;
+}
+jQuery(document).ready(function() {
+    if (!mathFormulaDetected) {
+        jsMath.ProcessBeforeShowing();
+        mathFormulaDetected = true;
+    }
+});
+
+//]]>
+</script>and 
+ 
+ 
+<style>
+    #math1823493165 .typeset {
+        color: black
+    }
+    #math1823493165 {
+        font-size: 150%;
+        margin: 1em 0px;
+    }
+    #jsMath_button, #jsMath_message, #jsMath_Warning {
+        display: none;
+    }
+</style>
+ 
+<script type="text/javascript" src="/includes/js/jsMath/plugins/noImageFonts.js">//<![CDATA[
+
+
+//]]>
+</script>
+<script type="text/javascript" src="/includes/js/jsMath/jsMath.js">//<![CDATA[
+
+
+//]]>
+</script>
+ 
+<span id="math1823493165" class="math">
+  \vec{k}_p
+</span>
+ 
+<script type="text/javascript">//<![CDATA[
+
+//check for use of this macro elsewhere on the page so that we only call jsMath once
+ if (typeof mathFormulaDetected == 'undefined') {
+    var mathFormulaDetected = false;
+}
+jQuery(document).ready(function() {
+    if (!mathFormulaDetected) {
+        jsMath.ProcessBeforeShowing();
+        mathFormulaDetected = true;
+    }
+});
+
+//]]>
+</script>are the feedback gains on the velocity and position errors, respectively. Because the forces that muscles apply to the body cannot change instantaneously, the desired accelerations are computed for some small time <em>T</em> in the future. For musculoskeletal models, <em>T</em> is typically chosen to be about 0.010 seconds. This time interval is short enough to allow adequate control, but long enough to allow muscle forces to change.</p><p>If these desired accelerations are achieved, errors between the model coordinates and experimentally-derived coordinates will be driven to zero. To drive these errors to zero in a critically damped fashion (i.e., without over-shooting or over-damping), the velocity gains can be chosen using the following relation:</p>
+ 
+ 
+<style>
+    #math1396699599 .typeset {
+        color: black
+    }
+    #math1396699599 {
+        font-size: 150%;
+        margin: 1em 0px;
+    }
+    #jsMath_button, #jsMath_message, #jsMath_Warning {
+        display: none;
+    }
+</style>
+ 
+<script type="text/javascript" src="/includes/js/jsMath/plugins/noImageFonts.js">//<![CDATA[
+
+
+//]]>
+</script>
+<script type="text/javascript" src="/includes/js/jsMath/jsMath.js">//<![CDATA[
+
+
+//]]>
+</script>
+ 
+<span id="math1396699599" class="math">
+  \vec{k}_v = 2 \sqrt{ \vec{k}_p }
+</span>
+ 
+<script type="text/javascript">//<![CDATA[
+
+//check for use of this macro elsewhere on the page so that we only call jsMath once
+ if (typeof mathFormulaDetected == 'undefined') {
+    var mathFormulaDetected = false;
+}
+jQuery(document).ready(function() {
+    if (!mathFormulaDetected) {
+        jsMath.ProcessBeforeShowing();
+        mathFormulaDetected = true;
+    }
+});
+
+//]]>
+</script><p>For musculoskeletal models, it works well if the error gains are chosen to drive any errors to zero slowly. The error gains
+ 
+ 
+<style>
+    #math1486968989 .typeset {
+        color: black
+    }
+    #math1486968989 {
+        font-size: 150%;
+        margin: 1em 0px;
+    }
+    #jsMath_button, #jsMath_message, #jsMath_Warning {
+        display: none;
+    }
+</style>
+ 
+<script type="text/javascript" src="/includes/js/jsMath/plugins/noImageFonts.js">//<![CDATA[
+
+
+//]]>
+</script>
+<script type="text/javascript" src="/includes/js/jsMath/jsMath.js">//<![CDATA[
+
+
+//]]>
+</script>
+ 
+<span id="math1486968989" class="math">
+  \vec{k}_v = 20
+</span>
+ 
+<script type="text/javascript">//<![CDATA[
+
+//check for use of this macro elsewhere on the page so that we only call jsMath once
+ if (typeof mathFormulaDetected == 'undefined') {
+    var mathFormulaDetected = false;
+}
+jQuery(document).ready(function() {
+    if (!mathFormulaDetected) {
+        jsMath.ProcessBeforeShowing();
+        mathFormulaDetected = true;
+    }
+});
+
+//]]>
+</script>and 
+ 
+ 
+<style>
+    #math1870202157 .typeset {
+        color: black
+    }
+    #math1870202157 {
+        font-size: 150%;
+        margin: 1em 0px;
+    }
+    #jsMath_button, #jsMath_message, #jsMath_Warning {
+        display: none;
+    }
+</style>
+ 
+<script type="text/javascript" src="/includes/js/jsMath/plugins/noImageFonts.js">//<![CDATA[
+
+
+//]]>
+</script>
+<script type="text/javascript" src="/includes/js/jsMath/jsMath.js">//<![CDATA[
+
+
+//]]>
+</script>
+ 
+<span id="math1870202157" class="math">
+  \vec{k}_p = 100
+</span>
+ 
+<script type="text/javascript">//<![CDATA[
+
+//check for use of this macro elsewhere on the page so that we only call jsMath once
+ if (typeof mathFormulaDetected == 'undefined') {
+    var mathFormulaDetected = false;
+}
+jQuery(document).ready(function() {
+    if (!mathFormulaDetected) {
+        jsMath.ProcessBeforeShowing();
+        mathFormulaDetected = true;
+    }
+});
+
+//]]>
+</script>will reduce tracking errors.</p><p>The next step in CMC is to compute the actuator controls (
+ 
+ 
+<style>
+    #math1693091044 .typeset {
+        color: black
+    }
+    #math1693091044 {
+        font-size: 150%;
+        margin: 1em 0px;
+    }
+    #jsMath_button, #jsMath_message, #jsMath_Warning {
+        display: none;
+    }
+</style>
+ 
+<script type="text/javascript" src="/includes/js/jsMath/plugins/noImageFonts.js">//<![CDATA[
+
+
+//]]>
+</script>
+<script type="text/javascript" src="/includes/js/jsMath/jsMath.js">//<![CDATA[
+
+
+//]]>
+</script>
+ 
+<span id="math1693091044" class="math">
+  \vec{x}
+</span>
+ 
+<script type="text/javascript">//<![CDATA[
+
+//check for use of this macro elsewhere on the page so that we only call jsMath once
+ if (typeof mathFormulaDetected == 'undefined') {
+    var mathFormulaDetected = false;
+}
+jQuery(document).ready(function() {
+    if (!mathFormulaDetected) {
+        jsMath.ProcessBeforeShowing();
+        mathFormulaDetected = true;
+    }
+});
+
+//]]>
+</script>) that will achieve the desired accelerations (
+ 
+ 
+<style>
+    #math271129883 .typeset {
+        color: black
+    }
+    #math271129883 {
+        font-size: 150%;
+        margin: 1em 0px;
+    }
+    #jsMath_button, #jsMath_message, #jsMath_Warning {
+        display: none;
+    }
+</style>
+ 
+<script type="text/javascript" src="/includes/js/jsMath/plugins/noImageFonts.js">//<![CDATA[
+
+
+//]]>
+</script>
+<script type="text/javascript" src="/includes/js/jsMath/jsMath.js">//<![CDATA[
+
+
+//]]>
+</script>
+ 
+<span id="math271129883" class="math">
+  \ddot{q}\,^* (t+T)
+</span>
+ 
+<script type="text/javascript">//<![CDATA[
+
+//check for use of this macro elsewhere on the page so that we only call jsMath once
+ if (typeof mathFormulaDetected == 'undefined') {
+    var mathFormulaDetected = false;
+}
+jQuery(document).ready(function() {
+    if (!mathFormulaDetected) {
+        jsMath.ProcessBeforeShowing();
+        mathFormulaDetected = true;
+    }
+});
+
+//]]>
+</script>). Most of the time, the controls are predominantly comprised of muscle excitations, but this is not required. Any kind of actuator can be used with CMC (e.g., idealized joint moments). Static optimization is used to distribute the load across synergistic actuators. It is called &quot;static&quot; optimization because the performance criterion (i.e., the cost index) is confined to quantities that can be computed at any instant in time during a simulation. Using criteria like jump height or total metabolic energy over a gait cycle, for example, are not possible because these require simulating until the body leaves the ground or until the end of the gait cycle is reached.</p><p>Two formulations of the static optimization problem are currently available in CMC. The first formulation, called the slow target, consists of a performance criterion (<em>J</em>) that is a weighted sum of squared actuator controls plus the sum of desired acceleration errors:</p>
+ 
+ 
+<style>
+    #math209174508 .typeset {
+        color: black
+    }
+    #math209174508 {
+        font-size: 150%;
+        margin: 1em 0px;
+    }
+    #jsMath_button, #jsMath_message, #jsMath_Warning {
+        display: none;
+    }
+</style>
+ 
+<script type="text/javascript" src="/includes/js/jsMath/plugins/noImageFonts.js">//<![CDATA[
+
+
+//]]>
+</script>
+<script type="text/javascript" src="/includes/js/jsMath/jsMath.js">//<![CDATA[
+
+
+//]]>
+</script>
+ 
+<span id="math209174508" class="math">
+  J = \sum_{i=1}^{nx} x_i^2 + \sum_{j=1}^{nq} w_j \left( \ddot{q}_j\,^* - \ddot{q}_j \right)^2
+</span>
+ 
+<script type="text/javascript">//<![CDATA[
+
+//check for use of this macro elsewhere on the page so that we only call jsMath once
+ if (typeof mathFormulaDetected == 'undefined') {
+    var mathFormulaDetected = false;
+}
+jQuery(document).ready(function() {
+    if (!mathFormulaDetected) {
+        jsMath.ProcessBeforeShowing();
+        mathFormulaDetected = true;
+    }
+});
+
+//]]>
+</script><p>The first summation minimizes and distributes loads across actuators and the second drives the model accelerations (
+ 
+ 
+<style>
+    #math1933023742 .typeset {
+        color: black
+    }
+    #math1933023742 {
+        font-size: 150%;
+        margin: 1em 0px;
+    }
+    #jsMath_button, #jsMath_message, #jsMath_Warning {
+        display: none;
+    }
+</style>
+ 
+<script type="text/javascript" src="/includes/js/jsMath/plugins/noImageFonts.js">//<![CDATA[
+
+
+//]]>
+</script>
+<script type="text/javascript" src="/includes/js/jsMath/jsMath.js">//<![CDATA[
+
+
+//]]>
+</script>
+ 
+<span id="math1933023742" class="math">
+  \ddot{q}_j
+</span>
+ 
+<script type="text/javascript">//<![CDATA[
+
+//check for use of this macro elsewhere on the page so that we only call jsMath once
+ if (typeof mathFormulaDetected == 'undefined') {
+    var mathFormulaDetected = false;
+}
+jQuery(document).ready(function() {
+    if (!mathFormulaDetected) {
+        jsMath.ProcessBeforeShowing();
+        mathFormulaDetected = true;
+    }
+});
+
+//]]>
+</script>) toward the desired accelerations (
+ 
+ 
+<style>
+    #math1292897860 .typeset {
+        color: black
+    }
+    #math1292897860 {
+        font-size: 150%;
+        margin: 1em 0px;
+    }
+    #jsMath_button, #jsMath_message, #jsMath_Warning {
+        display: none;
+    }
+</style>
+ 
+<script type="text/javascript" src="/includes/js/jsMath/plugins/noImageFonts.js">//<![CDATA[
+
+
+//]]>
+</script>
+<script type="text/javascript" src="/includes/js/jsMath/jsMath.js">//<![CDATA[
+
+
+//]]>
+</script>
+ 
+<span id="math1292897860" class="math">
+  \ddot{q}_j\,^*
+</span>
+ 
+<script type="text/javascript">//<![CDATA[
+
+//check for use of this macro elsewhere on the page so that we only call jsMath once
+ if (typeof mathFormulaDetected == 'undefined') {
+    var mathFormulaDetected = false;
+}
+jQuery(document).ready(function() {
+    if (!mathFormulaDetected) {
+        jsMath.ProcessBeforeShowing();
+        mathFormulaDetected = true;
+    }
+});
+
+//]]>
+</script>).</p><p>The second formulation, called the fast target, is the sum of squared controls augmented by a set of equality constraints (
+ 
+ 
+<style>
+    #math1167212228 .typeset {
+        color: black
+    }
+    #math1167212228 {
+        font-size: 150%;
+        margin: 1em 0px;
+    }
+    #jsMath_button, #jsMath_message, #jsMath_Warning {
+        display: none;
+    }
+</style>
+ 
+<script type="text/javascript" src="/includes/js/jsMath/plugins/noImageFonts.js">//<![CDATA[
+
+
+//]]>
+</script>
+<script type="text/javascript" src="/includes/js/jsMath/jsMath.js">//<![CDATA[
+
+
+//]]>
+</script>
+ 
+<span id="math1167212228" class="math">
+  C_j = 0
+</span>
+ 
+<script type="text/javascript">//<![CDATA[
+
+//check for use of this macro elsewhere on the page so that we only call jsMath once
+ if (typeof mathFormulaDetected == 'undefined') {
+    var mathFormulaDetected = false;
+}
+jQuery(document).ready(function() {
+    if (!mathFormulaDetected) {
+        jsMath.ProcessBeforeShowing();
+        mathFormulaDetected = true;
+    }
+});
+
+//]]>
+</script>) that requires the desired accelerations to be achieved within the tolerance set for the optimizer:</p>
+ 
+ 
+<style>
+    #math1495531665 .typeset {
+        color: black
+    }
+    #math1495531665 {
+        font-size: 150%;
+        margin: 1em 0px;
+    }
+    #jsMath_button, #jsMath_message, #jsMath_Warning {
+        display: none;
+    }
+</style>
+ 
+<script type="text/javascript" src="/includes/js/jsMath/plugins/noImageFonts.js">//<![CDATA[
+
+
+//]]>
+</script>
+<script type="text/javascript" src="/includes/js/jsMath/jsMath.js">//<![CDATA[
+
+
+//]]>
+</script>
+ 
+<span id="math1495531665" class="math">
+  J = \sum_{i=1}^{nx} x_i^2; C_j = \ddot{q}_j\,^* - \ddot{q}_j \forall j
+</span>
+ 
+<script type="text/javascript">//<![CDATA[
+
+//check for use of this macro elsewhere on the page so that we only call jsMath once
+ if (typeof mathFormulaDetected == 'undefined') {
+    var mathFormulaDetected = false;
+}
+jQuery(document).ready(function() {
+    if (!mathFormulaDetected) {
+        jsMath.ProcessBeforeShowing();
+        mathFormulaDetected = true;
+    }
+});
+
+//]]>
+</script><p>The fast target is both faster and generally produces better tracking. However, if the constraints cannot be met, the fast target will fail and CMC will exit with an error message. Often the reason for the failure is that the musculoskeletal model is not strong enough.</p><p>To prevent the fast target from failing, it is possible to add a number of <span style="color: rgb(128,0,0);"><em>reserve actuators</em></span> to a model that are able to make up for strength deficiencies in muscles should any be encountered. The reserve actuators have very low strength (or optimal force) and so require very high excitations to apply substantial load to the model. As a result, use of the reserve actuators is highly penalized in both the fast and slow formulations. When the forces (or moments) applied by the reserve actuators are written to file and plotted, their values are a good indication of which joints in the musculoskeletal model are not strong enough. If the model is strong enough, the reserve actuator forces/moments should generally be very small relative to the forces/moments applied by the primary actuators.</p><p>The final step in the CMC algorithm is to use the computed controls to conduct a standard forward dynamic simulation, advancing forward in time by <em>T</em> . These steps—computing the desired accelerations, static optimization, and forward dynamic simulation—are repeated until time is advanced to the end of the desired movement interval.</p><p>Once CMC finishes execution, you will typically want to compare the computed muscle excitation patterns with prototypical or measured electromyographical measurements. If desired, constraints can be placed on the upper and lower bounds of the controls 
+ 
+ 
+<style>
+    #math439515250 .typeset {
+        color: black
+    }
+    #math439515250 {
+        font-size: 150%;
+        margin: 1em 0px;
+    }
+    #jsMath_button, #jsMath_message, #jsMath_Warning {
+        display: none;
+    }
+</style>
+ 
+<script type="text/javascript" src="/includes/js/jsMath/plugins/noImageFonts.js">//<![CDATA[
+
+
+//]]>
+</script>
+<script type="text/javascript" src="/includes/js/jsMath/jsMath.js">//<![CDATA[
+
+
+//]]>
+</script>
+ 
+<span id="math439515250" class="math">
+  \vec{x}
+</span>
+ 
+<script type="text/javascript">//<![CDATA[
+
+//check for use of this macro elsewhere on the page so that we only call jsMath once
+ if (typeof mathFormulaDetected == 'undefined') {
+    var mathFormulaDetected = false;
+}
+jQuery(document).ready(function() {
+    if (!mathFormulaDetected) {
+        jsMath.ProcessBeforeShowing();
+        mathFormulaDetected = true;
+    }
+});
+
+//]]>
+</script>as a function of simulation time. The bounds on the controls 
+ 
+ 
+<style>
+    #math611761836 .typeset {
+        color: black
+    }
+    #math611761836 {
+        font-size: 150%;
+        margin: 1em 0px;
+    }
+    #jsMath_button, #jsMath_message, #jsMath_Warning {
+        display: none;
+    }
+</style>
+ 
+<script type="text/javascript" src="/includes/js/jsMath/plugins/noImageFonts.js">//<![CDATA[
+
+
+//]]>
+</script>
+<script type="text/javascript" src="/includes/js/jsMath/jsMath.js">//<![CDATA[
+
+
+//]]>
+</script>
+ 
+<span id="math611761836" class="math">
+  \vec{x}
+</span>
+ 
+<script type="text/javascript">//<![CDATA[
+
+//check for use of this macro elsewhere on the page so that we only call jsMath once
+ if (typeof mathFormulaDetected == 'undefined') {
+    var mathFormulaDetected = false;
+}
+jQuery(document).ready(function() {
+    if (!mathFormulaDetected) {
+        jsMath.ProcessBeforeShowing();
+        mathFormulaDetected = true;
+    }
+});
+
+//]]>
+</script>are specified in an XML input file. For muscle excitations, the default upper bound is typically 1.0 (full excitation), and the default lower bound is typically a small number just above 0.0 (no excitation), such as 0.01 or 0.02. The lower bound is not set at precisely 0.0 because mathematical models of muscle are often not as well-behaved when excitation goes all the way to 0.0. The format of the control constraints is shown in the following section.</p><p>You can view the excitations produced by CMC using the <a href="Excitation%2BEditor.html">Excitation Editor</a>.</p><p> </p><div class="panel" style="background-color: white;border-color: gray;border-style: solid;border-width: 5px;"><div class="panelContent" style="background-color: white;">
+<p>Next: <a href="How%2Bto%2BUse%2Bthe%2BCMC%2BTool.html">How to Use the CMC Tool</a></p><p>Previous: <a href="Getting%2BStarted%2Bwith%2BCMC.html">Getting Started with CMC</a></p><p>Home: <a href="Computed%2BMuscle%2BControl.html">Computed Muscle Control</a></p>
+</div></div>
+                    </div>
+
+                                        <div class="pageSection group">
+                        <div class="pageSectionHeader">
+                            <h2 id="attachments" class="pageSectionTitle">Attachments:</h2>
+                        </div>
+
+                        <div class="greybox" align="left">
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/3376198/3737208.png">worddav97845c4519711d896ddee75a4165ad15.png</a> (image/png)
+                                <br/>
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/3376198/3737207.png">worddavba90cb6a34bd0a590537259d360f499f.png</a> (image/png)
+                                <br/>
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/3376198/3737206.png">worddav0e6edce2d738f83af6c1d47c6edde947.png</a> (image/png)
+                                <br/>
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/3376198/3737205.png">worddav6b9424b564d42771b94f81aabba2120c.png</a> (image/png)
+                                <br/>
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/3376198/3737204.png">worddav040131149634ab099757f8d1b1193965.png</a> (image/png)
+                                <br/>
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/3376198/3737203.png">worddav142da6918abaae58449707a8edc89819.png</a> (image/png)
+                                <br/>
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/3376198/3737202.png">worddav1ce31874ebc7b5ed267c9f0b7a0b0e15.png</a> (image/png)
+                                <br/>
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/3376198/3737201.png">worddav8113cc20fcfb970ce48ad44d358aa1f0.png</a> (image/png)
+                                <br/>
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/3376198/3737200.png">worddavf4fb5a1979b7477f0629492d907765ce.png</a> (image/png)
+                                <br/>
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/3376198/3737199.png">worddava6feee47b56e82b2351782934a8f2243.png</a> (image/png)
+                                <br/>
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/3376198/3737198.png">worddav384c3b737198497eb323247a940df190.png</a> (image/png)
+                                <br/>
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/3376198/3737197.png">worddav50368336933e117ed45c99a1041f5a99.png</a> (image/png)
+                                <br/>
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/3376198/3737196.png">worddav91a5e4390e44971f94306718f150d167.png</a> (image/png)
+                                <br/>
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/3376198/3737195.png">worddav6cda79198281e256a49eefbaa65e9870.png</a> (image/png)
+                                <br/>
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/3376198/3737194.png">worddavb8614c3c48830df319967fd05e5b66fc.png</a> (image/png)
+                                <br/>
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/3376198/3737193.png">worddav14a9b55495e5ff3bdd147929d3e1aa39.png</a> (image/png)
+                                <br/>
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/3376198/3737192.png">worddav02028546857d81248f39272d63305391.png</a> (image/png)
+                                <br/>
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/3376198/3737191.png">worddav2f5acd1677947beaafd0916dae134213.png</a> (image/png)
+                                <br/>
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/3376198/3737190.png">CMC1.png</a> (image/png)
+                                <br/>
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/3376198/3737189.png">CMC2.png</a> (image/png)
+                                <br/>
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/3376198/3737188.png">CMC3.png</a> (image/png)
+                                <br/>
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/3376198/3737187.png">CMC4.png</a> (image/png)
+                                <br/>
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/3376198/3737186.png">CMC5.png</a> (image/png)
+                                <br/>
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/3376198/3737185.png">CMC6.png</a> (image/png)
+                                <br/>
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/3376198/3737184.png">CMC7.png</a> (image/png)
+                                <br/>
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/3376198/3737183.png">CMC8.png</a> (image/png)
+                                <br/>
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/3376198/3737182.png">CMC9.png</a> (image/png)
+                                <br/>
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/3376198/3737181.png">CMC10.png</a> (image/png)
+                                <br/>
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/3376198/3737180.png">CMC11.png</a> (image/png)
+                                <br/>
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/3376198/3737179.png">CMC12.png</a> (image/png)
+                                <br/>
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/3376198/3737178.png">CMC13.png</a> (image/png)
+                                <br/>
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/3376198/3737177.png">CMC14.png</a> (image/png)
+                                <br/>
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/3376198/3737176.png">CMC15.png</a> (image/png)
+                                <br/>
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/3376198/3737175.png">CMC16.png</a> (image/png)
+                                <br/>
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/3376198/3737174.png">CMC17.png</a> (image/png)
+                                <br/>
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/3376198/3737173.docx">CMC Equations.docx</a> (application/vnd.openxmlformats-officedocument.wordprocessingml.document)
+                                <br/>
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/3376198/3737172.png">Picture 18.png</a> (image/png)
+                                <br/>
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/3376198/3737171.png">Picture 20.png</a> (image/png)
+                                <br/>
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/3376198/3737170.png">Picture 21.png</a> (image/png)
+                                <br/>
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/3376198/3737169.png">Picture 22.png</a> (image/png)
+                                <br/>
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/3376198/3737168.png">Picture 23.png</a> (image/png)
+                                <br/>
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/3376198/3737167.png">Picture 25.png</a> (image/png)
+                                <br/>
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/3376198/3737166.png">Picture 26.png</a> (image/png)
+                                <br/>
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/3376198/3737165.png">Picture 27.png</a> (image/png)
+                                <br/>
+                                                    </div>
+                    </div>
+                    
+                                                      
+                </div>             </div> 
+            <div id="footer" style="background: url(http://simtk-confluence.stanford.edu:8080/images/border/border_bottom.gif) repeat-x;">
+                <p><small>Document generated by Confluence on Feb 24, 2014 09:27</small></p>
+            </div>
+        </div>     </body>
+</html>

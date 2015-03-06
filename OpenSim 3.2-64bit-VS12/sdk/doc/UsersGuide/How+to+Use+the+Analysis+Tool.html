@@ -1,0 +1,85 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+    <head>
+        <title>OpenSim Documentation : How to Use the Analysis Tool</title>
+        <link rel="stylesheet" href="styles/site.css" type="text/css" />
+        <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    </head>
+
+    <body>
+        <div id="page">
+            <div id="main">
+                <div id="main-header" class="pageSectionHeader">
+                    <h1 id="title-heading" class="pagetitle">
+                                                <span id="title-text">
+                            OpenSim Documentation : How to Use the Analysis Tool
+                        </span>
+                    </h1>
+
+                    <div class="page-metadata">
+                        <p>This page last changed on Nov 12, 2012 by <font color="#0050B2">jenhicks</font>.</p>
+                    </div>
+                </div>
+
+                <div id="content" class="view">
+                    <div id="main-content" class="wiki-content group">
+                    <p>The topics covered in this section include:</p><p><div>
+<ul>
+    <li><a href='#HowtoUsetheAnalysisTool-Overview'>Overview</a></li>
+<ul>
+    <li><a href='#HowtoUsetheAnalysisTool-TheControlPanel'>The Control Panel</a></li>
+</ul>
+    <li><a href='#HowtoUsetheAnalysisTool-MainSettingsPane'>Main Settings Pane</a></li>
+    <li><a href='#HowtoUsetheAnalysisTool-ActuatorsandExternalLoadsPane'>Actuators and External Loads Pane</a></li>
+    <li><a href='#HowtoUsetheAnalysisTool-AnalysesPane'>Analyses Pane</a></li>
+</ul></div></p><h2 id="HowtoUsetheAnalysisTool-Overview">Overview</h2><p>The Analyze Tool is accessed by selecting <strong>Tools</strong> <strong>-&gt; Analyze…</strong> from the OpenSim main menu bar. Like all tools, the operations performed by the Analyze Tool apply to the current model. The name of the current model is shown in bold in the Navigator. See <a href="Opening%252C%2BClosing%252C%2Band%2BUsing%2Bthe%2BNavigator%2BWindow.html">Opening, Closing, and Using the Navigator Window</a> for information on opening models and making a particular model current. The Analyze Tool consists of three panes: <em>Main Settings</em>, <em>Actuators and External Loads</em>, and <em>Analyses</em>. Shown is the <em>Main Settings</em> pane.</p><div class="table-wrap"><table class="confluenceTable"><tbody><tr><th class="nohighlight confluenceTh"><img class="confluence-embedded-image" src="attachments/3376215/3737276.png" data-image-src="attachments/3376215/3737276.png"></th><th class="nohighlight confluenceTh"><ul><li><p>The <em>Main Settings</em> pane is used to specify parameters relating to the input, the time range over which the analyses are to be run, which analyses are to be run, and the output.</p></li><li><p>The <em>Actuators and External Loads</em> pane is used to specify parameters relating to the external loads applied to the model during analysis and whether or not an additional set of actuators should be added to the model.</p></li><li><p><span>The </span><em>Analyses</em><span> pane provides a means of adding, removing, and editing the analyses that will be run.</span></p><p> </p></li></ul><p> </p></th></tr></tbody></table></div><p><h3 id="HowtoUsetheAnalysisTool-TheControlPanel">The Control Panel</h3><p>At the bottom of all the Tool dialog windows are four buttons, located in what we call the <em>Control Panel</em>.</p><div class="table-wrap"><table class="confluenceTable"><tbody><tr><th class="nohighlight confluenceTh"><img class="confluence-embedded-image" src="attachments/3376096/3736747.png" data-image-src="attachments/3376096/3736747.png"></th><th class="nohighlight confluenceTh"><ul><li>The <strong>Load and Save</strong> buttons are used to load or save settings for the tool. </li><li>The <strong>Run</strong> button starts execution. </li><li>The <strong>Close</strong> button closes the window.</li><li>The <strong>Help </strong>button takes you to the relevant section of the User Guide.</li></ul><div class='panelMacro'><table class='infoMacro'><colgroup><col width='24'><col></colgroup><tr><td valign='top'><img src="images/icons/emoticons/information.png" width="16" height="16" align="absmiddle" alt="" border="0"></td><td><p>Note that the <strong>Close</strong> button can be clicked immediately after execution has begun; the execution will complete even though the window has been closed.</p></td></tr></table></div><p> </p><ul><li>If you click <strong>Load…</strong>, you will be presented with a file browser that displays all files ending with the <strong>.xml</strong> suffix. You may browse for an appropriate settings file (e.g., <span style="color: rgb(0,128,0);"><strong>subject01_Forward_Setup.xml or subject01_Scale_Setup.xml)</strong></span>) and click <strong>Open</strong>. The tool will then be populated with the settings in that setup file.</li><li>If you have manually entered or modified settings, you may save those settings to a file for future use. If you click <strong>Save…</strong>, a Save dialog box will come up in which you can specify the name of the settings file. The name you specify for the file should have a suffix of <strong>.xml</strong>. Click <strong>Save</strong> to save the settings to file.</li><li><p>After you click <strong>Save</strong>, you may be presented with another dialog box that asks you whether or not you would like to save some of the settings to separate external files. This can be useful if you would like to reuse those settings for other trials or subjects. Check the boxes of the settings that you'd like to save to external files and specify the names of these files. All of these files should have a suffix of <strong>.xml</strong>.</p></li></ul></th></tr></tbody></table></div></p><h2 id="HowtoUsetheAnalysisTool-MainSettingsPane">Main Settings Pane</h2><p>The <em>Main Settings</em> pane (figure above) is used to specify parameters relating to input, the time range over which analyses are to be performed, which analyses are to be performed, and the output. The pane is organized into five main sections entitled <em>Current Model</em>, <em>Input</em>, <em>Time</em>, <em>Analysis Set</em>, and <em>Output</em>.</p><div class="table-wrap"><table class="confluenceTable"><tbody><tr><th class="nohighlight confluenceTh"><img class="confluence-embedded-image" src="attachments/3376215/3737275.png" data-image-src="attachments/3376215/3737275.png"></th><th class="nohighlight confluenceTh"><ul><li><p>The section for <em>Current Model</em> displays an uneditable name for the current model that is to be used for the analysis.</p></li></ul></th></tr><tr><td class="confluenceTd"><img class="confluence-embedded-image" src="attachments/3376215/3737274.png" data-image-src="attachments/3376215/3737274.png"></td><td class="confluenceTd"><ul><li>The section for <em>Input</em> displays editable information that allows you to specify the controls, states or motion, and whether or not to solve for force equilibrium for the actuator forces. </li><li>If you are running an analysis on an existing simulation, you will most often specify a set of controls and states output by that simulation. </li><li>You may use the folder button to browse for the input files.</li></ul></td></tr><tr><td class="confluenceTd"><img class="confluence-embedded-image" src="attachments/3376215/3737272.png" data-image-src="attachments/3376215/3737272.png"></td><td class="confluenceTd"><ul><li>If you would like to run a set of analyses based on experimentally recorded motion, you may use the <img class="confluence-embedded-image" height="14" width="14" src="plugins/servlet/confluence/placeholder/unknown-attachment" title="worddav50ab2ffcc5bfe1f9f9298c68bbe7c46b.png"> radio button to select <strong>Motion</strong> as the input type. </li><li>If you choose to run the analyses from <strong>Loaded motion</strong>, you will need to choose a motion from the <img class="confluence-embedded-image" height="17" width="112" src="plugins/servlet/confluence/placeholder/unknown-attachment" title="worddavf6ab5291d8f6718b2412787b2138275e.png"> drop down list.</li></ul></td></tr><tr><td class="confluenceTd"><img class="confluence-embedded-image" src="attachments/3376215/3737271.png" data-image-src="attachments/3376215/3737271.png"></td><td class="confluenceTd"><ul><li>The section for <em>Time</em> displays editable information that allows you to specify the start and end time for the analysis. </li></ul></td></tr><tr><td class="confluenceTd"><img class="confluence-embedded-image" src="attachments/3376215/3737270.png" data-image-src="attachments/3376215/3737270.png"></td><td class="confluenceTd"><ul><li>The section for <em>Output</em> displays editable information that allows you to specify the prefix appended to the resulting output file, the directory to which the file is saved, and the precision of the decimal places used when writing results. </li><li>You may use the folder button to browse for and specify a directory in which to save the output files.</li><li>You may use the folder/magnifying glass button to open an Explorer window to the specified directory. </li></ul></td></tr></tbody></table></div><h2 id="HowtoUsetheAnalysisTool-ActuatorsandExternalLoadsPane">Actuators and External Loads Pane</h2><p>The <em>Actuators and External Loads</em> pane (figure below) is used to specify parameters relating to the actuators appended to the model and the external loads applied to the model during the analyses. The pane is organized into two main sections entitled <em>Actuators</em> and <em>External Loads</em>.</p><div class="table-wrap"><table class="confluenceTable"><tbody><tr><th class="nohighlight confluenceTh"><img class="confluence-embedded-image" src="attachments/3376215/3737269.png" data-image-src="attachments/3376215/3737269.png"></th><th class="nohighlight confluenceTh"><ul><li><p>The section for <em>Actuators</em> displays editable information that allows you to specify additional actuator set files that specify actuators to supplement the muscles of the model.</p></li><li><p><span>You may use the Edit</span><span> button to edit the list of actuator set files describing the actuators to be appended to or replaced in the model.</span></p></li></ul></th></tr><tr><td class="confluenceTd"><img class="confluence-embedded-image" width="300" src="attachments/3376215/3737268.png" data-image-src="attachments/3376215/3737268.png"></td><td class="confluenceTd"><ul><li>The information in the <em>External Loads</em> section is optional. </li><li>If checked, the section displays information so that you can specify the external loads applied to the model, the bodies of the model to which the loads are applied, and the corresponding kinematics of the external loads. </li><li>Additionally, there is an option to filter the kinematics for the external loads by selecting the checkbox next to <strong>Filter kinematics</strong> and entering the filter frequency. </li></ul></td></tr></tbody></table></div><h2 id="HowtoUsetheAnalysisTool-AnalysesPane">Analyses Pane</h2><p>The analyses pane lets you add and edit analyses (Muscle Analysis, Joint Reaction Analysis, Induced Acceleration Analysis, etc.)</p><p><img class="confluence-embedded-image" width="500" src="attachments/3376215/3737267.png" data-image-src="attachments/3376215/3737267.png"></p><div class="panel" style="background-color: white;border-color: gray;border-style: solid;border-width: 5px;"><div class="panelContent" style="background-color: white;">
+<p>Next: <a href="Induced%2BAcceleration%2BAnalysis.html">Induced Acceleration Analysis</a></p><p>Previous: <a href="Getting%2BStarted%2Bwith%2BAnalyses.html">Getting Started with Analyses</a></p><p>Home: <a href="Analyses.html">Analyses</a></p>
+</div></div><p> </p><p> </p>
+                    </div>
+
+                                        <div class="pageSection group">
+                        <div class="pageSectionHeader">
+                            <h2 id="attachments" class="pageSectionTitle">Attachments:</h2>
+                        </div>
+
+                        <div class="greybox" align="left">
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/3376215/3737276.png">analyze-1.PNG</a> (image/png)
+                                <br/>
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/3376215/3737275.png">analyze-2.PNG</a> (image/png)
+                                <br/>
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/3376215/3737274.png">analyze-3.PNG</a> (image/png)
+                                <br/>
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/3376215/3737273.png">analyze-4.PNG</a> (image/png)
+                                <br/>
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/3376215/3737272.png">analyze-5.PNG</a> (image/png)
+                                <br/>
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/3376215/3737271.png">analyze-6.PNG</a> (image/png)
+                                <br/>
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/3376215/3737270.png">analyze-7.PNG</a> (image/png)
+                                <br/>
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/3376215/3737269.png">analyze-8.PNG</a> (image/png)
+                                <br/>
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/3376215/3737268.png">analyze-9.PNG</a> (image/png)
+                                <br/>
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/3376215/3737267.png">analyze-10.PNG</a> (image/png)
+                                <br/>
+                                                    </div>
+                    </div>
+                    
+                                                      
+                </div>             </div> 
+            <div id="footer" style="background: url(http://simtk-confluence.stanford.edu:8080/images/border/border_bottom.gif) repeat-x;">
+                <p><small>Document generated by Confluence on Feb 24, 2014 09:28</small></p>
+            </div>
+        </div>     </body>
+</html>

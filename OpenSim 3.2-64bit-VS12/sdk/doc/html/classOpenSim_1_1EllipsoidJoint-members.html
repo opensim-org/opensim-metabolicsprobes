@@ -1,0 +1,605 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=9"/>
+<title>OpenSim: Member List</title>
+<link href="opensim.css" rel="stylesheet" type="text/css" />
+<link href="lightbox.css" rel="stylesheet" type="text/css" />
+<link href="bootstrap3/css/bootstrap.min.css" rel="stylesheet">
+<script src="jquery-2.1.0.min.js"></script>
+<script src="bootstrap3/js/bootstrap.min.js"></script>
+<script src="lightbox.js"></script>
+<script type="text/javascript" src="typeahead.min.js"></script>
+<script src="hogan-2.0.0.js"></script>
+<script type="text/javascript">
+  window.onhashchange = function() {
+  if (window.location.hash)
+      window.scrollBy(0, -50);
+  }
+  if (window.location.hash)
+  {
+    window.scrollBy(0, -50);
+  }
+$( document ).ready(function() {
+  $("#MSearchBox").hide();
+  $("div.headertitle").addClass("page-header");
+  $("div.title").addClass("h1");
+  $('li > a[href="index.html"] > span').before("<i class='fa fa-cog'></i> ");
+  $('li > a[href="index.html"] > span').text("OpenSim");
+  $('li > a[href="modules.html"] > span').before("<i class='fa fa-square'></i> ");
+  $('li > a[href="namespaces.html"] > span').before("<i class='fa fa-bars'></i> ");
+  $('li > a[href="annotated.html"] > span').before("<i class='fa fa-list-ul'></i> ");
+  $('li > a[href="classes.html"] > span').before("<i class='fa fa-book'></i> ");
+  $('li > a[href="inherits.html"] > span').before("<i class='fa fa-sitemap'></i> ");
+  $('li > a[href="functions.html"] > span').before("<i class='fa fa-list'></i> ");
+  $('li > a[href="functions_func.html"] > span').before("<i class='fa fa-list'></i> ");
+  $('li > a[href="functions_vars.html"] > span').before("<i class='fa fa-list'></i> ");
+  $('li > a[href="functions_enum.html"] > span').before("<i class='fa fa-list'></i> ");
+  $('li > a[href="functions_eval.html"] > span').before("<i class='fa fa-list'></i> ");
+  $('img[src="ftv2ns.png"]').replaceWith('<span class="label label-danger">N</span> ');
+  $('img[src="ftv2cl.png"]').replaceWith('<span class="label label-danger">C</span> ');
+  $("ul.tablist").addClass("nav nav-pills nav-justified");
+  $("ul.tablist").css("margin-top", "0.5em");
+  $("ul.tablist").css("margin-bottom", "0.5em");
+  $("li.current").addClass("active");
+  $("iframe").attr("scrolling", "yes");
+  $("#nav-path > ul").addClass("breadcrumb");
+  $("table.params").addClass("table");
+  $("div.ingroups").wrapInner("<small></small>");
+  $("div.levels").css("margin", "0.5em");
+  $("div.levels > span").addClass("btn btn-default btn-xs");
+  $("div.levels > span").css("margin-right", "0.25em");
+  $("table.directory").addClass("table table-striped");
+  $("div.summary > a").addClass("btn btn-default btn-xs");
+  $("table.fieldtable").addClass("table");
+  $(".fragment").addClass("well");
+  $(".memitem").addClass("panel panel-default");
+  $(".memproto").addClass("panel-heading");
+  $(".memdoc").addClass("panel-body");
+  $("span.mlabel").addClass("label label-info");
+  $("table.memberdecls").addClass("table");
+  $("[class^=memitem]").addClass("active");
+  $("div.ah").addClass("btn btn-default");
+  $("span.mlabels").addClass("pull-right");
+  $("table.mlabels").css("width", "100%")
+  $("td.mlabels-right").addClass("pull-right");
+  $("div.ttc").addClass("panel panel-info");
+  $("div.ttname").addClass("panel-heading");
+  $("div.ttdef,div.ttdoc,div.ttdeci").addClass("panel-body");
+$("#search").typeahead([
+    {
+      name: 'opensim-search',
+      valueKey: 'title',
+      remote: { url: 'query?q=%QUERY&teaser=body&pagesize=1000',
+      filter: function(p) {
+        dat = [];
+        for(i=0; i < p.hits.length; i++)
+        {
+          var pn = p.hits[i].document;
+          pn.href = p.hits[i].id;
+          dat.push(pn);
+        }
+        return dat;
+      }
+    },
+      template: '<strong>{{title}}</strong><p>{{{teaser}}}</p>',
+      engine: Hogan,
+      limit: 1000
+    }
+    ]).on("typeahead:selected", (function (e, datum){
+      window.location = datum.href;
+    }));
+    $('.typeahead.input-sm').siblings('input.tt-hint').addClass('hint-small');
+    $('.typeahead.input-lg').siblings('input.tt-hint').addClass('hint-large');
+  $.ajax({url : "ping", type: "GET", error : function() {
+    var prt = $("#MSearchBox").parent();
+    $(".twitter-typeahead").replaceWith($("#MSearchBox").show());
+    prt.remove();
+  }, success: function() {
+    $("#MSearchBox").parent().remove();
+    $(".nav>li").css("width", "266.667px");
+  }   });
+});
+var initNavTree = function(a,b) { } 
+function toggleVisibility(linkObj)
+{
+ var base = $(linkObj).attr('id');
+ var summary = $('#'+base+'-summary');
+ var content = $('#'+base+'-content');
+ var trigger = $('#'+base+'-trigger');
+ var src=$(trigger).attr('src');
+ if (content.is(':visible')===true) {
+   content.hide();
+   summary.show();
+   $(linkObj).addClass('closed').removeClass('opened');
+   $(trigger).attr('src',src.substring(0,src.length-8)+'closed.png');
+ } else {
+   content.show();
+   summary.hide();
+   $(linkObj).removeClass('closed').addClass('opened');
+   $(trigger).attr('src',src.substring(0,src.length-10)+'open.png');
+ } 
+ return false;
+}
+function updateStripes()
+{
+  $('table.directory tr').
+       removeClass('even').filter(':visible:even').addClass('even');
+}
+function toggleLevel(level)
+{
+  $('table.directory tr').each(function(){ 
+    var l = this.id.split('_').length-1;
+    var i = $('#img'+this.id.substring(3));
+    var a = $('#arr'+this.id.substring(3));
+    if (l<level+1) {
+      i.attr('src','ftv2folderopen.png');
+      a.attr('src','ftv2mnode.png');
+      $(this).show();
+    } else if (l==level+1) {
+      i.attr('src','ftv2folderclosed.png');
+      a.attr('src','ftv2pnode.png');
+      $(this).show();
+    } else {
+      $(this).hide();
+    }
+  });
+  updateStripes();
+}
+function toggleFolder(id)
+{
+  //The clicked row
+  var currentRow = $('#row_'+id);
+  var currentRowImages = currentRow.find("img");
+  //All rows after the clicked row
+  var rows = currentRow.nextAll("tr");
+  //Only match elements AFTER this one (can't hide elements before)
+  var childRows = rows.filter(function() {
+    var re = new RegExp('^row_'+id+'\\d+_$', "i"); //only one sub
+    return this.id.match(re);
+  });
+  //First row is visible we are HIDING
+  if (childRows.filter(':first').is(':visible')===true) {
+    currentRowImages.filter("[id^=arr]").attr('src', 'ftv2pnode.png');
+    currentRowImages.filter("[id^=img]").attr('src', 'ftv2folderclosed.png');
+    rows.filter("[id^=row_"+id+"]").hide();
+  } else { //We are SHOWING
+    //All sub images
+    var childImages = childRows.find("img");
+    var childImg = childImages.filter("[id^=img]");
+    var childArr = childImages.filter("[id^=arr]");
+    currentRow.find("[id^=arr]").attr('src', 'ftv2mnode.png'); //open row
+    currentRow.find("[id^=img]").attr('src', 'ftv2folderopen.png'); //open row
+    childImg.attr('src','ftv2folderclosed.png'); //children closed
+    childArr.attr('src','ftv2pnode.png'); //children closed
+    childRows.show(); //show all children
+  }
+  updateStripes();
+}
+function toggleInherit(id)
+{
+  var rows = $('tr.inherit.'+id);
+  var img = $('tr.inherit_header.'+id+' img');
+  var src = $(img).attr('src');
+  if (rows.filter(':first').is(':visible')===true) {
+    rows.css('display','none');
+    $(img).attr('src',src.substring(0,src.length-8)+'closed.png');
+  } else {
+    rows.css('display','table-row'); // using show() causes jump in firefox
+    $(img).attr('src',src.substring(0,src.length-10)+'open.png');
+  }
+}
+$(function() {
+$(".dyncontent img").each(function () {
+  $(this).wrap("<a href='" + $(this).attr("src") + "'></a>");
+  $(".dyncontent a").click(function(e) { e.preventDefault(); $(this).ekkoLightbox();  });
+} );
+  diag = $("map").parent().children("a").children("img");
+  if (diag != 'undefined')
+  {
+      diag.clone().load(function() { 
+      ratio = diag.width() / this.width;
+      $("area").each(function () {
+          cr = $(this).attr("coords").split(",");
+          for(l=0; l < cr.length; l++) {
+            cr[l] = parseInt(cr[l]) * ratio;
+          }
+          $(this).attr("coords", cr.join(','));
+      })
+      console.log(ratio); 
+    });
+  }
+});
+</script>
+<style type="text/css">
+  body
+  {
+    width: 800px;
+    margin: 0 auto;
+  }
+  img
+  {
+    max-width: 800px;
+  }
+  #container
+  {
+    margin-top: 70px;
+  }
+.twitter-typeahead .tt-hint
+{
+    display: block;
+    height: 34px;
+    padding: 6px 12px;
+    font-size: 14px;
+    line-height: 1.428571429;
+    border: 1px solid transparent;
+    border-radius:4px;
+}
+.twitter-typeahead .hint-small
+{
+    height: 30px;
+    padding: 5px 10px;
+    font-size: 12px;
+    border-radius: 3px;
+    line-height: 1.5;
+}
+.twitter-typeahead .hint-large
+{
+    height: 45px;
+    padding: 10px 16px;
+    font-size: 18px;
+    border-radius: 6px;
+    line-height: 1.33;
+}
+.twitter-typeahead {
+    width: 100%;
+    position: relative;
+}
+.twitter-typeahead .tt-query,
+.twitter-typeahead .tt-hint {
+    margin-bottom: 0;
+    width:100%;
+    height: 34px;
+    position: absolute;
+    top:0;
+    left:0;
+}
+.twitter-typeahead .tt-hint {
+    color:#a1a1a1;
+    z-index: 1;
+    padding: 6px 12px;
+    border:1px solid transparent;
+}
+.twitter-typeahead .tt-query {
+    z-index: 2;
+    border-radius: 4px!important;
+}
+.tt-dropdown-menu {
+    left: auto !important;
+    right: 0px !important;
+    overflow-y: auto;
+    max-height: 400px;
+    min-width: 160px;
+    margin-top: 2px;
+    padding: 5px 0;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border: 1px solid rgba(0,0,0,.2);
+    *border-right-width: 2px;
+    *border-bottom-width: 2px;
+    -webkit-border-radius: 6px;
+    -moz-border-radius: 6px;
+    border-radius: 6px;
+    -webkit-box-shadow: 0 5px 10px rgba(0,0,0,.2);
+    -moz-box-shadow: 0 5px 10px rgba(0,0,0,.2);
+    box-shadow: 0 5px 10px rgba(0,0,0,.2);
+    -webkit-background-clip: padding-box;
+    -moz-background-clip: padding;
+    background-clip: padding-box;
+}
+.tt-suggestion {
+    display: block;
+    padding: 3px 20px;
+}
+.tt-suggestion.tt-is-under-cursor {
+    color: #fff;
+    background-color: #0081c2;
+    background-image: -moz-linear-gradient(top, #0088cc, #0077b3);
+    background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#0088cc), to(#0077b3));
+    background-image: -webkit-linear-gradient(top, #0088cc, #0077b3);
+    background-image: -o-linear-gradient(top, #0088cc, #0077b3);
+    background-image: linear-gradient(to bottom, #0088cc, #0077b3);
+    background-repeat: repeat-x;
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff0088cc', endColorstr='#ff0077b3', GradientType=0)
+}
+.tt-suggestion.tt-is-under-cursor a {
+    color: #fff;
+}
+.tt-suggestion p {
+    margin: 0;
+}
+.sc-em
+{
+  font-weight: bold;
+}
+#MSearchResultsWindow
+{
+  top: 51px !important;
+  position: fixed !important;
+}
+</style>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/search.js"></script>
+<script type="text/javascript">
+  $(document).ready(function() { searchBox.OnSelectItem(0); });
+</script>
+</head>
+<body>
+    <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <a class="navbar-brand" href="index.html">OpenSim Documentation</a>
+        </div>
+          <form class="navbar-form navbar-right">
+              <input type="search" placeholder="Search" class="form-control" id="search">
+          </form>
+      </div>
+    </div>
+  <div id="container">
+<!-- Generated by Doxygen 1.8.6 -->
+<script type="text/javascript">
+var searchBox = new SearchBox("searchBox", "search",false,'Search');
+</script>
+  <div id="navrow1" class="tabs">
+    <ul class="tablist">
+      <li><a href="index.html"><span>Main&#160;Page</span></a></li>
+      <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
+      <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
+      <li>
+        <div id="MSearchBox" class="MSearchBoxInactive">
+        <span class="left">
+          <img id="MSearchSelect" src="search/mag_sel.png"
+               onmouseover="return searchBox.OnSearchSelectShow()"
+               onmouseout="return searchBox.OnSearchSelectHide()"
+               alt=""/>
+          <input type="text" id="MSearchField" value="Search" accesskey="S"
+               onfocus="searchBox.OnSearchFieldFocus(true)" 
+               onblur="searchBox.OnSearchFieldFocus(false)" 
+               onkeyup="searchBox.OnSearchFieldChange(event)"/>
+          </span><span class="right">
+            <a id="MSearchClose" href="javascript:searchBox.CloseResultsWindow()"><img id="MSearchCloseImg" border="0" src="search/close.png" alt=""/></a>
+          </span>
+        </div>
+      </li>
+    </ul>
+  </div>
+  <div id="navrow2" class="tabs2">
+    <ul class="tablist">
+      <li><a href="annotated.html"><span>Class&#160;List</span></a></li>
+      <li><a href="hierarchy.html"><span>Class&#160;Hierarchy</span></a></li>
+      <li><a href="functions.html"><span>Class&#160;Members</span></a></li>
+    </ul>
+  </div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+$(document).ready(function(){initNavTree('classOpenSim_1_1EllipsoidJoint.html','');});
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Namespaces</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Enumerator</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Friends</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(9)"><span class="SelectionMark">&#160;</span>Pages</a></div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<iframe src="javascript:void(0)" frameborder="0" 
+        name="MSearchResults" id="MSearchResults">
+</iframe>
+</div>
+
+<div class="header">
+  <div class="headertitle">
+<div class="title">OpenSim::EllipsoidJoint Member List</div>  </div>
+</div><!--header-->
+<div class="contents">
+
+<p>This is the complete list of members for <a class="el" href="classOpenSim_1_1EllipsoidJoint.html">OpenSim::EllipsoidJoint</a>, including all inherited members.</p>
+<table class="directory">
+  <tr class="even"><td class="entry"><a class="el" href="classOpenSim_1_1Joint.html#a947f57689277b5d811b84406c9d88691">_jointFrameInBody</a></td><td class="entry"><a class="el" href="classOpenSim_1_1Joint.html">OpenSim::Joint</a></td><td class="entry"><span class="mlabel">protected</span></td></tr>
+  <tr><td class="entry"><a class="el" href="classOpenSim_1_1Joint.html#ab47236312440472f08c291a5e21f9418">_jointFrameInParent</a></td><td class="entry"><a class="el" href="classOpenSim_1_1Joint.html">OpenSim::Joint</a></td><td class="entry"><span class="mlabel">protected</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classOpenSim_1_1ModelComponent.html#a7c93dfde21c0a5cb40b37d1f095c41e7">_model</a></td><td class="entry"><a class="el" href="classOpenSim_1_1ModelComponent.html">OpenSim::ModelComponent</a></td><td class="entry"><span class="mlabel">protected</span></td></tr>
+  <tr><td class="entry"><a class="el" href="classOpenSim_1_1Object.html#a22e666ea5837cc9bfd8818b86b35e4ce">_propertySet</a></td><td class="entry"><a class="el" href="classOpenSim_1_1Object.html">OpenSim::Object</a></td><td class="entry"><span class="mlabel">protected</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classOpenSim_1_1ModelComponent.html#ab11ab98fd15b10f669e6603249b2631e">addCacheVariable</a>(const std::string &amp;cacheVariableName, const T &amp;variablePrototype, SimTK::Stage dependsOnStage) const </td><td class="entry"><a class="el" href="classOpenSim_1_1ModelComponent.html">OpenSim::ModelComponent</a></td><td class="entry"><span class="mlabel">inline</span><span class="mlabel">protected</span></td></tr>
+  <tr><td class="entry"><a class="el" href="classOpenSim_1_1ModelComponent.html#af337159e39099a05a8d0098ad75a0550">addDiscreteVariable</a>(const std::string &amp;discreteVariableName, SimTK::Stage invalidatesStage) const </td><td class="entry"><a class="el" href="classOpenSim_1_1ModelComponent.html">OpenSim::ModelComponent</a></td><td class="entry"><span class="mlabel">protected</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classOpenSim_1_1Object.html#ad5046920687929fbc0c0ec17681c146d">addListProperty</a>(const std::string &amp;name, const std::string &amp;comment, int minSize, int maxSize)</td><td class="entry"><a class="el" href="classOpenSim_1_1Object.html">OpenSim::Object</a></td><td class="entry"><span class="mlabel">protected</span></td></tr>
+  <tr><td class="entry"><a class="el" href="classOpenSim_1_1Object.html#a2e09382ab2bb833eba12c081f35b5a2d">addListProperty</a>(const std::string &amp;name, const std::string &amp;comment, int minSize, int maxSize, const Container&lt; T &gt; &amp;valueList)</td><td class="entry"><a class="el" href="classOpenSim_1_1Object.html">OpenSim::Object</a></td><td class="entry"><span class="mlabel">protected</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classOpenSim_1_1ModelComponent.html#af471114e25f71ed5ed941c8f046837b2">addModelingOption</a>(const std::string &amp;optionName, int maxFlagValue) const </td><td class="entry"><a class="el" href="classOpenSim_1_1ModelComponent.html">OpenSim::ModelComponent</a></td><td class="entry"><span class="mlabel">protected</span></td></tr>
+  <tr><td class="entry"><a class="el" href="classOpenSim_1_1Object.html#ae33cd5e9f8e0b563ac29f7cf2565d5fc">addOptionalProperty</a>(const std::string &amp;name, const std::string &amp;comment)</td><td class="entry"><a class="el" href="classOpenSim_1_1Object.html">OpenSim::Object</a></td><td class="entry"><span class="mlabel">protected</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classOpenSim_1_1Object.html#affef953ecb6526d5de51f8d045229d79">addOptionalProperty</a>(const std::string &amp;name, const std::string &amp;comment, const T &amp;value)</td><td class="entry"><a class="el" href="classOpenSim_1_1Object.html">OpenSim::Object</a></td><td class="entry"><span class="mlabel">protected</span></td></tr>
+  <tr><td class="entry"><a class="el" href="classOpenSim_1_1Object.html#af24322b3b4552de29ed0589a03ba7ad5">addProperty</a>(const std::string &amp;name, const std::string &amp;comment, const T &amp;value)</td><td class="entry"><a class="el" href="classOpenSim_1_1Object.html">OpenSim::Object</a></td><td class="entry"><span class="mlabel">protected</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classOpenSim_1_1ModelComponent.html#af51551472252df745741d2cfe6ae96f8">addStateVariable</a>(const std::string &amp;stateVariableName, SimTK::Stage invalidatesStage=SimTK::Stage::Dynamics) const </td><td class="entry"><a class="el" href="classOpenSim_1_1ModelComponent.html">OpenSim::ModelComponent</a></td><td class="entry"><span class="mlabel">protected</span></td></tr>
+  <tr><td class="entry"><a class="el" href="classOpenSim_1_1EllipsoidJoint.html#a79a49a56b6adb1613ff0ff877103ac94">addToSystem</a>(SimTK::MultibodySystem &amp;system) const override</td><td class="entry"><a class="el" href="classOpenSim_1_1EllipsoidJoint.html">OpenSim::EllipsoidJoint</a></td><td class="entry"><span class="mlabel">protected</span><span class="mlabel">virtual</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classOpenSim_1_1Joint.html#a611afb24beb60d18475c4571be6b31ae">calcEquivalentSpatialForce</a>(const SimTK::State &amp;s, const SimTK::Vector &amp;mobilityForces) const </td><td class="entry"><a class="el" href="classOpenSim_1_1Joint.html">OpenSim::Joint</a></td><td class="entry"><span class="mlabel">virtual</span></td></tr>
+  <tr><td class="entry"><a class="el" href="classOpenSim_1_1Joint.html#a99253bf9019690f5ab496b6ed9da16eb">calcEquivalentSpatialForceForMobilizedBody</a>(const SimTK::State &amp;s, const SimTK::MobilizedBodyIndex mbx, const SimTK::Vector &amp;mobilityForces) const </td><td class="entry"><a class="el" href="classOpenSim_1_1Joint.html">OpenSim::Joint</a></td><td class="entry"><span class="mlabel">protected</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classOpenSim_1_1Joint.html#ae2bdd78db7820371dc242374f3027d74">calcPower</a>(const SimTK::State &amp;s) const </td><td class="entry"><a class="el" href="classOpenSim_1_1Joint.html">OpenSim::Joint</a></td><td class="entry"><span class="mlabel">virtual</span></td></tr>
+  <tr><td class="entry"><a class="el" href="classOpenSim_1_1Joint.html#adc427c0c5f4ed2a28d9062ef797b378f">checkParentBody</a>()</td><td class="entry"><a class="el" href="classOpenSim_1_1Joint.html">OpenSim::Joint</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classOpenSim_1_1Object.html#a5291e688292cba7a488b077e6dc64938">clearObjectIsUpToDateWithProperties</a>()</td><td class="entry"><a class="el" href="classOpenSim_1_1Object.html">OpenSim::Object</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
+  <tr><td class="entry"><a class="el" href="classOpenSim_1_1Object.html#af221c900c5447df9928f1786469ef1b8">clone</a>() const =0</td><td class="entry"><a class="el" href="classOpenSim_1_1Object.html">OpenSim::Object</a></td><td class="entry"><span class="mlabel">pure virtual</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classOpenSim_1_1ModelComponent.html#a0a7e2996757ff53344dc835d12939346">computeStateVariableDerivatives</a>(const SimTK::State &amp;s) const </td><td class="entry"><a class="el" href="classOpenSim_1_1ModelComponent.html">OpenSim::ModelComponent</a></td><td class="entry"><span class="mlabel">protected</span><span class="mlabel">virtual</span></td></tr>
+  <tr><td class="entry"><a class="el" href="classOpenSim_1_1Joint.html#ac280e71c09f51ad1cfe594ddac69cc36">connectToModel</a>(Model &amp;aModel) override</td><td class="entry"><a class="el" href="classOpenSim_1_1Joint.html">OpenSim::Joint</a></td><td class="entry"><span class="mlabel">virtual</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classOpenSim_1_1Joint.html#ae387c7e0e7a97d908c5d35379b0c6205">constructCoordinates</a>()</td><td class="entry"><a class="el" href="classOpenSim_1_1Joint.html">OpenSim::Joint</a></td><td class="entry"><span class="mlabel">protected</span></td></tr>
+  <tr><td class="entry"><a class="el" href="classOpenSim_1_1Object.html#a84a2e7e58491709482729c7d52b90f21">DEFAULT_NAME</a></td><td class="entry"><a class="el" href="classOpenSim_1_1Object.html">OpenSim::Object</a></td><td class="entry"><span class="mlabel">static</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classOpenSim_1_1Object.html#aa0e26741bc3518688164242c4b880c71">dump</a>(bool dumpName=false)</td><td class="entry"><a class="el" href="classOpenSim_1_1Object.html">OpenSim::Object</a></td><td class="entry"></td></tr>
+  <tr><td class="entry"><a class="el" href="classOpenSim_1_1EllipsoidJoint.html#a84207ecb59c40a575059987ff05585e6">EllipsoidJoint</a>()</td><td class="entry"><a class="el" href="classOpenSim_1_1EllipsoidJoint.html">OpenSim::EllipsoidJoint</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classOpenSim_1_1EllipsoidJoint.html#a6047a8d5857ee04e94ffc381347ae373">EllipsoidJoint</a>(const std::string &amp;name, OpenSim::Body &amp;parent, SimTK::Vec3 locationInParent, SimTK::Vec3 orientationInParent, OpenSim::Body &amp;body, SimTK::Vec3 locationInBody, SimTK::Vec3 orientationInBody, SimTK::Vec3 ellipsoidRadii, bool reverse=false)</td><td class="entry"><a class="el" href="classOpenSim_1_1EllipsoidJoint.html">OpenSim::EllipsoidJoint</a></td><td class="entry"></td></tr>
+  <tr><td class="entry"><a class="el" href="classOpenSim_1_1EllipsoidJoint.html#ae5845844a2230a4a24828cd863661ceb">generateDecorations</a>(bool fixed, const ModelDisplayHints &amp;hints, const SimTK::State &amp;state, SimTK::Array_&lt; SimTK::DecorativeGeometry &gt; &amp;geometryArray) const </td><td class="entry"><a class="el" href="classOpenSim_1_1EllipsoidJoint.html">OpenSim::EllipsoidJoint</a></td><td class="entry"><span class="mlabel">protected</span><span class="mlabel">virtual</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classOpenSim_1_1Object.html#a33466c9415fae20658e0cb03919c9ea3">getAuthors</a>() const </td><td class="entry"><a class="el" href="classOpenSim_1_1Object.html">OpenSim::Object</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
+  <tr><td class="entry"><a class="el" href="classOpenSim_1_1Joint.html#aabaa9a95001809f6d8e48435eaa8408c">getBody</a>() const </td><td class="entry"><a class="el" href="classOpenSim_1_1Joint.html">OpenSim::Joint</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classOpenSim_1_1ModelComponent.html#a14aafd5f6718f35a60dc612b851ed369">getCacheVariable</a>(const SimTK::State &amp;state, const std::string &amp;name) const </td><td class="entry"><a class="el" href="classOpenSim_1_1ModelComponent.html">OpenSim::ModelComponent</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
+  <tr><td class="entry"><a class="el" href="classOpenSim_1_1ModelComponent.html#a181f44c0a862c361d19ca55323364032">getCacheVariableIndex</a>(const std::string &amp;name) const </td><td class="entry"><a class="el" href="classOpenSim_1_1ModelComponent.html">OpenSim::ModelComponent</a></td><td class="entry"><span class="mlabel">protected</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classOpenSim_1_1Object.html#a37944898e801cba2bf6f772272df2649">getClassName</a>()</td><td class="entry"><a class="el" href="classOpenSim_1_1Object.html">OpenSim::Object</a></td><td class="entry"><span class="mlabel">inline</span><span class="mlabel">static</span></td></tr>
+  <tr><td class="entry"><a class="el" href="classOpenSim_1_1Object.html#a56f3462342f51392a34cb4f0787ae2b7">getConcreteClassName</a>() const =0</td><td class="entry"><a class="el" href="classOpenSim_1_1Object.html">OpenSim::Object</a></td><td class="entry"><span class="mlabel">pure virtual</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classOpenSim_1_1Joint.html#a38c26e143facfa06fd8313ef9077d555">getCoordinateSet</a>() const </td><td class="entry"><a class="el" href="classOpenSim_1_1Joint.html">OpenSim::Joint</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
+  <tr><td class="entry"><a class="el" href="classOpenSim_1_1Object.html#a96486fa12910478db9b65384546d9e97">getDebugLevel</a>()</td><td class="entry"><a class="el" href="classOpenSim_1_1Object.html">OpenSim::Object</a></td><td class="entry"><span class="mlabel">inline</span><span class="mlabel">static</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classOpenSim_1_1Object.html#afa003166ace3f14af022b6650fc6fbd7">getDefaultInstanceOfType</a>(const std::string &amp;concreteClassName)</td><td class="entry"><a class="el" href="classOpenSim_1_1Object.html">OpenSim::Object</a></td><td class="entry"><span class="mlabel">static</span></td></tr>
+  <tr><td class="entry"><a class="el" href="classOpenSim_1_1Object.html#a95c82687e6065eaaded78637d6b962b3">getDescription</a>() const </td><td class="entry"><a class="el" href="classOpenSim_1_1Object.html">OpenSim::Object</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classOpenSim_1_1ModelComponent.html#ac499f83623232385e301122268107c65">getDiscreteVariable</a>(const SimTK::State &amp;state, const std::string &amp;name) const </td><td class="entry"><a class="el" href="classOpenSim_1_1ModelComponent.html">OpenSim::ModelComponent</a></td><td class="entry"></td></tr>
+  <tr><td class="entry"><a class="el" href="classOpenSim_1_1ModelComponent.html#ac5b74e191cba00ab5298f711137dd142">getDiscreteVariableIndex</a>(const std::string &amp;name) const </td><td class="entry"><a class="el" href="classOpenSim_1_1ModelComponent.html">OpenSim::ModelComponent</a></td><td class="entry"><span class="mlabel">protected</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classOpenSim_1_1Object.html#ad198104a9d49d467c58488a6964d6730">getDisplayer</a>() const </td><td class="entry"><a class="el" href="classOpenSim_1_1Object.html">OpenSim::Object</a></td><td class="entry"><span class="mlabel">inline</span><span class="mlabel">virtual</span></td></tr>
+  <tr><td class="entry"><a class="el" href="classOpenSim_1_1Object.html#a00afa73fcae409e8b8c993d3e977149f">getDocument</a>() const </td><td class="entry"><a class="el" href="classOpenSim_1_1Object.html">OpenSim::Object</a></td><td class="entry"><span class="mlabel">inline</span><span class="mlabel">protected</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classOpenSim_1_1Object.html#ad54c991bb056d6cafe4c26d670c9c891">getDocumentFileName</a>() const </td><td class="entry"><a class="el" href="classOpenSim_1_1Object.html">OpenSim::Object</a></td><td class="entry"></td></tr>
+  <tr><td class="entry"><a class="el" href="classOpenSim_1_1Object.html#a10d8a9b32fa174430a354c3508345bc0">getInlined</a>() const </td><td class="entry"><a class="el" href="classOpenSim_1_1Object.html">OpenSim::Object</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classOpenSim_1_1Joint.html#af283fe4069bcad8a5f67cdf4d31a38e9">getLocation</a>(SimTK::Vec3 &amp;rLocation) const </td><td class="entry"><a class="el" href="classOpenSim_1_1Joint.html">OpenSim::Joint</a></td><td class="entry"><span class="mlabel">virtual</span></td></tr>
+  <tr><td class="entry"><a class="el" href="classOpenSim_1_1Joint.html#aa56005741abcce8eab4574f951ab8a5b">getLocationInChild</a>() const </td><td class="entry"><a class="el" href="classOpenSim_1_1Joint.html">OpenSim::Joint</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classOpenSim_1_1Joint.html#af213846d292e6d26f1e64cc459c37081">getLocationInParent</a>(SimTK::Vec3 &amp;rLocation) const </td><td class="entry"><a class="el" href="classOpenSim_1_1Joint.html">OpenSim::Joint</a></td><td class="entry"></td></tr>
+  <tr><td class="entry"><a class="el" href="classOpenSim_1_1Joint.html#a2cce77ec2dbd0c0508e1a554c41c2b2e">getMobilizedBodyIndex</a>(Body *aBody) const </td><td class="entry"><a class="el" href="classOpenSim_1_1Joint.html">OpenSim::Joint</a></td><td class="entry"><span class="mlabel">protected</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classOpenSim_1_1ModelComponent.html#a948f0bd29d759a7c52ae815a8179571b">getModel</a>() const </td><td class="entry"><a class="el" href="classOpenSim_1_1ModelComponent.html">OpenSim::ModelComponent</a></td><td class="entry"></td></tr>
+  <tr><td class="entry"><a class="el" href="classOpenSim_1_1ModelComponent.html#a311f7ccad1c388786cc6c4f5d607c089">getModelingOption</a>(const SimTK::State &amp;state, const std::string &amp;name) const </td><td class="entry"><a class="el" href="classOpenSim_1_1ModelComponent.html">OpenSim::ModelComponent</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classOpenSim_1_1Object.html#a5915b8c1d384df8ac19fd11a1fb21ccd">getName</a>() const </td><td class="entry"><a class="el" href="classOpenSim_1_1Object.html">OpenSim::Object</a></td><td class="entry"></td></tr>
+  <tr><td class="entry"><a class="el" href="classOpenSim_1_1Object.html#aa298781dd5a5b3c892662ef73172f0bf">getNumProperties</a>() const </td><td class="entry"><a class="el" href="classOpenSim_1_1Object.html">OpenSim::Object</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classOpenSim_1_1ModelComponent.html#afa488ee79d608fb02b22476ad48c8762">getNumStateVariables</a>() const </td><td class="entry"><a class="el" href="classOpenSim_1_1ModelComponent.html">OpenSim::ModelComponent</a></td><td class="entry"><span class="mlabel">virtual</span></td></tr>
+  <tr><td class="entry"><a class="el" href="classOpenSim_1_1Joint.html#afd15e02af1f91f27a1d84ddfd0c6da76">getOrientation</a>(SimTK::Vec3 &amp;rOrientation) const </td><td class="entry"><a class="el" href="classOpenSim_1_1Joint.html">OpenSim::Joint</a></td><td class="entry"><span class="mlabel">virtual</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classOpenSim_1_1Joint.html#a4752d2b4b0299db409a6d05ef966227e">getOrientationInParent</a>(SimTK::Vec3 &amp;rOrientation) const </td><td class="entry"><a class="el" href="classOpenSim_1_1Joint.html">OpenSim::Joint</a></td><td class="entry"></td></tr>
+  <tr><td class="entry"><a class="el" href="classOpenSim_1_1Joint.html#ae0615361c2a2e2a4179bdc9a4fb4459b">getParentBody</a>() const </td><td class="entry"><a class="el" href="classOpenSim_1_1Joint.html">OpenSim::Joint</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classOpenSim_1_1Joint.html#ac97852f09cdfe1e065a0cb0d78891b1d">getParentName</a>() const </td><td class="entry"><a class="el" href="classOpenSim_1_1Joint.html">OpenSim::Joint</a></td><td class="entry"></td></tr>
+  <tr><td class="entry"><a class="el" href="classOpenSim_1_1Object.html#ae569867dea47d552436ca887a580dd3c">getProperty</a>(const PropertyIndex &amp;index) const </td><td class="entry"><a class="el" href="classOpenSim_1_1Object.html">OpenSim::Object</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classOpenSim_1_1Object.html#a3135199b9122677080358606b672d8df">getPropertyByIndex</a>(int propertyIndex) const </td><td class="entry"><a class="el" href="classOpenSim_1_1Object.html">OpenSim::Object</a></td><td class="entry"></td></tr>
+  <tr><td class="entry"><a class="el" href="classOpenSim_1_1Object.html#a1a65abcee1fee7ef6a261f99c45e46d9">getPropertyByName</a>(const std::string &amp;name) const </td><td class="entry"><a class="el" href="classOpenSim_1_1Object.html">OpenSim::Object</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classOpenSim_1_1Object.html#ae2a709cf81656cfd97bf37237bd03082">getPropertyIndex</a>(const std::string &amp;name) const </td><td class="entry"><a class="el" href="classOpenSim_1_1Object.html">OpenSim::Object</a></td><td class="entry"><span class="mlabel">inline</span><span class="mlabel">protected</span></td></tr>
+  <tr><td class="entry"><a class="el" href="classOpenSim_1_1Object.html#a8c14b84c3759aa0298bc772f06e9bbc6">getPropertyIndex</a>() const </td><td class="entry"><a class="el" href="classOpenSim_1_1Object.html">OpenSim::Object</a></td><td class="entry"><span class="mlabel">inline</span><span class="mlabel">protected</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classOpenSim_1_1Object.html#accf9602cb1075775f01243618e8cf57b">getPropertySet</a>()</td><td class="entry"><a class="el" href="classOpenSim_1_1Object.html">OpenSim::Object</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
+  <tr><td class="entry"><a class="el" href="classOpenSim_1_1Object.html#a08df031ee6f34e151108dbb94be924f6">getPropertySet</a>() const </td><td class="entry"><a class="el" href="classOpenSim_1_1Object.html">OpenSim::Object</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classOpenSim_1_1Object.html#a1e03d1cd0bda7673fc8d697a0114fc96">getReferences</a>() const </td><td class="entry"><a class="el" href="classOpenSim_1_1Object.html">OpenSim::Object</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
+  <tr><td class="entry"><a class="el" href="classOpenSim_1_1Object.html#a34f0039fba61c2fef84ba6bf8c07de6d">getRegisteredObjectsOfGivenType</a>(ArrayPtrs&lt; T &gt; &amp;rArray)</td><td class="entry"><a class="el" href="classOpenSim_1_1Object.html">OpenSim::Object</a></td><td class="entry"><span class="mlabel">inline</span><span class="mlabel">static</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classOpenSim_1_1Object.html#a0296f61a06c319786a46d29743135d74">getRegisteredTypenames</a>(Array&lt; std::string &gt; &amp;typeNames)</td><td class="entry"><a class="el" href="classOpenSim_1_1Object.html">OpenSim::Object</a></td><td class="entry"><span class="mlabel">static</span></td></tr>
+  <tr><td class="entry"><a class="el" href="classOpenSim_1_1Joint.html#ac536994ac37ac1c8ac6e03912edda75c">getReverse</a>() const </td><td class="entry"><a class="el" href="classOpenSim_1_1Joint.html">OpenSim::Joint</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classOpenSim_1_1Object.html#a533e0a9420d312a73cb9a5d8efd17081">getSerializeAllDefaults</a>()</td><td class="entry"><a class="el" href="classOpenSim_1_1Object.html">OpenSim::Object</a></td><td class="entry"><span class="mlabel">inline</span><span class="mlabel">static</span></td></tr>
+  <tr><td class="entry"><a class="el" href="classOpenSim_1_1ModelComponent.html#aee03658fadef45654eda36204dc0532f">getStateIndex</a>(const std::string &amp;name) const </td><td class="entry"><a class="el" href="classOpenSim_1_1ModelComponent.html">OpenSim::ModelComponent</a></td><td class="entry"><span class="mlabel">protected</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classOpenSim_1_1ModelComponent.html#aef5aacbf59ab7894b25bfbbb2d11378f">getStateVariable</a>(const SimTK::State &amp;state, const std::string &amp;name) const </td><td class="entry"><a class="el" href="classOpenSim_1_1ModelComponent.html">OpenSim::ModelComponent</a></td><td class="entry"></td></tr>
+  <tr><td class="entry"><a class="el" href="classOpenSim_1_1ModelComponent.html#a3b3146b83b83221fe916e0addd9459a3">getStateVariableNames</a>() const </td><td class="entry"><a class="el" href="classOpenSim_1_1ModelComponent.html">OpenSim::ModelComponent</a></td><td class="entry"><span class="mlabel">virtual</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classOpenSim_1_1ModelComponent.html#af3c3b4e13131bbf45b2d147ee0d3f5b4">getStateVariableSystemIndex</a>(const std::string &amp;stateVariableName) const </td><td class="entry"><a class="el" href="classOpenSim_1_1ModelComponent.html">OpenSim::ModelComponent</a></td><td class="entry"><span class="mlabel">virtual</span></td></tr>
+  <tr><td class="entry"><a class="el" href="classOpenSim_1_1Object.html#a0e325f974b4640ba3a61658d83a4e5bc">hasProperty</a>(const std::string &amp;name) const </td><td class="entry"><a class="el" href="classOpenSim_1_1Object.html">OpenSim::Object</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classOpenSim_1_1Object.html#ab6af5b2dc8e345c2a99a50f75ce12275">hasProperty</a>() const </td><td class="entry"><a class="el" href="classOpenSim_1_1Object.html">OpenSim::Object</a></td><td class="entry"></td></tr>
+  <tr><td class="entry"><a class="el" href="classOpenSim_1_1ModelComponent.html#aab3847b1c66db609a3c00010b9507920">includeAsSubComponent</a>(ModelComponent *aComponent)</td><td class="entry"><a class="el" href="classOpenSim_1_1ModelComponent.html">OpenSim::ModelComponent</a></td><td class="entry"><span class="mlabel">protected</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classOpenSim_1_1EllipsoidJoint.html#a9fd88fbd8b8a6428abc5cdcb6d942342">initStateFromProperties</a>(SimTK::State &amp;s) const override</td><td class="entry"><a class="el" href="classOpenSim_1_1EllipsoidJoint.html">OpenSim::EllipsoidJoint</a></td><td class="entry"><span class="mlabel">protected</span><span class="mlabel">virtual</span></td></tr>
+  <tr><td class="entry"><a class="el" href="classOpenSim_1_1Object.html#a126f1d87df28a081c7b1c99bb477cb3b">isA</a>(const char *type) const </td><td class="entry"><a class="el" href="classOpenSim_1_1Object.html">OpenSim::Object</a></td><td class="entry"><span class="mlabel">inline</span><span class="mlabel">virtual</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classOpenSim_1_1ModelComponent.html#ab55fac6f1bff5448e0de9b551a6c26f1">isCacheVariableValid</a>(const SimTK::State &amp;state, const std::string &amp;name) const </td><td class="entry"><a class="el" href="classOpenSim_1_1ModelComponent.html">OpenSim::ModelComponent</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
+  <tr><td class="entry"><a class="el" href="classOpenSim_1_1Joint.html#a76e585289ca1527369c1860956ea9bdf">isCoordinateUsed</a>(Coordinate &amp;aCoordinate) const </td><td class="entry"><a class="el" href="classOpenSim_1_1Joint.html">OpenSim::Joint</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classOpenSim_1_1Object.html#a6690bb504728e0ba5d675178616005c0">isEqualTo</a>(const Object &amp;aObject) const </td><td class="entry"><a class="el" href="classOpenSim_1_1Object.html">OpenSim::Object</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
+  <tr><td class="entry"><a class="el" href="classOpenSim_1_1Object.html#a9debf9775f9e8c0b517654cb19669518">isKindOf</a>(const char *type)</td><td class="entry"><a class="el" href="classOpenSim_1_1Object.html">OpenSim::Object</a></td><td class="entry"><span class="mlabel">inline</span><span class="mlabel">static</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classOpenSim_1_1Object.html#a77a7df6eb433b4e130ce7aa63b8d3d7e">isObjectTypeDerivedFrom</a>(const std::string &amp;concreteClassName)</td><td class="entry"><a class="el" href="classOpenSim_1_1Object.html">OpenSim::Object</a></td><td class="entry"><span class="mlabel">inline</span><span class="mlabel">static</span></td></tr>
+  <tr><td class="entry"><a class="el" href="classOpenSim_1_1Object.html#a8e4e64da3072679681702cdb786c41cf">isObjectUpToDateWithProperties</a>() const </td><td class="entry"><a class="el" href="classOpenSim_1_1Object.html">OpenSim::Object</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classOpenSim_1_1Joint.html#a29f20e9345ba24e45f5625510934f993">Joint</a>()</td><td class="entry"><a class="el" href="classOpenSim_1_1Joint.html">OpenSim::Joint</a></td><td class="entry"></td></tr>
+  <tr><td class="entry"><a class="el" href="classOpenSim_1_1Joint.html#a46c6683d6776b2a1ebfdc0ed874b9787">Joint</a>(const std::string &amp;name, Body &amp;parent, SimTK::Vec3 locationInParent, SimTK::Vec3 orientationInParent, Body &amp;body, SimTK::Vec3 locationInBody, SimTK::Vec3 orientationInBody, bool reverse=false)</td><td class="entry"><a class="el" href="classOpenSim_1_1Joint.html">OpenSim::Joint</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classOpenSim_1_1Object.html#ab7d860a7849ddbb27885673dbf5dbf76">makeObjectFromFile</a>(const std::string &amp;fileName)</td><td class="entry"><a class="el" href="classOpenSim_1_1Object.html">OpenSim::Object</a></td><td class="entry"><span class="mlabel">static</span></td></tr>
+  <tr><td class="entry"><a class="el" href="classOpenSim_1_1ModelComponent.html#ac2f7eae492f32d1662df56965bef2d04">markCacheVariableInvalid</a>(const SimTK::State &amp;state, const std::string &amp;name) const </td><td class="entry"><a class="el" href="classOpenSim_1_1ModelComponent.html">OpenSim::ModelComponent</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classOpenSim_1_1ModelComponent.html#a69adf999c37dd17a7afcbdee765a56e3">markCacheVariableValid</a>(const SimTK::State &amp;state, const std::string &amp;name) const </td><td class="entry"><a class="el" href="classOpenSim_1_1ModelComponent.html">OpenSim::ModelComponent</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
+  <tr><td class="entry"><a class="el" href="classOpenSim_1_1ModelComponent.html#a5ebcaa522b055841281b9dd0955cfa59">ModelComponent</a>()</td><td class="entry"><a class="el" href="classOpenSim_1_1ModelComponent.html">OpenSim::ModelComponent</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classOpenSim_1_1ModelComponent.html#a5e97b9c5d5ed00c4444006e88c6b9e74">ModelComponent</a>(const std::string &amp;aFileName, bool aUpdateFromXMLNode=true) SWIG_DECLARE_EXCEPTION</td><td class="entry"><a class="el" href="classOpenSim_1_1ModelComponent.html">OpenSim::ModelComponent</a></td><td class="entry"></td></tr>
+  <tr><td class="entry"><a class="el" href="classOpenSim_1_1ModelComponent.html#ac995f923d4edc65f94e155a334e0a198">ModelComponent</a>(SimTK::Xml::Element &amp;aNode)</td><td class="entry"><a class="el" href="classOpenSim_1_1ModelComponent.html">OpenSim::ModelComponent</a></td><td class="entry"><span class="mlabel">explicit</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classOpenSim_1_1ModelComponent.html#a736a848bf25b6ca1dbdfd3016e2e0a8b">ModelComponent</a>(const ModelComponent &amp;source)</td><td class="entry"><a class="el" href="classOpenSim_1_1ModelComponent.html">OpenSim::ModelComponent</a></td><td class="entry"></td></tr>
+  <tr><td class="entry"><a class="el" href="classOpenSim_1_1Object.html#afd44aecebc85d2f98ff3adf443e284d0">newInstanceOfType</a>(const std::string &amp;concreteClassName)</td><td class="entry"><a class="el" href="classOpenSim_1_1Object.html">OpenSim::Object</a></td><td class="entry"><span class="mlabel">static</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classOpenSim_1_1EllipsoidJoint.html#a8d2050a820ebddcf246880822e636355">numCoordinates</a>() const override</td><td class="entry"><a class="el" href="classOpenSim_1_1EllipsoidJoint.html">OpenSim::EllipsoidJoint</a></td><td class="entry"><span class="mlabel">inline</span><span class="mlabel">virtual</span></td></tr>
+  <tr><td class="entry"><a class="el" href="classOpenSim_1_1Object.html#a620026774a4b0d36d93ed12a9451b356">Object</a>()</td><td class="entry"><a class="el" href="classOpenSim_1_1Object.html">OpenSim::Object</a></td><td class="entry"><span class="mlabel">protected</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classOpenSim_1_1Object.html#af1557e960a306925e8e809123f81a331">Object</a>(const std::string &amp;fileName, bool aUpdateFromXMLNode=true) SWIG_DECLARE_EXCEPTION</td><td class="entry"><a class="el" href="classOpenSim_1_1Object.html">OpenSim::Object</a></td><td class="entry"><span class="mlabel">explicit</span><span class="mlabel">protected</span></td></tr>
+  <tr><td class="entry"><a class="el" href="classOpenSim_1_1Object.html#a88fad2c70cc33674ede31a20a29610fc">Object</a>(const Object &amp;source)</td><td class="entry"><a class="el" href="classOpenSim_1_1Object.html">OpenSim::Object</a></td><td class="entry"><span class="mlabel">protected</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classOpenSim_1_1Object.html#af8ecc144d30a872d28ab63d82245da9b">Object</a>(SimTK::Xml::Element &amp;aElement)</td><td class="entry"><a class="el" href="classOpenSim_1_1Object.html">OpenSim::Object</a></td><td class="entry"><span class="mlabel">explicit</span><span class="mlabel">protected</span></td></tr>
+  <tr><td class="entry"><a class="el" href="classOpenSim_1_1Object.html#ab75c37552f6feacddf9fc1d9a7c08cbe">OpenSim::Object::OpenSim_DECLARE_ABSTRACT_OBJECT</a></td><td class="entry"><a class="el" href="classOpenSim_1_1Object.html">OpenSim::Object</a></td><td class="entry"><span class="mlabel">related</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classOpenSim_1_1Object.html#af7bc131913e859c757561270bb3adb86">OpenSim_DECLARE_ABSTRACT_OBJECT_T</a></td><td class="entry"><a class="el" href="classOpenSim_1_1Object.html">OpenSim::Object</a></td><td class="entry"><span class="mlabel">related</span></td></tr>
+  <tr><td class="entry"><a class="el" href="classOpenSim_1_1Object.html#a13075f96c92f1a0f18b791adf0fa255b">OpenSim::Joint::OpenSim_DECLARE_CONCRETE_OBJECT</a></td><td class="entry"><a class="el" href="classOpenSim_1_1Object.html">OpenSim::Object</a></td><td class="entry"><span class="mlabel">related</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classOpenSim_1_1Object.html#a04a016239bdc0a855927f706eca78876">OpenSim_DECLARE_CONCRETE_OBJECT_T</a></td><td class="entry"><a class="el" href="classOpenSim_1_1Object.html">OpenSim::Object</a></td><td class="entry"><span class="mlabel">related</span></td></tr>
+  <tr><td class="entry"><a class="el" href="classOpenSim_1_1EllipsoidJoint.html#a96306460589c696f352ab4ec030a6bb5">OpenSim_DECLARE_PROPERTY</a>(radii_x_y_z, SimTK::Vec3,&quot;Radii of the ellipsoid fixed to the parent frame, &quot;&quot;specified as a Vec3(rX, rY, rZ).&quot;)</td><td class="entry"><a class="el" href="classOpenSim_1_1EllipsoidJoint.html">OpenSim::EllipsoidJoint</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classOpenSim_1_1Joint.html#a496db40f447204797abcb1af8a45d5f4">OpenSim::Joint::OpenSim_DECLARE_PROPERTY</a>(parent_body, std::string,&quot;Name of the parent body to which this joint connects its owner body.&quot;)</td><td class="entry"><a class="el" href="classOpenSim_1_1Joint.html">OpenSim::Joint</a></td><td class="entry"></td></tr>
+  <tr><td class="entry"><a class="el" href="classOpenSim_1_1Joint.html#a30e04408172d9714f86279fa3bb617d1">OpenSim::Joint::OpenSim_DECLARE_PROPERTY</a>(location_in_parent, SimTK::Vec3,&quot;Location of the joint in the parent body specified in the parent &quot;&quot;reference frame. Default is (0,0,0).&quot;)</td><td class="entry"><a class="el" href="classOpenSim_1_1Joint.html">OpenSim::Joint</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classOpenSim_1_1Joint.html#aa37f2aa4ee338c89d83cea1830c5e3a5">OpenSim::Joint::OpenSim_DECLARE_PROPERTY</a>(orientation_in_parent, SimTK::Vec3,&quot;Orientation of the joint in the parent body specified in the parent &quot;&quot;reference frame. Euler XYZ body-fixed rotation angles are used to &quot;&quot;express the orientation. Default is (0,0,0).&quot;)</td><td class="entry"><a class="el" href="classOpenSim_1_1Joint.html">OpenSim::Joint</a></td><td class="entry"></td></tr>
+  <tr><td class="entry"><a class="el" href="classOpenSim_1_1Joint.html#a28bb38a9086a692262a7d112f14d08cb">OpenSim::Joint::OpenSim_DECLARE_PROPERTY</a>(location, SimTK::Vec3,&quot;Location of the joint in the child body specified in the child &quot;&quot;reference frame. For SIMM models, this vector is always the zero &quot;&quot;vector (i.e., the body reference frame coincides with the joint). &quot;)</td><td class="entry"><a class="el" href="classOpenSim_1_1Joint.html">OpenSim::Joint</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classOpenSim_1_1Joint.html#a0b71f85f79a0007e0cbaa7d481d22036">OpenSim::Joint::OpenSim_DECLARE_PROPERTY</a>(orientation, SimTK::Vec3,&quot;Orientation of the joint in the owing body specified in the owning body &quot;&quot;reference frame.  Euler XYZ body-fixed rotation angles are used to &quot;&quot;express the orientation. &quot;)</td><td class="entry"><a class="el" href="classOpenSim_1_1Joint.html">OpenSim::Joint</a></td><td class="entry"></td></tr>
+  <tr><td class="entry"><a class="el" href="classOpenSim_1_1Joint.html#ad75927a8a6000e711775630a69e82637">OpenSim::Joint::OpenSim_DECLARE_PROPERTY</a>(reverse, bool,&quot;Whether the joint transform defines parent-&gt;child or child-&gt;parent.&quot;)</td><td class="entry"><a class="el" href="classOpenSim_1_1Joint.html">OpenSim::Joint</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classOpenSim_1_1Joint.html#a6e6b52cfe76700af697ec09494300300">OpenSim_DECLARE_UNNAMED_PROPERTY</a>(CoordinateSet,&quot;Set holding the generalized coordinates (q's) that parmeterize this joint.&quot;)</td><td class="entry"><a class="el" href="classOpenSim_1_1Joint.html">OpenSim::Joint</a></td><td class="entry"></td></tr>
+  <tr><td class="entry"><a class="el" href="classOpenSim_1_1Object.html#a3fe4c39736b73c4df2f9c68c7a9f74a3">operator&lt;</a>(const Object &amp;aObject) const </td><td class="entry"><a class="el" href="classOpenSim_1_1Object.html">OpenSim::Object</a></td><td class="entry"><span class="mlabel">virtual</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classOpenSim_1_1ModelComponent.html#abe591e8c08c2cca2b2bb35e1ee0761ae">operator=</a>(const ModelComponent &amp;aModelComponent)</td><td class="entry"><a class="el" href="classOpenSim_1_1ModelComponent.html">OpenSim::ModelComponent</a></td><td class="entry"></td></tr>
+  <tr><td class="entry"><a class="el" href="classOpenSim_1_1Object.html#a1296dda9711e0e061fd29b88eacae796">OpenSim::Object::operator=</a>(const Object &amp;aObject)</td><td class="entry"><a class="el" href="classOpenSim_1_1Object.html">OpenSim::Object</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classOpenSim_1_1Object.html#a96b3686d0084ddba34a754cf61996b71">operator==</a>(const Object &amp;aObject) const </td><td class="entry"><a class="el" href="classOpenSim_1_1Object.html">OpenSim::Object</a></td><td class="entry"><span class="mlabel">virtual</span></td></tr>
+  <tr><td class="entry"><a class="el" href="classOpenSim_1_1Object.html#abb75c7ca31491448197278e589266c48">print</a>(const std::string &amp;fileName)</td><td class="entry"><a class="el" href="classOpenSim_1_1Object.html">OpenSim::Object</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classOpenSim_1_1Object.html#a0586ab0764c0a94ead847bb0ca4c0eb3">PrintPropertyInfo</a>(std::ostream &amp;os, const std::string &amp;classNameDotPropertyName)</td><td class="entry"><a class="el" href="classOpenSim_1_1Object.html">OpenSim::Object</a></td><td class="entry"><span class="mlabel">static</span></td></tr>
+  <tr><td class="entry"><a class="el" href="classOpenSim_1_1Object.html#aaab93bb0a139e5e11f359d61fe1ae3e1">PrintPropertyInfo</a>(std::ostream &amp;os, const std::string &amp;className, const std::string &amp;propertyName)</td><td class="entry"><a class="el" href="classOpenSim_1_1Object.html">OpenSim::Object</a></td><td class="entry"><span class="mlabel">static</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classOpenSim_1_1Object.html#abd740e38f08939be0c05b622b2a5f61e">readObjectFromXMLNodeOrFile</a>(SimTK::Xml::Element &amp;objectElement, int versionNumber)</td><td class="entry"><a class="el" href="classOpenSim_1_1Object.html">OpenSim::Object</a></td><td class="entry"></td></tr>
+  <tr><td class="entry"><a class="el" href="classOpenSim_1_1ModelComponent.html#a2dcb81eb9e9c2fd713a22a70134df62f">realizeAcceleration</a>(const SimTK::State &amp;state) const </td><td class="entry"><a class="el" href="classOpenSim_1_1ModelComponent.html">OpenSim::ModelComponent</a></td><td class="entry"><span class="mlabel">protected</span><span class="mlabel">virtual</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classOpenSim_1_1ModelComponent.html#aeeb95419add0063c64488167a072272b">realizeDynamics</a>(const SimTK::State &amp;state) const </td><td class="entry"><a class="el" href="classOpenSim_1_1ModelComponent.html">OpenSim::ModelComponent</a></td><td class="entry"><span class="mlabel">protected</span><span class="mlabel">virtual</span></td></tr>
+  <tr><td class="entry"><a class="el" href="classOpenSim_1_1ModelComponent.html#a32054352d6d12cf439330ae2e1f0c4af">realizeInstance</a>(const SimTK::State &amp;state) const </td><td class="entry"><a class="el" href="classOpenSim_1_1ModelComponent.html">OpenSim::ModelComponent</a></td><td class="entry"><span class="mlabel">protected</span><span class="mlabel">virtual</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classOpenSim_1_1ModelComponent.html#a4ce3483ba6137bb11e89b60bb433f566">realizeModel</a>(SimTK::State &amp;state) const </td><td class="entry"><a class="el" href="classOpenSim_1_1ModelComponent.html">OpenSim::ModelComponent</a></td><td class="entry"><span class="mlabel">protected</span><span class="mlabel">virtual</span></td></tr>
+  <tr><td class="entry"><a class="el" href="classOpenSim_1_1ModelComponent.html#a02d949fadc594b5bff0dc7f1fb0c4eda">realizePosition</a>(const SimTK::State &amp;state) const </td><td class="entry"><a class="el" href="classOpenSim_1_1ModelComponent.html">OpenSim::ModelComponent</a></td><td class="entry"><span class="mlabel">protected</span><span class="mlabel">virtual</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classOpenSim_1_1ModelComponent.html#a8cf78bacf52f896c5720e06a22a971e7">realizeReport</a>(const SimTK::State &amp;state) const </td><td class="entry"><a class="el" href="classOpenSim_1_1ModelComponent.html">OpenSim::ModelComponent</a></td><td class="entry"><span class="mlabel">protected</span><span class="mlabel">virtual</span></td></tr>
+  <tr><td class="entry"><a class="el" href="classOpenSim_1_1ModelComponent.html#acc89b5f62952334e67b97d2f849eeec9">realizeTime</a>(const SimTK::State &amp;state) const </td><td class="entry"><a class="el" href="classOpenSim_1_1ModelComponent.html">OpenSim::ModelComponent</a></td><td class="entry"><span class="mlabel">protected</span><span class="mlabel">virtual</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classOpenSim_1_1ModelComponent.html#a5e999041a8bc65334a5294ff5883802f">realizeTopology</a>(SimTK::State &amp;state) const </td><td class="entry"><a class="el" href="classOpenSim_1_1ModelComponent.html">OpenSim::ModelComponent</a></td><td class="entry"><span class="mlabel">protected</span><span class="mlabel">virtual</span></td></tr>
+  <tr><td class="entry"><a class="el" href="classOpenSim_1_1ModelComponent.html#a9f3a292d4de6ee432be5e5fe597b911e">realizeVelocity</a>(const SimTK::State &amp;state) const </td><td class="entry"><a class="el" href="classOpenSim_1_1ModelComponent.html">OpenSim::ModelComponent</a></td><td class="entry"><span class="mlabel">protected</span><span class="mlabel">virtual</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classOpenSim_1_1Object.html#a0a6f962db2c026cce6176ed5017e805c">RegisterType</a>(const Object &amp;defaultObject)</td><td class="entry"><a class="el" href="classOpenSim_1_1Object.html">OpenSim::Object</a></td><td class="entry"><span class="mlabel">inline</span><span class="mlabel">static</span></td></tr>
+  <tr><td class="entry"><a class="el" href="classOpenSim_1_1Object.html#ace1fe7d9f4d7509b5d9e74fbe757b72d">registerType</a>(const Object &amp;defaultObject)</td><td class="entry"><a class="el" href="classOpenSim_1_1Object.html">OpenSim::Object</a></td><td class="entry"><span class="mlabel">static</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classOpenSim_1_1Object.html#a2b7d3f95ec3dcec17bd5fc17de4b3062">RenameType</a>(const std::string &amp;oldName, const std::string &amp;newName)</td><td class="entry"><a class="el" href="classOpenSim_1_1Object.html">OpenSim::Object</a></td><td class="entry"><span class="mlabel">inline</span><span class="mlabel">static</span></td></tr>
+  <tr><td class="entry"><a class="el" href="classOpenSim_1_1Object.html#ad4f89d1f8a5d4b85dba51df9b207183b">renameType</a>(const std::string &amp;oldTypeName, const std::string &amp;newTypeName)</td><td class="entry"><a class="el" href="classOpenSim_1_1Object.html">OpenSim::Object</a></td><td class="entry"><span class="mlabel">static</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classOpenSim_1_1Object.html#a72643bf97b601311912f678bb3770abe">SafeCopy</a>(const Object *aObject)</td><td class="entry"><a class="el" href="classOpenSim_1_1Object.html">OpenSim::Object</a></td><td class="entry"><span class="mlabel">inline</span><span class="mlabel">static</span></td></tr>
+  <tr><td class="entry"><a class="el" href="classOpenSim_1_1EllipsoidJoint.html#ab0a87f14370ff2485af759fa6ef20e65">scale</a>(const ScaleSet &amp;aScaleSet) override</td><td class="entry"><a class="el" href="classOpenSim_1_1EllipsoidJoint.html">OpenSim::EllipsoidJoint</a></td><td class="entry"><span class="mlabel">virtual</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classOpenSim_1_1Object.html#a092550b5528d3d817022c045e4144183">setAllPropertiesUseDefault</a>(bool aUseDefault)</td><td class="entry"><a class="el" href="classOpenSim_1_1Object.html">OpenSim::Object</a></td><td class="entry"></td></tr>
+  <tr><td class="entry"><a class="el" href="classOpenSim_1_1Object.html#a5543fa91645f86c336d121cf6da60dfd">setAuthors</a>(const std::string &amp;authors)</td><td class="entry"><a class="el" href="classOpenSim_1_1Object.html">OpenSim::Object</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classOpenSim_1_1Joint.html#ab502a561565b0ce00e08bd08dae28e17">setBody</a>(OpenSim::Body &amp;aBody)</td><td class="entry"><a class="el" href="classOpenSim_1_1Joint.html">OpenSim::Joint</a></td><td class="entry"><span class="mlabel">virtual</span></td></tr>
+  <tr><td class="entry"><a class="el" href="classOpenSim_1_1ModelComponent.html#ac4d403312ddf190222d24c4fab3ea5e5">setCacheVariable</a>(const SimTK::State &amp;state, const std::string &amp;name, const T &amp;value) const </td><td class="entry"><a class="el" href="classOpenSim_1_1ModelComponent.html">OpenSim::ModelComponent</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classOpenSim_1_1Joint.html#a84daafabc3f915e20dd6adcdd6389088">setCoordinateMobilizedBodyIndex</a>(Coordinate *aCoord, SimTK::MobilizedBodyIndex index) const </td><td class="entry"><a class="el" href="classOpenSim_1_1Joint.html">OpenSim::Joint</a></td><td class="entry"><span class="mlabel">inline</span><span class="mlabel">protected</span></td></tr>
+  <tr><td class="entry"><a class="el" href="classOpenSim_1_1Joint.html#a788c6444a3957b66aec9f83841d525e6">setCoordinateMobilizerQIndex</a>(Coordinate *aCoord, int index) const </td><td class="entry"><a class="el" href="classOpenSim_1_1Joint.html">OpenSim::Joint</a></td><td class="entry"><span class="mlabel">inline</span><span class="mlabel">protected</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classOpenSim_1_1Joint.html#af08d566469df0f6896dff8d69ef5027a">setCoordinateModel</a>(Coordinate *aCoord, Model *aModel) const </td><td class="entry"><a class="el" href="classOpenSim_1_1Joint.html">OpenSim::Joint</a></td><td class="entry"><span class="mlabel">inline</span><span class="mlabel">protected</span></td></tr>
+  <tr><td class="entry"><a class="el" href="classOpenSim_1_1Object.html#a46f10ccc4bc8ab3b0b4e68d3ab75f892">setDebugLevel</a>(int newLevel)</td><td class="entry"><a class="el" href="classOpenSim_1_1Object.html">OpenSim::Object</a></td><td class="entry"><span class="mlabel">inline</span><span class="mlabel">static</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classOpenSim_1_1Object.html#a736967772e266744409791c21a94dd80">setDescription</a>(const std::string &amp;description)</td><td class="entry"><a class="el" href="classOpenSim_1_1Object.html">OpenSim::Object</a></td><td class="entry"></td></tr>
+  <tr><td class="entry"><a class="el" href="classOpenSim_1_1ModelComponent.html#a795743ad34d15469f37f51ae0e14df91">setDiscreteVariable</a>(SimTK::State &amp;state, const std::string &amp;name, double value) const </td><td class="entry"><a class="el" href="classOpenSim_1_1ModelComponent.html">OpenSim::ModelComponent</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classOpenSim_1_1Object.html#abb6cc3ab175f7fbd32e9bc001d5ba30a">setDocument</a>(XMLDocument *doc)</td><td class="entry"><a class="el" href="classOpenSim_1_1Object.html">OpenSim::Object</a></td><td class="entry"><span class="mlabel">inline</span><span class="mlabel">protected</span></td></tr>
+  <tr><td class="entry"><a class="el" href="classOpenSim_1_1EllipsoidJoint.html#a82d78a5ec4c60005d31c82625e82830d">setEllipsoidRadii</a>(SimTK::Vec3 radii)</td><td class="entry"><a class="el" href="classOpenSim_1_1EllipsoidJoint.html">OpenSim::EllipsoidJoint</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classOpenSim_1_1Object.html#ab419ca21895e653bffb4fc5b0ac3afa2">setInlined</a>(bool aInlined, const std::string &amp;aFileName=&quot;&quot;)</td><td class="entry"><a class="el" href="classOpenSim_1_1Object.html">OpenSim::Object</a></td><td class="entry"></td></tr>
+  <tr><td class="entry"><a class="el" href="classOpenSim_1_1Joint.html#a8cde95edcc1dde549fa446be2427226c">setLocation</a>(const SimTK::Vec3 &amp;aLocation)</td><td class="entry"><a class="el" href="classOpenSim_1_1Joint.html">OpenSim::Joint</a></td><td class="entry"><span class="mlabel">virtual</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classOpenSim_1_1Joint.html#aafddf673ab6a56e447b61d5aafed2c58">setLocationInChild</a>(const SimTK::Vec3 &amp;aLocation)</td><td class="entry"><a class="el" href="classOpenSim_1_1Joint.html">OpenSim::Joint</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
+  <tr><td class="entry"><a class="el" href="classOpenSim_1_1Joint.html#a3c2fef692610324a85f6a478621df88c">setLocationInParent</a>(const SimTK::Vec3 &amp;aLocation)</td><td class="entry"><a class="el" href="classOpenSim_1_1Joint.html">OpenSim::Joint</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classOpenSim_1_1Joint.html#a4ae285f60054c48c889f656a1216fc57">setMobilizedBodyIndex</a>(Body *aBody, SimTK::MobilizedBodyIndex index) const </td><td class="entry"><a class="el" href="classOpenSim_1_1Joint.html">OpenSim::Joint</a></td><td class="entry"><span class="mlabel">protected</span></td></tr>
+  <tr><td class="entry"><a class="el" href="classOpenSim_1_1ModelComponent.html#a1ff6f3ccb11f87563054de2437d831aa">setModelingOption</a>(SimTK::State &amp;state, const std::string &amp;name, int flag) const </td><td class="entry"><a class="el" href="classOpenSim_1_1ModelComponent.html">OpenSim::ModelComponent</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classOpenSim_1_1Object.html#a44921f417260a606255a162bfaa74e85">setName</a>(const std::string &amp;name)</td><td class="entry"><a class="el" href="classOpenSim_1_1Object.html">OpenSim::Object</a></td><td class="entry"></td></tr>
+  <tr><td class="entry"><a class="el" href="classOpenSim_1_1Object.html#a6aff140025aa58def7bad8810a6c4652">setObjectIsUpToDateWithProperties</a>()</td><td class="entry"><a class="el" href="classOpenSim_1_1Object.html">OpenSim::Object</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classOpenSim_1_1Joint.html#aa6a216bd54dddd0de363b84d3ab487f7">setOrientation</a>(const SimTK::Vec3 &amp;aOrientation)</td><td class="entry"><a class="el" href="classOpenSim_1_1Joint.html">OpenSim::Joint</a></td><td class="entry"><span class="mlabel">virtual</span></td></tr>
+  <tr><td class="entry"><a class="el" href="classOpenSim_1_1Joint.html#a48da01ec344fffdeb3b155910c24f060">setOrientationInParent</a>(const SimTK::Vec3 &amp;aOrientation)</td><td class="entry"><a class="el" href="classOpenSim_1_1Joint.html">OpenSim::Joint</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classOpenSim_1_1Joint.html#a4606f4f493088c399de71fb7aab2d125">setParentBody</a>(OpenSim::Body &amp;aBody)</td><td class="entry"><a class="el" href="classOpenSim_1_1Joint.html">OpenSim::Joint</a></td><td class="entry"></td></tr>
+  <tr><td class="entry"><a class="el" href="classOpenSim_1_1Joint.html#a97245ee11878504b4ace30d7febf5a8b">setParentName</a>(const std::string &amp;aName)</td><td class="entry"><a class="el" href="classOpenSim_1_1Joint.html">OpenSim::Joint</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classOpenSim_1_1EllipsoidJoint.html#aaa2abebaeafb2a94a1a32d15783a7dff">setPropertiesFromState</a>(const SimTK::State &amp;state) override</td><td class="entry"><a class="el" href="classOpenSim_1_1EllipsoidJoint.html">OpenSim::EllipsoidJoint</a></td><td class="entry"><span class="mlabel">protected</span><span class="mlabel">virtual</span></td></tr>
+  <tr><td class="entry"><a class="el" href="classOpenSim_1_1Object.html#a3cf59c40ec8751e01d736db3383cbe50">setReferences</a>(const std::string &amp;references)</td><td class="entry"><a class="el" href="classOpenSim_1_1Object.html">OpenSim::Object</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classOpenSim_1_1Object.html#adc42e7d52c371b14898ce7e13e55700c">setSerializeAllDefaults</a>(bool shouldSerializeDefaults)</td><td class="entry"><a class="el" href="classOpenSim_1_1Object.html">OpenSim::Object</a></td><td class="entry"><span class="mlabel">inline</span><span class="mlabel">static</span></td></tr>
+  <tr><td class="entry"><a class="el" href="classOpenSim_1_1ModelComponent.html#a1bc98a8d7a4e3b04e9f9e58904ecf6bc">setStateVariable</a>(SimTK::State &amp;state, const std::string &amp;name, double value) const </td><td class="entry"><a class="el" href="classOpenSim_1_1ModelComponent.html">OpenSim::ModelComponent</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classOpenSim_1_1Object.html#ac3c9abc33ff7e6f061e35c7e67e6eb14">toString</a>() const </td><td class="entry"><a class="el" href="classOpenSim_1_1Object.html">OpenSim::Object</a></td><td class="entry"></td></tr>
+  <tr><td class="entry"><a class="el" href="classOpenSim_1_1ModelComponent.html#a9fea6f835ae3f760c0d9e5b41063d2ff">updateDisplayer</a>(const SimTK::State &amp;s) const </td><td class="entry"><a class="el" href="classOpenSim_1_1ModelComponent.html">OpenSim::ModelComponent</a></td><td class="entry"><span class="mlabel">inline</span><span class="mlabel">virtual</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classOpenSim_1_1Object.html#a1d2da63a45b146424737d00c128a8491">updateFromXMLDocument</a>()</td><td class="entry"><a class="el" href="classOpenSim_1_1Object.html">OpenSim::Object</a></td><td class="entry"><span class="mlabel">protected</span></td></tr>
+  <tr><td class="entry"><a class="el" href="classOpenSim_1_1Object.html#a988abda95a67bb454373a89fe38f2af7">updateFromXMLNode</a>(SimTK::Xml::Element &amp;objectElement, int versionNumber)</td><td class="entry"><a class="el" href="classOpenSim_1_1Object.html">OpenSim::Object</a></td><td class="entry"><span class="mlabel">virtual</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classOpenSim_1_1Object.html#a0bad202ee6d57acbbcc28c2b51cf7413">updateXMLNode</a>(SimTK::Xml::Element &amp;parent)</td><td class="entry"><a class="el" href="classOpenSim_1_1Object.html">OpenSim::Object</a></td><td class="entry"><span class="mlabel">virtual</span></td></tr>
+  <tr><td class="entry"><a class="el" href="classOpenSim_1_1Joint.html#aa0525e7094f86705c15616983b088112">updBody</a>()</td><td class="entry"><a class="el" href="classOpenSim_1_1Joint.html">OpenSim::Joint</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classOpenSim_1_1ModelComponent.html#af2e3d1a9d0e3f09a49735ae584a38d1f">updCacheVariable</a>(const SimTK::State &amp;state, const std::string &amp;name) const </td><td class="entry"><a class="el" href="classOpenSim_1_1ModelComponent.html">OpenSim::ModelComponent</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
+  <tr><td class="entry"><a class="el" href="classOpenSim_1_1Object.html#abe46905179b5d21f37c9b20f5ad70ffb">updDisplayer</a>()</td><td class="entry"><a class="el" href="classOpenSim_1_1Object.html">OpenSim::Object</a></td><td class="entry"><span class="mlabel">inline</span><span class="mlabel">virtual</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classOpenSim_1_1Object.html#afd5324b6c5432c4c37619afc29996136">updDocument</a>()</td><td class="entry"><a class="el" href="classOpenSim_1_1Object.html">OpenSim::Object</a></td><td class="entry"><span class="mlabel">inline</span><span class="mlabel">protected</span></td></tr>
+  <tr><td class="entry"><a class="el" href="classOpenSim_1_1ModelComponent.html#a7c705588d2883bf3709bdff2042bf42c">updModel</a>()</td><td class="entry"><a class="el" href="classOpenSim_1_1ModelComponent.html">OpenSim::ModelComponent</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classOpenSim_1_1Joint.html#aeeca97d36b55917dacae421f9efedd38">updParentBody</a>()</td><td class="entry"><a class="el" href="classOpenSim_1_1Joint.html">OpenSim::Joint</a></td><td class="entry"></td></tr>
+  <tr><td class="entry"><a class="el" href="classOpenSim_1_1Object.html#a351933e7ddc7a7e761e2a8a9cd12728b">updProperty</a>(const PropertyIndex &amp;index)</td><td class="entry"><a class="el" href="classOpenSim_1_1Object.html">OpenSim::Object</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classOpenSim_1_1Object.html#ac3f81ef13cb278c49785cbb2236cc2b0">updPropertyByIndex</a>(int propertyIndex)</td><td class="entry"><a class="el" href="classOpenSim_1_1Object.html">OpenSim::Object</a></td><td class="entry"></td></tr>
+  <tr><td class="entry"><a class="el" href="classOpenSim_1_1Object.html#a62268af4017fc9d547ae718b3cb3733d">updPropertyByName</a>(const std::string &amp;name)</td><td class="entry"><a class="el" href="classOpenSim_1_1Object.html">OpenSim::Object</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classOpenSim_1_1EllipsoidJoint.html#ad24c98eb9e71a4d7c6b704ba1164b6cc">~EllipsoidJoint</a>()</td><td class="entry"><a class="el" href="classOpenSim_1_1EllipsoidJoint.html">OpenSim::EllipsoidJoint</a></td><td class="entry"><span class="mlabel">virtual</span></td></tr>
+  <tr><td class="entry"><a class="el" href="classOpenSim_1_1Joint.html#a41a04975fb0c80b23a6c0f6869eb352c">~Joint</a>()</td><td class="entry"><a class="el" href="classOpenSim_1_1Joint.html">OpenSim::Joint</a></td><td class="entry"><span class="mlabel">virtual</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classOpenSim_1_1ModelComponent.html#afc961abe1d185266e4d4e4f9a6311e1e">~ModelComponent</a>()</td><td class="entry"><a class="el" href="classOpenSim_1_1ModelComponent.html">OpenSim::ModelComponent</a></td><td class="entry"><span class="mlabel">inline</span><span class="mlabel">virtual</span></td></tr>
+  <tr><td class="entry"><a class="el" href="classOpenSim_1_1Object.html#a5dc026c632531b193236dfaa65962d40">~Object</a>()</td><td class="entry"><a class="el" href="classOpenSim_1_1Object.html">OpenSim::Object</a></td><td class="entry"><span class="mlabel">virtual</span></td></tr>
+</table></div><!-- contents -->
+</div><!-- doc-content -->
+</div>
+</body>
+</html>

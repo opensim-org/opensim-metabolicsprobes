@@ -1,0 +1,1919 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=9"/>
+<title>OpenSim: OpenSim::Array&lt; T &gt; Class Template Reference</title>
+<link href="opensim.css" rel="stylesheet" type="text/css" />
+<link href="lightbox.css" rel="stylesheet" type="text/css" />
+<link href="bootstrap3/css/bootstrap.min.css" rel="stylesheet">
+<script src="jquery-2.1.0.min.js"></script>
+<script src="bootstrap3/js/bootstrap.min.js"></script>
+<script src="lightbox.js"></script>
+<script type="text/javascript" src="typeahead.min.js"></script>
+<script src="hogan-2.0.0.js"></script>
+<script type="text/javascript">
+  window.onhashchange = function() {
+  if (window.location.hash)
+      window.scrollBy(0, -50);
+  }
+  if (window.location.hash)
+  {
+    window.scrollBy(0, -50);
+  }
+$( document ).ready(function() {
+  $("#MSearchBox").hide();
+  $("div.headertitle").addClass("page-header");
+  $("div.title").addClass("h1");
+  $('li > a[href="index.html"] > span').before("<i class='fa fa-cog'></i> ");
+  $('li > a[href="index.html"] > span').text("OpenSim");
+  $('li > a[href="modules.html"] > span').before("<i class='fa fa-square'></i> ");
+  $('li > a[href="namespaces.html"] > span').before("<i class='fa fa-bars'></i> ");
+  $('li > a[href="annotated.html"] > span').before("<i class='fa fa-list-ul'></i> ");
+  $('li > a[href="classes.html"] > span').before("<i class='fa fa-book'></i> ");
+  $('li > a[href="inherits.html"] > span').before("<i class='fa fa-sitemap'></i> ");
+  $('li > a[href="functions.html"] > span').before("<i class='fa fa-list'></i> ");
+  $('li > a[href="functions_func.html"] > span').before("<i class='fa fa-list'></i> ");
+  $('li > a[href="functions_vars.html"] > span').before("<i class='fa fa-list'></i> ");
+  $('li > a[href="functions_enum.html"] > span').before("<i class='fa fa-list'></i> ");
+  $('li > a[href="functions_eval.html"] > span').before("<i class='fa fa-list'></i> ");
+  $('img[src="ftv2ns.png"]').replaceWith('<span class="label label-danger">N</span> ');
+  $('img[src="ftv2cl.png"]').replaceWith('<span class="label label-danger">C</span> ');
+  $("ul.tablist").addClass("nav nav-pills nav-justified");
+  $("ul.tablist").css("margin-top", "0.5em");
+  $("ul.tablist").css("margin-bottom", "0.5em");
+  $("li.current").addClass("active");
+  $("iframe").attr("scrolling", "yes");
+  $("#nav-path > ul").addClass("breadcrumb");
+  $("table.params").addClass("table");
+  $("div.ingroups").wrapInner("<small></small>");
+  $("div.levels").css("margin", "0.5em");
+  $("div.levels > span").addClass("btn btn-default btn-xs");
+  $("div.levels > span").css("margin-right", "0.25em");
+  $("table.directory").addClass("table table-striped");
+  $("div.summary > a").addClass("btn btn-default btn-xs");
+  $("table.fieldtable").addClass("table");
+  $(".fragment").addClass("well");
+  $(".memitem").addClass("panel panel-default");
+  $(".memproto").addClass("panel-heading");
+  $(".memdoc").addClass("panel-body");
+  $("span.mlabel").addClass("label label-info");
+  $("table.memberdecls").addClass("table");
+  $("[class^=memitem]").addClass("active");
+  $("div.ah").addClass("btn btn-default");
+  $("span.mlabels").addClass("pull-right");
+  $("table.mlabels").css("width", "100%")
+  $("td.mlabels-right").addClass("pull-right");
+  $("div.ttc").addClass("panel panel-info");
+  $("div.ttname").addClass("panel-heading");
+  $("div.ttdef,div.ttdoc,div.ttdeci").addClass("panel-body");
+$("#search").typeahead([
+    {
+      name: 'opensim-search',
+      valueKey: 'title',
+      remote: { url: 'query?q=%QUERY&teaser=body&pagesize=1000',
+      filter: function(p) {
+        dat = [];
+        for(i=0; i < p.hits.length; i++)
+        {
+          var pn = p.hits[i].document;
+          pn.href = p.hits[i].id;
+          dat.push(pn);
+        }
+        return dat;
+      }
+    },
+      template: '<strong>{{title}}</strong><p>{{{teaser}}}</p>',
+      engine: Hogan,
+      limit: 1000
+    }
+    ]).on("typeahead:selected", (function (e, datum){
+      window.location = datum.href;
+    }));
+    $('.typeahead.input-sm').siblings('input.tt-hint').addClass('hint-small');
+    $('.typeahead.input-lg').siblings('input.tt-hint').addClass('hint-large');
+  $.ajax({url : "ping", type: "GET", error : function() {
+    var prt = $("#MSearchBox").parent();
+    $(".twitter-typeahead").replaceWith($("#MSearchBox").show());
+    prt.remove();
+  }, success: function() {
+    $("#MSearchBox").parent().remove();
+    $(".nav>li").css("width", "266.667px");
+  }   });
+});
+var initNavTree = function(a,b) { } 
+function toggleVisibility(linkObj)
+{
+ var base = $(linkObj).attr('id');
+ var summary = $('#'+base+'-summary');
+ var content = $('#'+base+'-content');
+ var trigger = $('#'+base+'-trigger');
+ var src=$(trigger).attr('src');
+ if (content.is(':visible')===true) {
+   content.hide();
+   summary.show();
+   $(linkObj).addClass('closed').removeClass('opened');
+   $(trigger).attr('src',src.substring(0,src.length-8)+'closed.png');
+ } else {
+   content.show();
+   summary.hide();
+   $(linkObj).removeClass('closed').addClass('opened');
+   $(trigger).attr('src',src.substring(0,src.length-10)+'open.png');
+ } 
+ return false;
+}
+function updateStripes()
+{
+  $('table.directory tr').
+       removeClass('even').filter(':visible:even').addClass('even');
+}
+function toggleLevel(level)
+{
+  $('table.directory tr').each(function(){ 
+    var l = this.id.split('_').length-1;
+    var i = $('#img'+this.id.substring(3));
+    var a = $('#arr'+this.id.substring(3));
+    if (l<level+1) {
+      i.attr('src','ftv2folderopen.png');
+      a.attr('src','ftv2mnode.png');
+      $(this).show();
+    } else if (l==level+1) {
+      i.attr('src','ftv2folderclosed.png');
+      a.attr('src','ftv2pnode.png');
+      $(this).show();
+    } else {
+      $(this).hide();
+    }
+  });
+  updateStripes();
+}
+function toggleFolder(id)
+{
+  //The clicked row
+  var currentRow = $('#row_'+id);
+  var currentRowImages = currentRow.find("img");
+  //All rows after the clicked row
+  var rows = currentRow.nextAll("tr");
+  //Only match elements AFTER this one (can't hide elements before)
+  var childRows = rows.filter(function() {
+    var re = new RegExp('^row_'+id+'\\d+_$', "i"); //only one sub
+    return this.id.match(re);
+  });
+  //First row is visible we are HIDING
+  if (childRows.filter(':first').is(':visible')===true) {
+    currentRowImages.filter("[id^=arr]").attr('src', 'ftv2pnode.png');
+    currentRowImages.filter("[id^=img]").attr('src', 'ftv2folderclosed.png');
+    rows.filter("[id^=row_"+id+"]").hide();
+  } else { //We are SHOWING
+    //All sub images
+    var childImages = childRows.find("img");
+    var childImg = childImages.filter("[id^=img]");
+    var childArr = childImages.filter("[id^=arr]");
+    currentRow.find("[id^=arr]").attr('src', 'ftv2mnode.png'); //open row
+    currentRow.find("[id^=img]").attr('src', 'ftv2folderopen.png'); //open row
+    childImg.attr('src','ftv2folderclosed.png'); //children closed
+    childArr.attr('src','ftv2pnode.png'); //children closed
+    childRows.show(); //show all children
+  }
+  updateStripes();
+}
+function toggleInherit(id)
+{
+  var rows = $('tr.inherit.'+id);
+  var img = $('tr.inherit_header.'+id+' img');
+  var src = $(img).attr('src');
+  if (rows.filter(':first').is(':visible')===true) {
+    rows.css('display','none');
+    $(img).attr('src',src.substring(0,src.length-8)+'closed.png');
+  } else {
+    rows.css('display','table-row'); // using show() causes jump in firefox
+    $(img).attr('src',src.substring(0,src.length-10)+'open.png');
+  }
+}
+$(function() {
+$(".dyncontent img").each(function () {
+  $(this).wrap("<a href='" + $(this).attr("src") + "'></a>");
+  $(".dyncontent a").click(function(e) { e.preventDefault(); $(this).ekkoLightbox();  });
+} );
+  diag = $("map").parent().children("a").children("img");
+  if (diag != 'undefined')
+  {
+      diag.clone().load(function() { 
+      ratio = diag.width() / this.width;
+      $("area").each(function () {
+          cr = $(this).attr("coords").split(",");
+          for(l=0; l < cr.length; l++) {
+            cr[l] = parseInt(cr[l]) * ratio;
+          }
+          $(this).attr("coords", cr.join(','));
+      })
+      console.log(ratio); 
+    });
+  }
+});
+</script>
+<style type="text/css">
+  body
+  {
+    width: 800px;
+    margin: 0 auto;
+  }
+  img
+  {
+    max-width: 800px;
+  }
+  #container
+  {
+    margin-top: 70px;
+  }
+.twitter-typeahead .tt-hint
+{
+    display: block;
+    height: 34px;
+    padding: 6px 12px;
+    font-size: 14px;
+    line-height: 1.428571429;
+    border: 1px solid transparent;
+    border-radius:4px;
+}
+.twitter-typeahead .hint-small
+{
+    height: 30px;
+    padding: 5px 10px;
+    font-size: 12px;
+    border-radius: 3px;
+    line-height: 1.5;
+}
+.twitter-typeahead .hint-large
+{
+    height: 45px;
+    padding: 10px 16px;
+    font-size: 18px;
+    border-radius: 6px;
+    line-height: 1.33;
+}
+.twitter-typeahead {
+    width: 100%;
+    position: relative;
+}
+.twitter-typeahead .tt-query,
+.twitter-typeahead .tt-hint {
+    margin-bottom: 0;
+    width:100%;
+    height: 34px;
+    position: absolute;
+    top:0;
+    left:0;
+}
+.twitter-typeahead .tt-hint {
+    color:#a1a1a1;
+    z-index: 1;
+    padding: 6px 12px;
+    border:1px solid transparent;
+}
+.twitter-typeahead .tt-query {
+    z-index: 2;
+    border-radius: 4px!important;
+}
+.tt-dropdown-menu {
+    left: auto !important;
+    right: 0px !important;
+    overflow-y: auto;
+    max-height: 400px;
+    min-width: 160px;
+    margin-top: 2px;
+    padding: 5px 0;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border: 1px solid rgba(0,0,0,.2);
+    *border-right-width: 2px;
+    *border-bottom-width: 2px;
+    -webkit-border-radius: 6px;
+    -moz-border-radius: 6px;
+    border-radius: 6px;
+    -webkit-box-shadow: 0 5px 10px rgba(0,0,0,.2);
+    -moz-box-shadow: 0 5px 10px rgba(0,0,0,.2);
+    box-shadow: 0 5px 10px rgba(0,0,0,.2);
+    -webkit-background-clip: padding-box;
+    -moz-background-clip: padding;
+    background-clip: padding-box;
+}
+.tt-suggestion {
+    display: block;
+    padding: 3px 20px;
+}
+.tt-suggestion.tt-is-under-cursor {
+    color: #fff;
+    background-color: #0081c2;
+    background-image: -moz-linear-gradient(top, #0088cc, #0077b3);
+    background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#0088cc), to(#0077b3));
+    background-image: -webkit-linear-gradient(top, #0088cc, #0077b3);
+    background-image: -o-linear-gradient(top, #0088cc, #0077b3);
+    background-image: linear-gradient(to bottom, #0088cc, #0077b3);
+    background-repeat: repeat-x;
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff0088cc', endColorstr='#ff0077b3', GradientType=0)
+}
+.tt-suggestion.tt-is-under-cursor a {
+    color: #fff;
+}
+.tt-suggestion p {
+    margin: 0;
+}
+.sc-em
+{
+  font-weight: bold;
+}
+#MSearchResultsWindow
+{
+  top: 51px !important;
+  position: fixed !important;
+}
+</style>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/search.js"></script>
+<script type="text/javascript">
+  $(document).ready(function() { searchBox.OnSelectItem(0); });
+</script>
+</head>
+<body>
+    <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <a class="navbar-brand" href="index.html">OpenSim Documentation</a>
+        </div>
+          <form class="navbar-form navbar-right">
+              <input type="search" placeholder="Search" class="form-control" id="search">
+          </form>
+      </div>
+    </div>
+  <div id="container">
+<!-- Generated by Doxygen 1.8.6 -->
+<script type="text/javascript">
+var searchBox = new SearchBox("searchBox", "search",false,'Search');
+</script>
+  <div id="navrow1" class="tabs">
+    <ul class="tablist">
+      <li><a href="index.html"><span>Main&#160;Page</span></a></li>
+      <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
+      <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
+      <li>
+        <div id="MSearchBox" class="MSearchBoxInactive">
+        <span class="left">
+          <img id="MSearchSelect" src="search/mag_sel.png"
+               onmouseover="return searchBox.OnSearchSelectShow()"
+               onmouseout="return searchBox.OnSearchSelectHide()"
+               alt=""/>
+          <input type="text" id="MSearchField" value="Search" accesskey="S"
+               onfocus="searchBox.OnSearchFieldFocus(true)" 
+               onblur="searchBox.OnSearchFieldFocus(false)" 
+               onkeyup="searchBox.OnSearchFieldChange(event)"/>
+          </span><span class="right">
+            <a id="MSearchClose" href="javascript:searchBox.CloseResultsWindow()"><img id="MSearchCloseImg" border="0" src="search/close.png" alt=""/></a>
+          </span>
+        </div>
+      </li>
+    </ul>
+  </div>
+  <div id="navrow2" class="tabs2">
+    <ul class="tablist">
+      <li><a href="annotated.html"><span>Class&#160;List</span></a></li>
+      <li><a href="hierarchy.html"><span>Class&#160;Hierarchy</span></a></li>
+      <li><a href="functions.html"><span>Class&#160;Members</span></a></li>
+    </ul>
+  </div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+$(document).ready(function(){initNavTree('classOpenSim_1_1Array.html','');});
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Namespaces</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Enumerator</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Friends</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(9)"><span class="SelectionMark">&#160;</span>Pages</a></div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<iframe src="javascript:void(0)" frameborder="0" 
+        name="MSearchResults" id="MSearchResults">
+</iframe>
+</div>
+
+<div class="header">
+  <div class="summary">
+<a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pro-attribs">Protected Attributes</a> &#124;
+<a href="#friends">Friends</a> &#124;
+<a href="classOpenSim_1_1Array-members.html">List of all members</a>  </div>
+  <div class="headertitle">
+<div class="title">OpenSim::Array&lt; T &gt; Class Template Reference</div>  </div>
+</div><!--header-->
+<div class="contents">
+
+<p><code>#include &lt;Array.h&gt;</code></p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
+Public Member Functions</h2></td></tr>
+<tr class="memitem:ab1ad1817f69d805fca2d8d2ea0d237ab"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classOpenSim_1_1Array.html#ab1ad1817f69d805fca2d8d2ea0d237ab">~Array</a> ()</td></tr>
+<tr class="memdesc:ab1ad1817f69d805fca2d8d2ea0d237ab"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destructor.  <a href="#ab1ad1817f69d805fca2d8d2ea0d237ab">More...</a><br/></td></tr>
+<tr class="separator:ab1ad1817f69d805fca2d8d2ea0d237ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa7d3e878a688aadb50918be1f44c9dd3"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classOpenSim_1_1Array.html#aa7d3e878a688aadb50918be1f44c9dd3">Array</a> (const T &amp;aDefaultValue=T(), int aSize=0, int aCapacity=Array_CAPMIN)</td></tr>
+<tr class="memdesc:aa7d3e878a688aadb50918be1f44c9dd3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor.  <a href="#aa7d3e878a688aadb50918be1f44c9dd3">More...</a><br/></td></tr>
+<tr class="separator:aa7d3e878a688aadb50918be1f44c9dd3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab03c2b78595c744e5d91cadefd9d82c9"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classOpenSim_1_1Array.html#ab03c2b78595c744e5d91cadefd9d82c9">Array</a> (const <a class="el" href="classOpenSim_1_1Array.html">Array</a>&lt; T &gt; &amp;aArray)</td></tr>
+<tr class="memdesc:ab03c2b78595c744e5d91cadefd9d82c9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Coppy constructor.  <a href="#ab03c2b78595c744e5d91cadefd9d82c9">More...</a><br/></td></tr>
+<tr class="separator:ab03c2b78595c744e5d91cadefd9d82c9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab6c730b018406f4ef9e18e4e7c0883b6"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classOpenSim_1_1Array.html#ab6c730b018406f4ef9e18e4e7c0883b6">arrayEquals</a> (const <a class="el" href="classOpenSim_1_1Array.html">Array</a>&lt; T &gt; &amp;aArray) const </td></tr>
+<tr class="separator:ab6c730b018406f4ef9e18e4e7c0883b6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab53794dfdf315dd09ddc090cb2cf8b46"><td class="memItemLeft" align="right" valign="top">T &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classOpenSim_1_1Array.html#ab53794dfdf315dd09ddc090cb2cf8b46">operator[]</a> (int aIndex) const </td></tr>
+<tr class="memdesc:ab53794dfdf315dd09ddc090cb2cf8b46"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the array element at a specified index.  <a href="#ab53794dfdf315dd09ddc090cb2cf8b46">More...</a><br/></td></tr>
+<tr class="separator:ab53794dfdf315dd09ddc090cb2cf8b46"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5267fc885b9a18a12d75d5ac75e519e8"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classOpenSim_1_1Array.html">Array</a>&lt; T &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classOpenSim_1_1Array.html#a5267fc885b9a18a12d75d5ac75e519e8">operator=</a> (const <a class="el" href="classOpenSim_1_1Array.html">Array</a>&lt; T &gt; &amp;aArray)</td></tr>
+<tr class="memdesc:a5267fc885b9a18a12d75d5ac75e519e8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assign this array to a specified array.  <a href="#a5267fc885b9a18a12d75d5ac75e519e8">More...</a><br/></td></tr>
+<tr class="separator:a5267fc885b9a18a12d75d5ac75e519e8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa9deb2ef7e59062e6935a331f9ce780b"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classOpenSim_1_1Array.html#aa9deb2ef7e59062e6935a331f9ce780b">operator==</a> (const <a class="el" href="classOpenSim_1_1Array.html">Array</a>&lt; T &gt; &amp;aArray) const </td></tr>
+<tr class="memdesc:aa9deb2ef7e59062e6935a331f9ce780b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Determine if two arrays are equal.  <a href="#aa9deb2ef7e59062e6935a331f9ce780b">More...</a><br/></td></tr>
+<tr class="separator:aa9deb2ef7e59062e6935a331f9ce780b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a614b8c0eb380d6f8aa1288d9706a6b37"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classOpenSim_1_1Array.html#a614b8c0eb380d6f8aa1288d9706a6b37">computeNewCapacity</a> (int aMinCapacity, int &amp;rNewCapacity)</td></tr>
+<tr class="memdesc:a614b8c0eb380d6f8aa1288d9706a6b37"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute a new capacity that is at least as large as a specified minimum capacity; this method does not change the capacity, it simply computes a new recommended capacity.  <a href="#a614b8c0eb380d6f8aa1288d9706a6b37">More...</a><br/></td></tr>
+<tr class="separator:a614b8c0eb380d6f8aa1288d9706a6b37"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2dfaacf117677d7a6bc024bbbd1e2cbe"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classOpenSim_1_1Array.html#a2dfaacf117677d7a6bc024bbbd1e2cbe">ensureCapacity</a> (int aCapacity)</td></tr>
+<tr class="memdesc:a2dfaacf117677d7a6bc024bbbd1e2cbe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Ensure that the capacity of this array is at least the specified amount.  <a href="#a2dfaacf117677d7a6bc024bbbd1e2cbe">More...</a><br/></td></tr>
+<tr class="separator:a2dfaacf117677d7a6bc024bbbd1e2cbe"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abd3897fd81d9d47dd0e771a61f110b16"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classOpenSim_1_1Array.html#abd3897fd81d9d47dd0e771a61f110b16">trim</a> ()</td></tr>
+<tr class="memdesc:abd3897fd81d9d47dd0e771a61f110b16"><td class="mdescLeft">&#160;</td><td class="mdescRight">Trim the capacity of this array so that it is one larger than the size of this array.  <a href="#abd3897fd81d9d47dd0e771a61f110b16">More...</a><br/></td></tr>
+<tr class="separator:abd3897fd81d9d47dd0e771a61f110b16"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aca4c847787ad5eb607845e2abe7eddfa"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classOpenSim_1_1Array.html#aca4c847787ad5eb607845e2abe7eddfa">getCapacity</a> () const </td></tr>
+<tr class="memdesc:aca4c847787ad5eb607845e2abe7eddfa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the capacity of this storage instance.  <a href="#aca4c847787ad5eb607845e2abe7eddfa">More...</a><br/></td></tr>
+<tr class="separator:aca4c847787ad5eb607845e2abe7eddfa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a14a93e0f3ffac301534392de881e1e72"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classOpenSim_1_1Array.html#a14a93e0f3ffac301534392de881e1e72">setCapacityIncrement</a> (int aIncrement)</td></tr>
+<tr class="memdesc:a14a93e0f3ffac301534392de881e1e72"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classOpenSim_1_1Set.html" title="A class for holding a set of pointers to objects. ">Set</a> the amount by which the capacity is increased when the capacity of of the array in exceeded.  <a href="#a14a93e0f3ffac301534392de881e1e72">More...</a><br/></td></tr>
+<tr class="separator:a14a93e0f3ffac301534392de881e1e72"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a217357d3358fc1ec1efb9b5e7bf1eb10"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classOpenSim_1_1Array.html#a217357d3358fc1ec1efb9b5e7bf1eb10">getCapacityIncrement</a> () const </td></tr>
+<tr class="memdesc:a217357d3358fc1ec1efb9b5e7bf1eb10"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the amount by which the capacity is increased.  <a href="#a217357d3358fc1ec1efb9b5e7bf1eb10">More...</a><br/></td></tr>
+<tr class="separator:a217357d3358fc1ec1efb9b5e7bf1eb10"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a78b56564ddc02e3b47dbb75a9349ea76"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classOpenSim_1_1Array.html#a78b56564ddc02e3b47dbb75a9349ea76">setSize</a> (int aSize)</td></tr>
+<tr class="memdesc:a78b56564ddc02e3b47dbb75a9349ea76"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classOpenSim_1_1Set.html" title="A class for holding a set of pointers to objects. ">Set</a> the size of the array.  <a href="#a78b56564ddc02e3b47dbb75a9349ea76">More...</a><br/></td></tr>
+<tr class="separator:a78b56564ddc02e3b47dbb75a9349ea76"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7decba452a0d518d8d6357e43ad60ea1"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classOpenSim_1_1Array.html#a7decba452a0d518d8d6357e43ad60ea1">getSize</a> () const </td></tr>
+<tr class="memdesc:a7decba452a0d518d8d6357e43ad60ea1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the size of the array.  <a href="#a7decba452a0d518d8d6357e43ad60ea1">More...</a><br/></td></tr>
+<tr class="separator:a7decba452a0d518d8d6357e43ad60ea1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a39300559852e8cb2eb0f66cd93a62496"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classOpenSim_1_1Array.html#a39300559852e8cb2eb0f66cd93a62496">size</a> () const </td></tr>
+<tr class="memdesc:a39300559852e8cb2eb0f66cd93a62496"><td class="mdescLeft">&#160;</td><td class="mdescRight">Alternate name for <a class="el" href="classOpenSim_1_1Array.html#a7decba452a0d518d8d6357e43ad60ea1" title="Get the size of the array. ">getSize()</a>.  <a href="#a39300559852e8cb2eb0f66cd93a62496">More...</a><br/></td></tr>
+<tr class="separator:a39300559852e8cb2eb0f66cd93a62496"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a16969ea83d0bb1b3cc9ceade180012fa"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classOpenSim_1_1Array.html#a16969ea83d0bb1b3cc9ceade180012fa">append</a> (const T &amp;aValue)</td></tr>
+<tr class="memdesc:a16969ea83d0bb1b3cc9ceade180012fa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Append a value onto the array.  <a href="#a16969ea83d0bb1b3cc9ceade180012fa">More...</a><br/></td></tr>
+<tr class="separator:a16969ea83d0bb1b3cc9ceade180012fa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afd5af71649fbf9df881e48f04aeee371"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classOpenSim_1_1Array.html#afd5af71649fbf9df881e48f04aeee371">append</a> (const <a class="el" href="classOpenSim_1_1Array.html">Array</a>&lt; T &gt; &amp;aArray)</td></tr>
+<tr class="memdesc:afd5af71649fbf9df881e48f04aeee371"><td class="mdescLeft">&#160;</td><td class="mdescRight">Append an array of values.  <a href="#afd5af71649fbf9df881e48f04aeee371">More...</a><br/></td></tr>
+<tr class="separator:afd5af71649fbf9df881e48f04aeee371"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a27e127f6bb6960bf4798d40a1d87bc83"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classOpenSim_1_1Array.html#a27e127f6bb6960bf4798d40a1d87bc83">append</a> (int aSize, const T *aArray)</td></tr>
+<tr class="memdesc:a27e127f6bb6960bf4798d40a1d87bc83"><td class="mdescLeft">&#160;</td><td class="mdescRight">Append an array of values.  <a href="#a27e127f6bb6960bf4798d40a1d87bc83">More...</a><br/></td></tr>
+<tr class="separator:a27e127f6bb6960bf4798d40a1d87bc83"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a919a732bf18326959e6aafa4f6ade5fc"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classOpenSim_1_1Array.html#a919a732bf18326959e6aafa4f6ade5fc">insert</a> (int aIndex, const T &amp;aValue)</td></tr>
+<tr class="memdesc:a919a732bf18326959e6aafa4f6ade5fc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Insert a value into the array at a specified index.  <a href="#a919a732bf18326959e6aafa4f6ade5fc">More...</a><br/></td></tr>
+<tr class="separator:a919a732bf18326959e6aafa4f6ade5fc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae800e1737112b46456c730f5115046b7"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classOpenSim_1_1Array.html#ae800e1737112b46456c730f5115046b7">remove</a> (int aIndex)</td></tr>
+<tr class="memdesc:ae800e1737112b46456c730f5115046b7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Remove a value from the array at a specified index.  <a href="#ae800e1737112b46456c730f5115046b7">More...</a><br/></td></tr>
+<tr class="separator:ae800e1737112b46456c730f5115046b7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a73d7e2c126c8379b1d9cf62b7df86b83"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classOpenSim_1_1Array.html#a73d7e2c126c8379b1d9cf62b7df86b83">set</a> (int aIndex, const T &amp;aValue)</td></tr>
+<tr class="memdesc:a73d7e2c126c8379b1d9cf62b7df86b83"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classOpenSim_1_1Set.html" title="A class for holding a set of pointers to objects. ">Set</a> the value at a specified index.  <a href="#a73d7e2c126c8379b1d9cf62b7df86b83">More...</a><br/></td></tr>
+<tr class="separator:a73d7e2c126c8379b1d9cf62b7df86b83"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa9c5f16e2584468b98bbf682993994da"><td class="memItemLeft" align="right" valign="top">T *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classOpenSim_1_1Array.html#aa9c5f16e2584468b98bbf682993994da">get</a> ()</td></tr>
+<tr class="memdesc:aa9c5f16e2584468b98bbf682993994da"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get a pointer to the low-level array.  <a href="#aa9c5f16e2584468b98bbf682993994da">More...</a><br/></td></tr>
+<tr class="separator:aa9c5f16e2584468b98bbf682993994da"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af8768a9c7bdd4b12b203b856fdbad1dd"><td class="memItemLeft" align="right" valign="top">const T *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classOpenSim_1_1Array.html#af8768a9c7bdd4b12b203b856fdbad1dd">get</a> () const </td></tr>
+<tr class="memdesc:af8768a9c7bdd4b12b203b856fdbad1dd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get a pointer to the low-level array.  <a href="#af8768a9c7bdd4b12b203b856fdbad1dd">More...</a><br/></td></tr>
+<tr class="separator:af8768a9c7bdd4b12b203b856fdbad1dd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8b6058630bc7602d5b482e163218aacc"><td class="memItemLeft" align="right" valign="top">const T &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classOpenSim_1_1Array.html#a8b6058630bc7602d5b482e163218aacc">get</a> (int aIndex) const </td></tr>
+<tr class="memdesc:a8b6058630bc7602d5b482e163218aacc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get a const reference to the value at a specified array index.  <a href="#a8b6058630bc7602d5b482e163218aacc">More...</a><br/></td></tr>
+<tr class="separator:a8b6058630bc7602d5b482e163218aacc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8163f5fc3b46cf8c9d2c2adb36b75295"><td class="memItemLeft" align="right" valign="top">T &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classOpenSim_1_1Array.html#a8163f5fc3b46cf8c9d2c2adb36b75295">updElt</a> (int aIndex) const </td></tr>
+<tr class="memdesc:a8163f5fc3b46cf8c9d2c2adb36b75295"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get a writable reference to value at a specified array index.  <a href="#a8163f5fc3b46cf8c9d2c2adb36b75295">More...</a><br/></td></tr>
+<tr class="separator:a8163f5fc3b46cf8c9d2c2adb36b75295"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8cb1a88a765ce210d83336a54d0e7136"><td class="memItemLeft" align="right" valign="top">const T &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classOpenSim_1_1Array.html#a8cb1a88a765ce210d83336a54d0e7136">getLast</a> () const </td></tr>
+<tr class="memdesc:a8cb1a88a765ce210d83336a54d0e7136"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the last value in the array.  <a href="#a8cb1a88a765ce210d83336a54d0e7136">More...</a><br/></td></tr>
+<tr class="separator:a8cb1a88a765ce210d83336a54d0e7136"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a70fba954c5c6f35ceb9e10b013682610"><td class="memItemLeft" align="right" valign="top">T &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classOpenSim_1_1Array.html#a70fba954c5c6f35ceb9e10b013682610">updLast</a> () const </td></tr>
+<tr class="memdesc:a70fba954c5c6f35ceb9e10b013682610"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get writable reference to last value in the array.  <a href="#a70fba954c5c6f35ceb9e10b013682610">More...</a><br/></td></tr>
+<tr class="separator:a70fba954c5c6f35ceb9e10b013682610"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6044037d81a73d73ba28635f8ee12150"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classOpenSim_1_1Array.html#a6044037d81a73d73ba28635f8ee12150">findIndex</a> (const T &amp;aValue) const </td></tr>
+<tr class="memdesc:a6044037d81a73d73ba28635f8ee12150"><td class="mdescLeft">&#160;</td><td class="mdescRight">Linear search for an element matching a given value.  <a href="#a6044037d81a73d73ba28635f8ee12150">More...</a><br/></td></tr>
+<tr class="separator:a6044037d81a73d73ba28635f8ee12150"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1bfa9e03d77f1cd301816566d1fb975a"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classOpenSim_1_1Array.html#a1bfa9e03d77f1cd301816566d1fb975a">rfindIndex</a> (const T &amp;aValue) const </td></tr>
+<tr class="memdesc:a1bfa9e03d77f1cd301816566d1fb975a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Linear search in reverse for an element matching a given value.  <a href="#a1bfa9e03d77f1cd301816566d1fb975a">More...</a><br/></td></tr>
+<tr class="separator:a1bfa9e03d77f1cd301816566d1fb975a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a63e5a3bde28c2704c424ba20ea9e58dd"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classOpenSim_1_1Array.html#a63e5a3bde28c2704c424ba20ea9e58dd">searchBinary</a> (const T &amp;aValue, bool aFindFirst=false, int aLo=-1, int aHi=-1) const </td></tr>
+<tr class="memdesc:a63e5a3bde28c2704c424ba20ea9e58dd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Search for the largest value in the array that is less than or equal to a specified value.  <a href="#a63e5a3bde28c2704c424ba20ea9e58dd">More...</a><br/></td></tr>
+<tr class="separator:a63e5a3bde28c2704c424ba20ea9e58dd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-attribs"></a>
+Protected Attributes</h2></td></tr>
+<tr class="memitem:a66ada54d5405977c01fcd34f8541cf26"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classOpenSim_1_1Array.html#a66ada54d5405977c01fcd34f8541cf26">_size</a></td></tr>
+<tr class="memdesc:a66ada54d5405977c01fcd34f8541cf26"><td class="mdescLeft">&#160;</td><td class="mdescRight">Size of the array.  <a href="#a66ada54d5405977c01fcd34f8541cf26">More...</a><br/></td></tr>
+<tr class="separator:a66ada54d5405977c01fcd34f8541cf26"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3f19ac907fe711e986511bc382baa6c2"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classOpenSim_1_1Array.html#a3f19ac907fe711e986511bc382baa6c2">_capacity</a></td></tr>
+<tr class="memdesc:a3f19ac907fe711e986511bc382baa6c2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Current capacity of the array.  <a href="#a3f19ac907fe711e986511bc382baa6c2">More...</a><br/></td></tr>
+<tr class="separator:a3f19ac907fe711e986511bc382baa6c2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad329eb9d66ff502672524af46c396ce0"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classOpenSim_1_1Array.html#ad329eb9d66ff502672524af46c396ce0">_capacityIncrement</a></td></tr>
+<tr class="memdesc:ad329eb9d66ff502672524af46c396ce0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Increment by which the current capacity is increased when the capacity of this storage instance is reached.  <a href="#ad329eb9d66ff502672524af46c396ce0">More...</a><br/></td></tr>
+<tr class="separator:ad329eb9d66ff502672524af46c396ce0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1559d17242b7a6aee6160ca266b5c782"><td class="memItemLeft" align="right" valign="top">T&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classOpenSim_1_1Array.html#a1559d17242b7a6aee6160ca266b5c782">_defaultValue</a></td></tr>
+<tr class="memdesc:a1559d17242b7a6aee6160ca266b5c782"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default value of elements.  <a href="#a1559d17242b7a6aee6160ca266b5c782">More...</a><br/></td></tr>
+<tr class="separator:a1559d17242b7a6aee6160ca266b5c782"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a56e42af806bcda1f301622905f4c26f8"><td class="memItemLeft" align="right" valign="top">T *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classOpenSim_1_1Array.html#a56e42af806bcda1f301622905f4c26f8">_array</a></td></tr>
+<tr class="memdesc:a56e42af806bcda1f301622905f4c26f8"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classOpenSim_1_1Array.html">Array</a> of values.  <a href="#a56e42af806bcda1f301622905f4c26f8">More...</a><br/></td></tr>
+<tr class="separator:a56e42af806bcda1f301622905f4c26f8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="friends"></a>
+Friends</h2></td></tr>
+<tr class="memitem:a9de7cd20d4d15367196d207c9628b57b"><td class="memItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classOpenSim_1_1Array.html#a9de7cd20d4d15367196d207c9628b57b">operator&lt;&lt;</a> (std::ostream &amp;aOut, const <a class="el" href="classOpenSim_1_1Array.html">Array</a>&lt; T &gt; &amp;aArray)</td></tr>
+<tr class="memdesc:a9de7cd20d4d15367196d207c9628b57b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Implementation of the output operator.  <a href="#a9de7cd20d4d15367196d207c9628b57b">More...</a><br/></td></tr>
+<tr class="separator:a9de7cd20d4d15367196d207c9628b57b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a83c389642a8a1db9c03409fcffe715fd"><td class="memItemLeft" align="right" valign="top">std::istream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classOpenSim_1_1Array.html#a83c389642a8a1db9c03409fcffe715fd">operator&gt;&gt;</a> (std::istream &amp;in, <a class="el" href="classOpenSim_1_1Array.html">Array</a>&lt; T &gt; &amp;out)</td></tr>
+<tr class="separator:a83c389642a8a1db9c03409fcffe715fd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+<h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a class="anchor" id="ab1ad1817f69d805fca2d8d2ea0d237ab"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual <a class="el" href="classOpenSim_1_1Array.html">OpenSim::Array</a>&lt; T &gt;::~<a class="el" href="classOpenSim_1_1Array.html">Array</a> </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Destructor. </p>
+<p>When the array is deleted, references to elements of this array become invalid. </p>
+
+</div>
+</div>
+<a class="anchor" id="aa7d3e878a688aadb50918be1f44c9dd3"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classOpenSim_1_1Array.html">OpenSim::Array</a>&lt; T &gt;::<a class="el" href="classOpenSim_1_1Array.html">Array</a> </td>
+          <td>(</td>
+          <td class="paramtype">const T &amp;&#160;</td>
+          <td class="paramname"><em>aDefaultValue</em> = <code>T()</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>aSize</em> = <code>0</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>aCapacity</em> = <code>Array_CAPMIN</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Default constructor. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">aDefaultValue</td><td>Default value of an array element. This value is used to initialize array elements as the size of the array is changed. </td></tr>
+    <tr><td class="paramname">aSize</td><td>Initial size of the array. The array elements are initialized to aDefaultValue. </td></tr>
+    <tr><td class="paramname">aCapacity</td><td>Initial capacity of the array. The initial capacity is guarranteed to be at least as large as aSize + 1. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="ab03c2b78595c744e5d91cadefd9d82c9"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classOpenSim_1_1Array.html">OpenSim::Array</a>&lt; T &gt;::<a class="el" href="classOpenSim_1_1Array.html">Array</a> </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classOpenSim_1_1Array.html">Array</a>&lt; T &gt; &amp;&#160;</td>
+          <td class="paramname"><em>aArray</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Coppy constructor. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">aArray</td><td><a class="el" href="classOpenSim_1_1Array.html">Array</a> to be copied. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a class="anchor" id="a16969ea83d0bb1b3cc9ceade180012fa"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int <a class="el" href="classOpenSim_1_1Array.html">OpenSim::Array</a>&lt; T &gt;::append </td>
+          <td>(</td>
+          <td class="paramtype">const T &amp;&#160;</td>
+          <td class="paramname"><em>aValue</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Append a value onto the array. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">aValue</td><td>Value to be appended. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>New size of the array, or, equvalently, the index to the new first empty element of the array. </dd></dl>
+
+<p>Referenced by <a class="el" href="classOpenSim_1_1Array.html#afd5af71649fbf9df881e48f04aeee371">OpenSim::Array&lt; OpenSim::Array&lt; double &gt; * &gt;::append()</a>, <a class="el" href="classOpenSim_1_1TransformAxis.html#a2d8bf35b5dcecf83b53ece1af26e3316">OpenSim::TransformAxis::getCoordinateNamesInArray()</a>, <a class="el" href="classOpenSim_1_1Set.html#ad2c3d975bd3d2fa695beb3aa84376ae0">OpenSim::Set&lt; Control &gt;::getGroupNames()</a>, <a class="el" href="classOpenSim_1_1Set.html#ad5682755e9b0ec2cfabcaade28855805">OpenSim::Set&lt; Control &gt;::getGroupNamesContaining()</a>, <a class="el" href="classOpenSim_1_1CoordinateCouplerConstraint.html#a927dc3bb9807f8ccf65091aaee3b10c0">OpenSim::CoordinateCouplerConstraint::getIndependentCoordinateNames()</a>, <a class="el" href="classOpenSim_1_1Set.html#a55910dcb8c15aa18dcc9f65640f8934d">OpenSim::Set&lt; Control &gt;::getNames()</a>, <a class="el" href="classOpenSim_1_1Ligament.html#a931b59dafa2c189b8749438d2fdd7ccb">OpenSim::Ligament::getRecordLabels()</a>, <a class="el" href="classOpenSim_1_1PathSpring.html#a1a6a14dc76479f8cbace1250b3c275e0">OpenSim::PathSpring::getRecordLabels()</a>, <a class="el" href="classOpenSim_1_1Actuator.html#af987731d5c9e66d61a97323f5e5057dc">OpenSim::Actuator::getRecordLabels()</a>, <a class="el" href="classOpenSim_1_1Ligament.html#aff75a63cb5397da5d45ec127a4a6f4ba">OpenSim::Ligament::getRecordValues()</a>, <a class="el" href="classOpenSim_1_1PathSpring.html#a48838adc25a69968d54c5e6276770426">OpenSim::PathSpring::getRecordValues()</a>, <a class="el" href="classOpenSim_1_1Actuator.html#a7694afb4b80dd33f263a69f47e34e20a">OpenSim::Actuator::getRecordValues()</a>, and <a class="el" href="classOpenSim_1_1CoordinateSet.html#a3faa0526b6d23cbbd51c9dd681e35c1c">OpenSim::CoordinateSet::getSpeedNames()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="afd5af71649fbf9df881e48f04aeee371"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int <a class="el" href="classOpenSim_1_1Array.html">OpenSim::Array</a>&lt; T &gt;::append </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classOpenSim_1_1Array.html">Array</a>&lt; T &gt; &amp;&#160;</td>
+          <td class="paramname"><em>aArray</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Append an array of values. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">aArray</td><td><a class="el" href="classOpenSim_1_1Array.html">Array</a> of values to append. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>New size of the array, or, equvalently, the index to the new first empty element of the array. </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a27e127f6bb6960bf4798d40a1d87bc83"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int <a class="el" href="classOpenSim_1_1Array.html">OpenSim::Array</a>&lt; T &gt;::append </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>aSize</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const T *&#160;</td>
+          <td class="paramname"><em>aArray</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Append an array of values. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">aSize</td><td>Size of the array to append. </td></tr>
+    <tr><td class="paramname">aArray</td><td><a class="el" href="classOpenSim_1_1Array.html">Array</a> of values to append. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>New size of the array, or, equvalently, the index to the new first empty element of the array. </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="ab6c730b018406f4ef9e18e4e7c0883b6"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool <a class="el" href="classOpenSim_1_1Array.html">OpenSim::Array</a>&lt; T &gt;::arrayEquals </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classOpenSim_1_1Array.html">Array</a>&lt; T &gt; &amp;&#160;</td>
+          <td class="paramname"><em>aArray</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a614b8c0eb380d6f8aa1288d9706a6b37"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool <a class="el" href="classOpenSim_1_1Array.html">OpenSim::Array</a>&lt; T &gt;::computeNewCapacity </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>aMinCapacity</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int &amp;&#160;</td>
+          <td class="paramname"><em>rNewCapacity</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Compute a new capacity that is at least as large as a specified minimum capacity; this method does not change the capacity, it simply computes a new recommended capacity. </p>
+<p>If the capacity increment is negative, the current capacity is doubled until the computed capacity is greater than or equal to the specified minimum capacity. If the capacity increment is positive, the current capacity increment by this amount until the computed capacity is greater than or equal to the specified minimum capacity. If the capacity increment is zero, the computed capacity is set to the current capacity and false is returned.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">rNewCapacity</td><td>New computed capacity. </td></tr>
+    <tr><td class="paramname">aMinCapacity</td><td>Minimum new computed capacity. The computed capacity is incremented until it is at least as large as aMinCapacity, assuming the capacity increment is not zero. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>True if the new capacity was increased, false otherwise (i.e., if the capacity increment is set to 0). </dd></dl>
+<dl class="section see"><dt>See Also</dt><dd><a class="el" href="classOpenSim_1_1Array.html#a14a93e0f3ffac301534392de881e1e72" title="Set the amount by which the capacity is increased when the capacity of of the array in exceeded...">setCapacityIncrement()</a> </dd></dl>
+
+<p>Referenced by <a class="el" href="classOpenSim_1_1Array.html#a16969ea83d0bb1b3cc9ceade180012fa">OpenSim::Array&lt; OpenSim::Array&lt; double &gt; * &gt;::append()</a>, <a class="el" href="classOpenSim_1_1Array.html#aa7d3e878a688aadb50918be1f44c9dd3">OpenSim::Array&lt; OpenSim::Array&lt; double &gt; * &gt;::Array()</a>, <a class="el" href="classOpenSim_1_1Array.html#a919a732bf18326959e6aafa4f6ade5fc">OpenSim::Array&lt; OpenSim::Array&lt; double &gt; * &gt;::insert()</a>, <a class="el" href="classOpenSim_1_1Array.html#a73d7e2c126c8379b1d9cf62b7df86b83">OpenSim::Array&lt; OpenSim::Array&lt; double &gt; * &gt;::set()</a>, and <a class="el" href="classOpenSim_1_1Array.html#a78b56564ddc02e3b47dbb75a9349ea76">OpenSim::Array&lt; OpenSim::Array&lt; double &gt; * &gt;::setSize()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a2dfaacf117677d7a6bc024bbbd1e2cbe"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool <a class="el" href="classOpenSim_1_1Array.html">OpenSim::Array</a>&lt; T &gt;::ensureCapacity </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>aCapacity</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Ensure that the capacity of this array is at least the specified amount. </p>
+<p>Note that the newly allocated array elements are not initialized.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">aCapacity</td><td>Desired capacity. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>true if the capacity was successfully obtained, false otherwise. </dd></dl>
+
+<p>Referenced by <a class="el" href="classOpenSim_1_1Array.html#a16969ea83d0bb1b3cc9ceade180012fa">OpenSim::Array&lt; OpenSim::Array&lt; double &gt; * &gt;::append()</a>, <a class="el" href="classOpenSim_1_1Array.html#aa7d3e878a688aadb50918be1f44c9dd3">OpenSim::Array&lt; OpenSim::Array&lt; double &gt; * &gt;::Array()</a>, <a class="el" href="classOpenSim_1_1Array.html#a919a732bf18326959e6aafa4f6ade5fc">OpenSim::Array&lt; OpenSim::Array&lt; double &gt; * &gt;::insert()</a>, <a class="el" href="classOpenSim_1_1Array.html#a73d7e2c126c8379b1d9cf62b7df86b83">OpenSim::Array&lt; OpenSim::Array&lt; double &gt; * &gt;::set()</a>, and <a class="el" href="classOpenSim_1_1Array.html#a78b56564ddc02e3b47dbb75a9349ea76">OpenSim::Array&lt; OpenSim::Array&lt; double &gt; * &gt;::setSize()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a6044037d81a73d73ba28635f8ee12150"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int <a class="el" href="classOpenSim_1_1Array.html">OpenSim::Array</a>&lt; T &gt;::findIndex </td>
+          <td>(</td>
+          <td class="paramtype">const T &amp;&#160;</td>
+          <td class="paramname"><em>aValue</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Linear search for an element matching a given value. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">aValue</td><td>Value to which the array elements are compared. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Index of the array element matching aValue. If there is more than one such elements with the same value the index of the first of these elements is returned. If no match is found, -1 is returned. </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="aa9c5f16e2584468b98bbf682993994da"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">T* <a class="el" href="classOpenSim_1_1Array.html">OpenSim::Array</a>&lt; T &gt;::get </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Get a pointer to the low-level array. </p>
+<dl class="section return"><dt>Returns</dt><dd>Pointer to the low-level array. </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="af8768a9c7bdd4b12b203b856fdbad1dd"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const T* <a class="el" href="classOpenSim_1_1Array.html">OpenSim::Array</a>&lt; T &gt;::get </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Get a pointer to the low-level array. </p>
+<dl class="section return"><dt>Returns</dt><dd>Pointer to the low-level array. </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a8b6058630bc7602d5b482e163218aacc"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const T&amp; <a class="el" href="classOpenSim_1_1Array.html">OpenSim::Array</a>&lt; T &gt;::get </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>aIndex</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Get a const reference to the value at a specified array index. </p>
+<p>If the index is negative or passed the end of the array, an exception is thrown.</p>
+<p>For faster execution, the array elements can be accessed through the overloaded operator[], which does no bounds checking.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">aIndex</td><td>Index of the desired array element. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>const reference to the array element. </dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname"><a class="el" href="classOpenSim_1_1Exception.html">Exception</a></td><td>if (aIndex&lt;0)||(aIndex&gt;=_size). </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section see"><dt>See Also</dt><dd>operator[]. </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="aca4c847787ad5eb607845e2abe7eddfa"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int <a class="el" href="classOpenSim_1_1Array.html">OpenSim::Array</a>&lt; T &gt;::getCapacity </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Get the capacity of this storage instance. </p>
+
+</div>
+</div>
+<a class="anchor" id="a217357d3358fc1ec1efb9b5e7bf1eb10"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int <a class="el" href="classOpenSim_1_1Array.html">OpenSim::Array</a>&lt; T &gt;::getCapacityIncrement </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Get the amount by which the capacity is increased. </p>
+
+</div>
+</div>
+<a class="anchor" id="a8cb1a88a765ce210d83336a54d0e7136"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const T&amp; <a class="el" href="classOpenSim_1_1Array.html">OpenSim::Array</a>&lt; T &gt;::getLast </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Get the last value in the array. </p>
+<dl class="section return"><dt>Returns</dt><dd>Last value in the array. </dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname"><a class="el" href="classOpenSim_1_1Exception.html">Exception</a></td><td>if the array is empty. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="a7decba452a0d518d8d6357e43ad60ea1"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int <a class="el" href="classOpenSim_1_1Array.html">OpenSim::Array</a>&lt; T &gt;::getSize </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Get the size of the array. </p>
+<dl class="section return"><dt>Returns</dt><dd>Size of the array. </dd></dl>
+
+<p>Referenced by <a class="el" href="classOpenSim_1_1Array.html#afd5af71649fbf9df881e48f04aeee371">OpenSim::Array&lt; OpenSim::Array&lt; double &gt; * &gt;::append()</a>, <a class="el" href="classOpenSim_1_1PropertyBoolArray.html#a9471383aadd4e6d9c567153f036ea6b5">OpenSim::PropertyBoolArray::getArraySize()</a>, <a class="el" href="classOpenSim_1_1PropertyIntArray.html#a4f273f401d608650e82e6f69336f8236">OpenSim::PropertyIntArray::getArraySize()</a>, <a class="el" href="classOpenSim_1_1PropertyStrArray.html#a67a810816668067b81b9eb26ffdfb168">OpenSim::PropertyStrArray::getArraySize()</a>, and <a class="el" href="classOpenSim_1_1Array.html#a39300559852e8cb2eb0f66cd93a62496">OpenSim::Array&lt; OpenSim::Array&lt; double &gt; * &gt;::size()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a919a732bf18326959e6aafa4f6ade5fc"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int <a class="el" href="classOpenSim_1_1Array.html">OpenSim::Array</a>&lt; T &gt;::insert </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>aIndex</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const T &amp;&#160;</td>
+          <td class="paramname"><em>aValue</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Insert a value into the array at a specified index. </p>
+<p>This method is relatively computationally costly since many of the array elements may need to be shifted.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">aValue</td><td>Value to be inserted. </td></tr>
+    <tr><td class="paramname">aIndex</td><td>Index at which to insert the new value. All current elements from aIndex to the end of the array are shifted one place in the direction of the end of the array. If the specified index is greater than the current size of the array, the size of the array is increased to aIndex+1 and the itervening new elements are initialized to the default value that was specified at the time of construction. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Size of the array after the insertion. </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a5267fc885b9a18a12d75d5ac75e519e8"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classOpenSim_1_1Array.html">Array</a>&lt;T&gt;&amp; <a class="el" href="classOpenSim_1_1Array.html">OpenSim::Array</a>&lt; T &gt;::operator= </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classOpenSim_1_1Array.html">Array</a>&lt; T &gt; &amp;&#160;</td>
+          <td class="paramname"><em>aArray</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Assign this array to a specified array. </p>
+<p>This operator makes a complete copy of the specified array; all member variables are copied. So, the result is two identical, independent arrays.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">aArray</td><td><a class="el" href="classOpenSim_1_1Array.html">Array</a> to be copied. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Reference to this array. </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="aa9deb2ef7e59062e6935a331f9ce780b"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool <a class="el" href="classOpenSim_1_1Array.html">OpenSim::Array</a>&lt; T &gt;::operator== </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classOpenSim_1_1Array.html">Array</a>&lt; T &gt; &amp;&#160;</td>
+          <td class="paramname"><em>aArray</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Determine if two arrays are equal. </p>
+<p>Two arrays are equal if their contents are equal. That is, each array must be the same length and their corresponding array elements must be equal.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">aArray</td><td><a class="el" href="classOpenSim_1_1Array.html">Array</a> to be tested as equal. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>True if equal, false if not equal. </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="ab53794dfdf315dd09ddc090cb2cf8b46"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">T&amp; <a class="el" href="classOpenSim_1_1Array.html">OpenSim::Array</a>&lt; T &gt;::operator[] </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>aIndex</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Get the array element at a specified index. </p>
+<p>This overloaded operator can be used both to set and get element values: </p>
+<div class="fragment"><div class="line">Array&lt;T&gt; array(2);</div>
+<div class="line">T value = array[i];</div>
+<div class="line">array[i] = value;</div>
+</div><!-- fragment --><p>This operator is intended for accessing array elements with as little overhead as possible, so no error checking is performed. The caller must make sure the specified index is within the bounds of the array. If error checking is desired, use <a class="el" href="classOpenSim_1_1Array.html#aa9c5f16e2584468b98bbf682993994da" title="Get a pointer to the low-level array. ">Array::get()</a>.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">aIndex</td><td>Index of the desired element (0 &lt;= aIndex &lt; _size). </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Reference to the array element. </dd></dl>
+<dl class="section see"><dt>See Also</dt><dd><a class="el" href="classOpenSim_1_1Array.html#aa9c5f16e2584468b98bbf682993994da" title="Get a pointer to the low-level array. ">get()</a>. </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="ae800e1737112b46456c730f5115046b7"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int <a class="el" href="classOpenSim_1_1Array.html">OpenSim::Array</a>&lt; T &gt;::remove </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>aIndex</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Remove a value from the array at a specified index. </p>
+<p>This method is relatively computationally costly since many of the array elements may need to be shifted.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">aIndex</td><td>Index of the value to remove. All elements from aIndex to the end of the array are shifted one place toward the beginning of the array. If aIndex is less than 0 or greater than or equal to the current size of the array, no element is removed. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Size of the array after the removal. </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a1bfa9e03d77f1cd301816566d1fb975a"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int <a class="el" href="classOpenSim_1_1Array.html">OpenSim::Array</a>&lt; T &gt;::rfindIndex </td>
+          <td>(</td>
+          <td class="paramtype">const T &amp;&#160;</td>
+          <td class="paramname"><em>aValue</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Linear search in reverse for an element matching a given value. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">aValue</td><td>Value to which the array elements are compared. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Index of the array element matching aValue. If there is more than one such elements with the same value the index of the last of these elements is returned. If no match is found, -1 is returned. </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a63e5a3bde28c2704c424ba20ea9e58dd"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int <a class="el" href="classOpenSim_1_1Array.html">OpenSim::Array</a>&lt; T &gt;::searchBinary </td>
+          <td>(</td>
+          <td class="paramtype">const T &amp;&#160;</td>
+          <td class="paramname"><em>aValue</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>aFindFirst</em> = <code>false</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>aLo</em> = <code>-1</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>aHi</em> = <code>-1</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Search for the largest value in the array that is less than or equal to a specified value. </p>
+<p>If there is more than one element with this largest value, the index of the first of these elements can optionally be found, but this can be up to twice as costly.</p>
+<p>This method assumes that the array element values monotonically increase as the array index increases. Note that monotonically increase means never decrease, so it is permissible for elements to</p>
+<p>A binary search is performed (i.e., the array is repeatedly subdivided into two bins one of which must contain the specified until the approprite element is identified), so the performance of this method is approximately ln(n), where n is the size of the array.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">aValue</td><td>Value to which the array elements are compared. </td></tr>
+    <tr><td class="paramname">aFindFirst</td><td>If true, find the first element that satisfies the search. If false, the index of any element that satisfies the search can be returned- which index will be returned depends on the length of the array and is therefore somewhat arbitrary. By default, this flag is false. </td></tr>
+    <tr><td class="paramname">aLo</td><td>Lowest array index to consider in the search. </td></tr>
+    <tr><td class="paramname">aHi</td><td>Highest array index to consider in the search. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Index of the array element that has the largest value that is less than or equal to aValue. If there is more than one such elements with the same value and aFindFirst is set to true, the index of the first of these elements is returned. If an error is encountered (e.g., the array is empty), or the array contains no element that is less than or equal to aValue, -1 is returned. </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a73d7e2c126c8379b1d9cf62b7df86b83"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="classOpenSim_1_1Array.html">OpenSim::Array</a>&lt; T &gt;::set </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>aIndex</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const T &amp;&#160;</td>
+          <td class="paramname"><em>aValue</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p><a class="el" href="classOpenSim_1_1Set.html" title="A class for holding a set of pointers to objects. ">Set</a> the value at a specified index. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">aIndex</td><td>Index of the array element to be set. It is permissible for aIndex to be past the current end of the array- the capacity will be increased if necessary. Values between the current end of the array and aIndex are not initialized. </td></tr>
+    <tr><td class="paramname">aValue</td><td>Value. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="a14a93e0f3ffac301534392de881e1e72"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="classOpenSim_1_1Array.html">OpenSim::Array</a>&lt; T &gt;::setCapacityIncrement </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>aIncrement</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p><a class="el" href="classOpenSim_1_1Set.html" title="A class for holding a set of pointers to objects. ">Set</a> the amount by which the capacity is increased when the capacity of of the array in exceeded. </p>
+<p>If the specified increment is negative, the capacity is set to double whenever the capacity is exceeded.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">aIncrement</td><td>Desired capacity increment. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="a78b56564ddc02e3b47dbb75a9349ea76"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool <a class="el" href="classOpenSim_1_1Array.html">OpenSim::Array</a>&lt; T &gt;::setSize </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>aSize</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p><a class="el" href="classOpenSim_1_1Set.html" title="A class for holding a set of pointers to objects. ">Set</a> the size of the array. </p>
+<p>This method can be used to either increase or decrease the size of the array. If this size of the array is increased, the new elements are initialized to the default value that was specified at the time of construction.</p>
+<p>Note that the size of an array is different than its capacity. The size indicates how many valid elements are stored in an array. The capacity indicates how much the size of the array can be increased without allocated more memory. At all times size &lt;= capacity.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">aSize</td><td>Desired size of the array. The size must be greater than or equal to zero. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Referenced by <a class="el" href="classOpenSim_1_1Set.html#ad2c3d975bd3d2fa695beb3aa84376ae0">OpenSim::Set&lt; Control &gt;::getGroupNames()</a>, <a class="el" href="classOpenSim_1_1Set.html#ad5682755e9b0ec2cfabcaade28855805">OpenSim::Set&lt; Control &gt;::getGroupNamesContaining()</a>, <a class="el" href="classOpenSim_1_1Array.html#a919a732bf18326959e6aafa4f6ade5fc">OpenSim::Array&lt; OpenSim::Array&lt; double &gt; * &gt;::insert()</a>, and <a class="el" href="classOpenSim_1_1PropertyDblVec__.html#aafeec5ab64d7aed0dd119e52578452cd">OpenSim::PropertyDblVec_&lt; 3 &gt;::PropertyDblVec_()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a39300559852e8cb2eb0f66cd93a62496"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int <a class="el" href="classOpenSim_1_1Array.html">OpenSim::Array</a>&lt; T &gt;::size </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Alternate name for <a class="el" href="classOpenSim_1_1Array.html#a7decba452a0d518d8d6357e43ad60ea1" title="Get the size of the array. ">getSize()</a>. </p>
+
+</div>
+</div>
+<a class="anchor" id="abd3897fd81d9d47dd0e771a61f110b16"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="classOpenSim_1_1Array.html">OpenSim::Array</a>&lt; T &gt;::trim </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Trim the capacity of this array so that it is one larger than the size of this array. </p>
+<p>This is useful for reducing the amount of memory used by this array. This capacity is kept at one larger than the size so that, for example, an array of characters can be treated as a NULL terminated string. </p>
+
+</div>
+</div>
+<a class="anchor" id="a8163f5fc3b46cf8c9d2c2adb36b75295"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">T&amp; <a class="el" href="classOpenSim_1_1Array.html">OpenSim::Array</a>&lt; T &gt;::updElt </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>aIndex</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Get a writable reference to value at a specified array index. </p>
+<p>If the index is negative or passed the end of the array, an exception is thrown.</p>
+<p>For faster execution, the array elements can be accessed through the overloaded operator[], which does no bounds checking.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">aIndex</td><td>Index of the desired array element. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Writable reference to the array element. </dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname"><a class="el" href="classOpenSim_1_1Exception.html">Exception</a></td><td>if (aIndex&lt;0)||(aIndex&gt;=_size). </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section see"><dt>See Also</dt><dd>operator[]. </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a70fba954c5c6f35ceb9e10b013682610"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">T&amp; <a class="el" href="classOpenSim_1_1Array.html">OpenSim::Array</a>&lt; T &gt;::updLast </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Get writable reference to last value in the array. </p>
+<dl class="section return"><dt>Returns</dt><dd>writable reference to Last value in the array. </dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname"><a class="el" href="classOpenSim_1_1Exception.html">Exception</a></td><td>if the array is empty. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<h2 class="groupheader">Friends And Related Function Documentation</h2>
+<a class="anchor" id="a9de7cd20d4d15367196d207c9628b57b"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::ostream&amp; operator&lt;&lt; </td>
+          <td>(</td>
+          <td class="paramtype">std::ostream &amp;&#160;</td>
+          <td class="paramname"><em>aOut</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classOpenSim_1_1Array.html">Array</a>&lt; T &gt; &amp;&#160;</td>
+          <td class="paramname"><em>aArray</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">friend</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Implementation of the output operator. </p>
+<p>The output for an array looks like the following:<br/>
+<br/>
+ T[0] T[1] T[2] ... T[size-1].</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">aOut</td><td>Output stream. </td></tr>
+    <tr><td class="paramname">aArray</td><td><a class="el" href="classOpenSim_1_1Array.html">Array</a> to be output. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Reference to the output stream. </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a83c389642a8a1db9c03409fcffe715fd"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::istream&amp; operator&gt;&gt; </td>
+          <td>(</td>
+          <td class="paramtype">std::istream &amp;&#160;</td>
+          <td class="paramname"><em>in</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classOpenSim_1_1Array.html">Array</a>&lt; T &gt; &amp;&#160;</td>
+          <td class="paramname"><em>out</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">friend</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<h2 class="groupheader">Member Data Documentation</h2>
+<a class="anchor" id="a56e42af806bcda1f301622905f4c26f8"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">T* <a class="el" href="classOpenSim_1_1Array.html">OpenSim::Array</a>&lt; T &gt;::_array</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p><a class="el" href="classOpenSim_1_1Array.html">Array</a> of values. </p>
+
+<p>Referenced by <a class="el" href="classOpenSim_1_1Array.html#a16969ea83d0bb1b3cc9ceade180012fa">OpenSim::Array&lt; OpenSim::Array&lt; double &gt; * &gt;::append()</a>, <a class="el" href="classOpenSim_1_1Array.html#a2dfaacf117677d7a6bc024bbbd1e2cbe">OpenSim::Array&lt; OpenSim::Array&lt; double &gt; * &gt;::ensureCapacity()</a>, <a class="el" href="classOpenSim_1_1Array.html#a6044037d81a73d73ba28635f8ee12150">OpenSim::Array&lt; OpenSim::Array&lt; double &gt; * &gt;::findIndex()</a>, <a class="el" href="classOpenSim_1_1Array.html#aa9c5f16e2584468b98bbf682993994da">OpenSim::Array&lt; OpenSim::Array&lt; double &gt; * &gt;::get()</a>, <a class="el" href="classOpenSim_1_1Array.html#a8cb1a88a765ce210d83336a54d0e7136">OpenSim::Array&lt; OpenSim::Array&lt; double &gt; * &gt;::getLast()</a>, <a class="el" href="classOpenSim_1_1Array.html#a919a732bf18326959e6aafa4f6ade5fc">OpenSim::Array&lt; OpenSim::Array&lt; double &gt; * &gt;::insert()</a>, <a class="el" href="classOpenSim_1_1Array.html#a5267fc885b9a18a12d75d5ac75e519e8">OpenSim::Array&lt; OpenSim::Array&lt; double &gt; * &gt;::operator=()</a>, <a class="el" href="classOpenSim_1_1Array.html#aa9deb2ef7e59062e6935a331f9ce780b">OpenSim::Array&lt; OpenSim::Array&lt; double &gt; * &gt;::operator==()</a>, <a class="el" href="classOpenSim_1_1Array.html#ab53794dfdf315dd09ddc090cb2cf8b46">OpenSim::Array&lt; OpenSim::Array&lt; double &gt; * &gt;::operator[]()</a>, <a class="el" href="classOpenSim_1_1Array.html#ae800e1737112b46456c730f5115046b7">OpenSim::Array&lt; OpenSim::Array&lt; double &gt; * &gt;::remove()</a>, <a class="el" href="classOpenSim_1_1Array.html#a1bfa9e03d77f1cd301816566d1fb975a">OpenSim::Array&lt; OpenSim::Array&lt; double &gt; * &gt;::rfindIndex()</a>, <a class="el" href="classOpenSim_1_1Array.html#a63e5a3bde28c2704c424ba20ea9e58dd">OpenSim::Array&lt; OpenSim::Array&lt; double &gt; * &gt;::searchBinary()</a>, <a class="el" href="classOpenSim_1_1Array.html#a73d7e2c126c8379b1d9cf62b7df86b83">OpenSim::Array&lt; OpenSim::Array&lt; double &gt; * &gt;::set()</a>, <a class="el" href="classOpenSim_1_1Array.html#a78b56564ddc02e3b47dbb75a9349ea76">OpenSim::Array&lt; OpenSim::Array&lt; double &gt; * &gt;::setSize()</a>, <a class="el" href="classOpenSim_1_1Array.html#abd3897fd81d9d47dd0e771a61f110b16">OpenSim::Array&lt; OpenSim::Array&lt; double &gt; * &gt;::trim()</a>, <a class="el" href="classOpenSim_1_1Array.html#a8163f5fc3b46cf8c9d2c2adb36b75295">OpenSim::Array&lt; OpenSim::Array&lt; double &gt; * &gt;::updElt()</a>, <a class="el" href="classOpenSim_1_1Array.html#a70fba954c5c6f35ceb9e10b013682610">OpenSim::Array&lt; OpenSim::Array&lt; double &gt; * &gt;::updLast()</a>, and <a class="el" href="classOpenSim_1_1Array.html#ab1ad1817f69d805fca2d8d2ea0d237ab">OpenSim::Array&lt; OpenSim::Array&lt; double &gt; * &gt;::~Array()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a3f19ac907fe711e986511bc382baa6c2"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int <a class="el" href="classOpenSim_1_1Array.html">OpenSim::Array</a>&lt; T &gt;::_capacity</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Current capacity of the array. </p>
+
+<p>Referenced by <a class="el" href="classOpenSim_1_1Array.html#a16969ea83d0bb1b3cc9ceade180012fa">OpenSim::Array&lt; OpenSim::Array&lt; double &gt; * &gt;::append()</a>, <a class="el" href="classOpenSim_1_1Array.html#a614b8c0eb380d6f8aa1288d9706a6b37">OpenSim::Array&lt; OpenSim::Array&lt; double &gt; * &gt;::computeNewCapacity()</a>, <a class="el" href="classOpenSim_1_1Array.html#a2dfaacf117677d7a6bc024bbbd1e2cbe">OpenSim::Array&lt; OpenSim::Array&lt; double &gt; * &gt;::ensureCapacity()</a>, <a class="el" href="classOpenSim_1_1Array.html#aca4c847787ad5eb607845e2abe7eddfa">OpenSim::Array&lt; OpenSim::Array&lt; double &gt; * &gt;::getCapacity()</a>, <a class="el" href="classOpenSim_1_1Array.html#a919a732bf18326959e6aafa4f6ade5fc">OpenSim::Array&lt; OpenSim::Array&lt; double &gt; * &gt;::insert()</a>, <a class="el" href="classOpenSim_1_1Array.html#a5267fc885b9a18a12d75d5ac75e519e8">OpenSim::Array&lt; OpenSim::Array&lt; double &gt; * &gt;::operator=()</a>, <a class="el" href="classOpenSim_1_1Array.html#a73d7e2c126c8379b1d9cf62b7df86b83">OpenSim::Array&lt; OpenSim::Array&lt; double &gt; * &gt;::set()</a>, <a class="el" href="classOpenSim_1_1Array.html#a78b56564ddc02e3b47dbb75a9349ea76">OpenSim::Array&lt; OpenSim::Array&lt; double &gt; * &gt;::setSize()</a>, and <a class="el" href="classOpenSim_1_1Array.html#abd3897fd81d9d47dd0e771a61f110b16">OpenSim::Array&lt; OpenSim::Array&lt; double &gt; * &gt;::trim()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ad329eb9d66ff502672524af46c396ce0"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int <a class="el" href="classOpenSim_1_1Array.html">OpenSim::Array</a>&lt; T &gt;::_capacityIncrement</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Increment by which the current capacity is increased when the capacity of this storage instance is reached. </p>
+<p>If negative, capacity doubles. </p>
+
+<p>Referenced by <a class="el" href="classOpenSim_1_1Array.html#a614b8c0eb380d6f8aa1288d9706a6b37">OpenSim::Array&lt; OpenSim::Array&lt; double &gt; * &gt;::computeNewCapacity()</a>, <a class="el" href="classOpenSim_1_1Array.html#a217357d3358fc1ec1efb9b5e7bf1eb10">OpenSim::Array&lt; OpenSim::Array&lt; double &gt; * &gt;::getCapacityIncrement()</a>, <a class="el" href="classOpenSim_1_1Array.html#a5267fc885b9a18a12d75d5ac75e519e8">OpenSim::Array&lt; OpenSim::Array&lt; double &gt; * &gt;::operator=()</a>, and <a class="el" href="classOpenSim_1_1Array.html#a14a93e0f3ffac301534392de881e1e72">OpenSim::Array&lt; OpenSim::Array&lt; double &gt; * &gt;::setCapacityIncrement()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a1559d17242b7a6aee6160ca266b5c782"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">T <a class="el" href="classOpenSim_1_1Array.html">OpenSim::Array</a>&lt; T &gt;::_defaultValue</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Default value of elements. </p>
+
+<p>Referenced by <a class="el" href="classOpenSim_1_1Array.html#aa7d3e878a688aadb50918be1f44c9dd3">OpenSim::Array&lt; OpenSim::Array&lt; double &gt; * &gt;::Array()</a>, <a class="el" href="classOpenSim_1_1Array.html#a2dfaacf117677d7a6bc024bbbd1e2cbe">OpenSim::Array&lt; OpenSim::Array&lt; double &gt; * &gt;::ensureCapacity()</a>, <a class="el" href="classOpenSim_1_1Array.html#a5267fc885b9a18a12d75d5ac75e519e8">OpenSim::Array&lt; OpenSim::Array&lt; double &gt; * &gt;::operator=()</a>, <a class="el" href="classOpenSim_1_1Array.html#ae800e1737112b46456c730f5115046b7">OpenSim::Array&lt; OpenSim::Array&lt; double &gt; * &gt;::remove()</a>, and <a class="el" href="classOpenSim_1_1Array.html#a78b56564ddc02e3b47dbb75a9349ea76">OpenSim::Array&lt; OpenSim::Array&lt; double &gt; * &gt;::setSize()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a66ada54d5405977c01fcd34f8541cf26"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int <a class="el" href="classOpenSim_1_1Array.html">OpenSim::Array</a>&lt; T &gt;::_size</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Size of the array. </p>
+<p>Also the index of the first empty array element. </p>
+
+<p>Referenced by <a class="el" href="classOpenSim_1_1Array.html#a16969ea83d0bb1b3cc9ceade180012fa">OpenSim::Array&lt; OpenSim::Array&lt; double &gt; * &gt;::append()</a>, <a class="el" href="classOpenSim_1_1Array.html#aa7d3e878a688aadb50918be1f44c9dd3">OpenSim::Array&lt; OpenSim::Array&lt; double &gt; * &gt;::Array()</a>, <a class="el" href="classOpenSim_1_1Array.html#a2dfaacf117677d7a6bc024bbbd1e2cbe">OpenSim::Array&lt; OpenSim::Array&lt; double &gt; * &gt;::ensureCapacity()</a>, <a class="el" href="classOpenSim_1_1Array.html#a6044037d81a73d73ba28635f8ee12150">OpenSim::Array&lt; OpenSim::Array&lt; double &gt; * &gt;::findIndex()</a>, <a class="el" href="classOpenSim_1_1Array.html#a8b6058630bc7602d5b482e163218aacc">OpenSim::Array&lt; OpenSim::Array&lt; double &gt; * &gt;::get()</a>, <a class="el" href="classOpenSim_1_1Array.html#a8cb1a88a765ce210d83336a54d0e7136">OpenSim::Array&lt; OpenSim::Array&lt; double &gt; * &gt;::getLast()</a>, <a class="el" href="classOpenSim_1_1Array.html#a7decba452a0d518d8d6357e43ad60ea1">OpenSim::Array&lt; OpenSim::Array&lt; double &gt; * &gt;::getSize()</a>, <a class="el" href="classOpenSim_1_1Array.html#a919a732bf18326959e6aafa4f6ade5fc">OpenSim::Array&lt; OpenSim::Array&lt; double &gt; * &gt;::insert()</a>, <a class="el" href="classOpenSim_1_1Array.html#a5267fc885b9a18a12d75d5ac75e519e8">OpenSim::Array&lt; OpenSim::Array&lt; double &gt; * &gt;::operator=()</a>, <a class="el" href="classOpenSim_1_1Array.html#aa9deb2ef7e59062e6935a331f9ce780b">OpenSim::Array&lt; OpenSim::Array&lt; double &gt; * &gt;::operator==()</a>, <a class="el" href="classOpenSim_1_1Array.html#ae800e1737112b46456c730f5115046b7">OpenSim::Array&lt; OpenSim::Array&lt; double &gt; * &gt;::remove()</a>, <a class="el" href="classOpenSim_1_1Array.html#a1bfa9e03d77f1cd301816566d1fb975a">OpenSim::Array&lt; OpenSim::Array&lt; double &gt; * &gt;::rfindIndex()</a>, <a class="el" href="classOpenSim_1_1Array.html#a63e5a3bde28c2704c424ba20ea9e58dd">OpenSim::Array&lt; OpenSim::Array&lt; double &gt; * &gt;::searchBinary()</a>, <a class="el" href="classOpenSim_1_1Array.html#a73d7e2c126c8379b1d9cf62b7df86b83">OpenSim::Array&lt; OpenSim::Array&lt; double &gt; * &gt;::set()</a>, <a class="el" href="classOpenSim_1_1Array.html#a78b56564ddc02e3b47dbb75a9349ea76">OpenSim::Array&lt; OpenSim::Array&lt; double &gt; * &gt;::setSize()</a>, <a class="el" href="classOpenSim_1_1Array.html#abd3897fd81d9d47dd0e771a61f110b16">OpenSim::Array&lt; OpenSim::Array&lt; double &gt; * &gt;::trim()</a>, <a class="el" href="classOpenSim_1_1Array.html#a8163f5fc3b46cf8c9d2c2adb36b75295">OpenSim::Array&lt; OpenSim::Array&lt; double &gt; * &gt;::updElt()</a>, and <a class="el" href="classOpenSim_1_1Array.html#a70fba954c5c6f35ceb9e10b013682610">OpenSim::Array&lt; OpenSim::Array&lt; double &gt; * &gt;::updLast()</a>.</p>
+
+</div>
+</div>
+<hr/>The documentation for this class was generated from the following file:<ul>
+<li>C:/ReleaseEnv/src/OpenSim32Branch/OpenSim/Common/Array.h</li>
+</ul>
+</div><!-- contents -->
+</div><!-- doc-content -->
+</div>
+</body>
+</html>

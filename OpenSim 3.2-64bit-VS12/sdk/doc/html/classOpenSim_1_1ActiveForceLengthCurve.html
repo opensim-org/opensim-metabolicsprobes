@@ -1,0 +1,1353 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=9"/>
+<title>OpenSim: OpenSim::ActiveForceLengthCurve Class Reference</title>
+<link href="opensim.css" rel="stylesheet" type="text/css" />
+<link href="lightbox.css" rel="stylesheet" type="text/css" />
+<link href="bootstrap3/css/bootstrap.min.css" rel="stylesheet">
+<script src="jquery-2.1.0.min.js"></script>
+<script src="bootstrap3/js/bootstrap.min.js"></script>
+<script src="lightbox.js"></script>
+<script type="text/javascript" src="typeahead.min.js"></script>
+<script src="hogan-2.0.0.js"></script>
+<script type="text/javascript">
+  window.onhashchange = function() {
+  if (window.location.hash)
+      window.scrollBy(0, -50);
+  }
+  if (window.location.hash)
+  {
+    window.scrollBy(0, -50);
+  }
+$( document ).ready(function() {
+  $("#MSearchBox").hide();
+  $("div.headertitle").addClass("page-header");
+  $("div.title").addClass("h1");
+  $('li > a[href="index.html"] > span').before("<i class='fa fa-cog'></i> ");
+  $('li > a[href="index.html"] > span').text("OpenSim");
+  $('li > a[href="modules.html"] > span').before("<i class='fa fa-square'></i> ");
+  $('li > a[href="namespaces.html"] > span').before("<i class='fa fa-bars'></i> ");
+  $('li > a[href="annotated.html"] > span').before("<i class='fa fa-list-ul'></i> ");
+  $('li > a[href="classes.html"] > span').before("<i class='fa fa-book'></i> ");
+  $('li > a[href="inherits.html"] > span').before("<i class='fa fa-sitemap'></i> ");
+  $('li > a[href="functions.html"] > span').before("<i class='fa fa-list'></i> ");
+  $('li > a[href="functions_func.html"] > span').before("<i class='fa fa-list'></i> ");
+  $('li > a[href="functions_vars.html"] > span').before("<i class='fa fa-list'></i> ");
+  $('li > a[href="functions_enum.html"] > span').before("<i class='fa fa-list'></i> ");
+  $('li > a[href="functions_eval.html"] > span').before("<i class='fa fa-list'></i> ");
+  $('img[src="ftv2ns.png"]').replaceWith('<span class="label label-danger">N</span> ');
+  $('img[src="ftv2cl.png"]').replaceWith('<span class="label label-danger">C</span> ');
+  $("ul.tablist").addClass("nav nav-pills nav-justified");
+  $("ul.tablist").css("margin-top", "0.5em");
+  $("ul.tablist").css("margin-bottom", "0.5em");
+  $("li.current").addClass("active");
+  $("iframe").attr("scrolling", "yes");
+  $("#nav-path > ul").addClass("breadcrumb");
+  $("table.params").addClass("table");
+  $("div.ingroups").wrapInner("<small></small>");
+  $("div.levels").css("margin", "0.5em");
+  $("div.levels > span").addClass("btn btn-default btn-xs");
+  $("div.levels > span").css("margin-right", "0.25em");
+  $("table.directory").addClass("table table-striped");
+  $("div.summary > a").addClass("btn btn-default btn-xs");
+  $("table.fieldtable").addClass("table");
+  $(".fragment").addClass("well");
+  $(".memitem").addClass("panel panel-default");
+  $(".memproto").addClass("panel-heading");
+  $(".memdoc").addClass("panel-body");
+  $("span.mlabel").addClass("label label-info");
+  $("table.memberdecls").addClass("table");
+  $("[class^=memitem]").addClass("active");
+  $("div.ah").addClass("btn btn-default");
+  $("span.mlabels").addClass("pull-right");
+  $("table.mlabels").css("width", "100%")
+  $("td.mlabels-right").addClass("pull-right");
+  $("div.ttc").addClass("panel panel-info");
+  $("div.ttname").addClass("panel-heading");
+  $("div.ttdef,div.ttdoc,div.ttdeci").addClass("panel-body");
+$("#search").typeahead([
+    {
+      name: 'opensim-search',
+      valueKey: 'title',
+      remote: { url: 'query?q=%QUERY&teaser=body&pagesize=1000',
+      filter: function(p) {
+        dat = [];
+        for(i=0; i < p.hits.length; i++)
+        {
+          var pn = p.hits[i].document;
+          pn.href = p.hits[i].id;
+          dat.push(pn);
+        }
+        return dat;
+      }
+    },
+      template: '<strong>{{title}}</strong><p>{{{teaser}}}</p>',
+      engine: Hogan,
+      limit: 1000
+    }
+    ]).on("typeahead:selected", (function (e, datum){
+      window.location = datum.href;
+    }));
+    $('.typeahead.input-sm').siblings('input.tt-hint').addClass('hint-small');
+    $('.typeahead.input-lg').siblings('input.tt-hint').addClass('hint-large');
+  $.ajax({url : "ping", type: "GET", error : function() {
+    var prt = $("#MSearchBox").parent();
+    $(".twitter-typeahead").replaceWith($("#MSearchBox").show());
+    prt.remove();
+  }, success: function() {
+    $("#MSearchBox").parent().remove();
+    $(".nav>li").css("width", "266.667px");
+  }   });
+});
+var initNavTree = function(a,b) { } 
+function toggleVisibility(linkObj)
+{
+ var base = $(linkObj).attr('id');
+ var summary = $('#'+base+'-summary');
+ var content = $('#'+base+'-content');
+ var trigger = $('#'+base+'-trigger');
+ var src=$(trigger).attr('src');
+ if (content.is(':visible')===true) {
+   content.hide();
+   summary.show();
+   $(linkObj).addClass('closed').removeClass('opened');
+   $(trigger).attr('src',src.substring(0,src.length-8)+'closed.png');
+ } else {
+   content.show();
+   summary.hide();
+   $(linkObj).removeClass('closed').addClass('opened');
+   $(trigger).attr('src',src.substring(0,src.length-10)+'open.png');
+ } 
+ return false;
+}
+function updateStripes()
+{
+  $('table.directory tr').
+       removeClass('even').filter(':visible:even').addClass('even');
+}
+function toggleLevel(level)
+{
+  $('table.directory tr').each(function(){ 
+    var l = this.id.split('_').length-1;
+    var i = $('#img'+this.id.substring(3));
+    var a = $('#arr'+this.id.substring(3));
+    if (l<level+1) {
+      i.attr('src','ftv2folderopen.png');
+      a.attr('src','ftv2mnode.png');
+      $(this).show();
+    } else if (l==level+1) {
+      i.attr('src','ftv2folderclosed.png');
+      a.attr('src','ftv2pnode.png');
+      $(this).show();
+    } else {
+      $(this).hide();
+    }
+  });
+  updateStripes();
+}
+function toggleFolder(id)
+{
+  //The clicked row
+  var currentRow = $('#row_'+id);
+  var currentRowImages = currentRow.find("img");
+  //All rows after the clicked row
+  var rows = currentRow.nextAll("tr");
+  //Only match elements AFTER this one (can't hide elements before)
+  var childRows = rows.filter(function() {
+    var re = new RegExp('^row_'+id+'\\d+_$', "i"); //only one sub
+    return this.id.match(re);
+  });
+  //First row is visible we are HIDING
+  if (childRows.filter(':first').is(':visible')===true) {
+    currentRowImages.filter("[id^=arr]").attr('src', 'ftv2pnode.png');
+    currentRowImages.filter("[id^=img]").attr('src', 'ftv2folderclosed.png');
+    rows.filter("[id^=row_"+id+"]").hide();
+  } else { //We are SHOWING
+    //All sub images
+    var childImages = childRows.find("img");
+    var childImg = childImages.filter("[id^=img]");
+    var childArr = childImages.filter("[id^=arr]");
+    currentRow.find("[id^=arr]").attr('src', 'ftv2mnode.png'); //open row
+    currentRow.find("[id^=img]").attr('src', 'ftv2folderopen.png'); //open row
+    childImg.attr('src','ftv2folderclosed.png'); //children closed
+    childArr.attr('src','ftv2pnode.png'); //children closed
+    childRows.show(); //show all children
+  }
+  updateStripes();
+}
+function toggleInherit(id)
+{
+  var rows = $('tr.inherit.'+id);
+  var img = $('tr.inherit_header.'+id+' img');
+  var src = $(img).attr('src');
+  if (rows.filter(':first').is(':visible')===true) {
+    rows.css('display','none');
+    $(img).attr('src',src.substring(0,src.length-8)+'closed.png');
+  } else {
+    rows.css('display','table-row'); // using show() causes jump in firefox
+    $(img).attr('src',src.substring(0,src.length-10)+'open.png');
+  }
+}
+$(function() {
+$(".dyncontent img").each(function () {
+  $(this).wrap("<a href='" + $(this).attr("src") + "'></a>");
+  $(".dyncontent a").click(function(e) { e.preventDefault(); $(this).ekkoLightbox();  });
+} );
+  diag = $("map").parent().children("a").children("img");
+  if (diag != 'undefined')
+  {
+      diag.clone().load(function() { 
+      ratio = diag.width() / this.width;
+      $("area").each(function () {
+          cr = $(this).attr("coords").split(",");
+          for(l=0; l < cr.length; l++) {
+            cr[l] = parseInt(cr[l]) * ratio;
+          }
+          $(this).attr("coords", cr.join(','));
+      })
+      console.log(ratio); 
+    });
+  }
+});
+</script>
+<style type="text/css">
+  body
+  {
+    width: 800px;
+    margin: 0 auto;
+  }
+  img
+  {
+    max-width: 800px;
+  }
+  #container
+  {
+    margin-top: 70px;
+  }
+.twitter-typeahead .tt-hint
+{
+    display: block;
+    height: 34px;
+    padding: 6px 12px;
+    font-size: 14px;
+    line-height: 1.428571429;
+    border: 1px solid transparent;
+    border-radius:4px;
+}
+.twitter-typeahead .hint-small
+{
+    height: 30px;
+    padding: 5px 10px;
+    font-size: 12px;
+    border-radius: 3px;
+    line-height: 1.5;
+}
+.twitter-typeahead .hint-large
+{
+    height: 45px;
+    padding: 10px 16px;
+    font-size: 18px;
+    border-radius: 6px;
+    line-height: 1.33;
+}
+.twitter-typeahead {
+    width: 100%;
+    position: relative;
+}
+.twitter-typeahead .tt-query,
+.twitter-typeahead .tt-hint {
+    margin-bottom: 0;
+    width:100%;
+    height: 34px;
+    position: absolute;
+    top:0;
+    left:0;
+}
+.twitter-typeahead .tt-hint {
+    color:#a1a1a1;
+    z-index: 1;
+    padding: 6px 12px;
+    border:1px solid transparent;
+}
+.twitter-typeahead .tt-query {
+    z-index: 2;
+    border-radius: 4px!important;
+}
+.tt-dropdown-menu {
+    left: auto !important;
+    right: 0px !important;
+    overflow-y: auto;
+    max-height: 400px;
+    min-width: 160px;
+    margin-top: 2px;
+    padding: 5px 0;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border: 1px solid rgba(0,0,0,.2);
+    *border-right-width: 2px;
+    *border-bottom-width: 2px;
+    -webkit-border-radius: 6px;
+    -moz-border-radius: 6px;
+    border-radius: 6px;
+    -webkit-box-shadow: 0 5px 10px rgba(0,0,0,.2);
+    -moz-box-shadow: 0 5px 10px rgba(0,0,0,.2);
+    box-shadow: 0 5px 10px rgba(0,0,0,.2);
+    -webkit-background-clip: padding-box;
+    -moz-background-clip: padding;
+    background-clip: padding-box;
+}
+.tt-suggestion {
+    display: block;
+    padding: 3px 20px;
+}
+.tt-suggestion.tt-is-under-cursor {
+    color: #fff;
+    background-color: #0081c2;
+    background-image: -moz-linear-gradient(top, #0088cc, #0077b3);
+    background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#0088cc), to(#0077b3));
+    background-image: -webkit-linear-gradient(top, #0088cc, #0077b3);
+    background-image: -o-linear-gradient(top, #0088cc, #0077b3);
+    background-image: linear-gradient(to bottom, #0088cc, #0077b3);
+    background-repeat: repeat-x;
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff0088cc', endColorstr='#ff0077b3', GradientType=0)
+}
+.tt-suggestion.tt-is-under-cursor a {
+    color: #fff;
+}
+.tt-suggestion p {
+    margin: 0;
+}
+.sc-em
+{
+  font-weight: bold;
+}
+#MSearchResultsWindow
+{
+  top: 51px !important;
+  position: fixed !important;
+}
+</style>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/search.js"></script>
+<script type="text/javascript">
+  $(document).ready(function() { searchBox.OnSelectItem(0); });
+</script>
+</head>
+<body>
+    <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <a class="navbar-brand" href="index.html">OpenSim Documentation</a>
+        </div>
+          <form class="navbar-form navbar-right">
+              <input type="search" placeholder="Search" class="form-control" id="search">
+          </form>
+      </div>
+    </div>
+  <div id="container">
+<!-- Generated by Doxygen 1.8.6 -->
+<script type="text/javascript">
+var searchBox = new SearchBox("searchBox", "search",false,'Search');
+</script>
+  <div id="navrow1" class="tabs">
+    <ul class="tablist">
+      <li><a href="index.html"><span>Main&#160;Page</span></a></li>
+      <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
+      <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
+      <li>
+        <div id="MSearchBox" class="MSearchBoxInactive">
+        <span class="left">
+          <img id="MSearchSelect" src="search/mag_sel.png"
+               onmouseover="return searchBox.OnSearchSelectShow()"
+               onmouseout="return searchBox.OnSearchSelectHide()"
+               alt=""/>
+          <input type="text" id="MSearchField" value="Search" accesskey="S"
+               onfocus="searchBox.OnSearchFieldFocus(true)" 
+               onblur="searchBox.OnSearchFieldFocus(false)" 
+               onkeyup="searchBox.OnSearchFieldChange(event)"/>
+          </span><span class="right">
+            <a id="MSearchClose" href="javascript:searchBox.CloseResultsWindow()"><img id="MSearchCloseImg" border="0" src="search/close.png" alt=""/></a>
+          </span>
+        </div>
+      </li>
+    </ul>
+  </div>
+  <div id="navrow2" class="tabs2">
+    <ul class="tablist">
+      <li><a href="annotated.html"><span>Class&#160;List</span></a></li>
+      <li><a href="hierarchy.html"><span>Class&#160;Hierarchy</span></a></li>
+      <li><a href="functions.html"><span>Class&#160;Members</span></a></li>
+    </ul>
+  </div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+$(document).ready(function(){initNavTree('classOpenSim_1_1ActiveForceLengthCurve.html','');});
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Namespaces</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Enumerator</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Friends</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(9)"><span class="SelectionMark">&#160;</span>Pages</a></div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<iframe src="javascript:void(0)" frameborder="0" 
+        name="MSearchResults" id="MSearchResults">
+</iframe>
+</div>
+
+<div class="header">
+  <div class="summary">
+<a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="classOpenSim_1_1ActiveForceLengthCurve-members.html">List of all members</a>  </div>
+  <div class="headertitle">
+<div class="title">OpenSim::ActiveForceLengthCurve Class Reference</div>  </div>
+</div><!--header-->
+<div class="contents">
+
+<p>This class serves as a serializable <a class="el" href="classOpenSim_1_1ActiveForceLengthCurve.html" title="This class serves as a serializable ActiveForceLengthCurve, commonly used to model the active element...">ActiveForceLengthCurve</a>, commonly used to model the active element in muscle models.  
+ <a href="classOpenSim_1_1ActiveForceLengthCurve.html#details">More...</a></p>
+
+<p><code>#include &lt;ActiveForceLengthCurve.h&gt;</code></p>
+<div class="dynheader">
+Inheritance diagram for OpenSim::ActiveForceLengthCurve:</div>
+<div class="dyncontent">
+ <div class="center">
+  <img src="classOpenSim_1_1ActiveForceLengthCurve.png" usemap="#OpenSim::ActiveForceLengthCurve_map" alt=""/>
+  <map id="OpenSim::ActiveForceLengthCurve_map" name="OpenSim::ActiveForceLengthCurve_map">
+<area href="classOpenSim_1_1Function.html" alt="OpenSim::Function" shape="rect" coords="0,56,212,80"/>
+<area href="classOpenSim_1_1Object.html" title="This is the base class for all OpenSim objects that are serializable (meaning they can be written to ..." alt="OpenSim::Object" shape="rect" coords="0,0,212,24"/>
+</map>
+ </div></div>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
+Public Member Functions</h2></td></tr>
+<tr class="memitem:aee1e095f1f949c325d039b583b6ad37f"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classOpenSim_1_1ActiveForceLengthCurve.html#aee1e095f1f949c325d039b583b6ad37f">ActiveForceLengthCurve</a> ()</td></tr>
+<tr class="memdesc:aee1e095f1f949c325d039b583b6ad37f"><td class="mdescLeft">&#160;</td><td class="mdescRight">The default constructor creates an active-force-length curve using the default property values and assigns a default name.  <a href="#aee1e095f1f949c325d039b583b6ad37f">More...</a><br/></td></tr>
+<tr class="separator:aee1e095f1f949c325d039b583b6ad37f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a61f6fa01611061ef997c0a96d97a940d"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classOpenSim_1_1ActiveForceLengthCurve.html#a61f6fa01611061ef997c0a96d97a940d">ActiveForceLengthCurve</a> (double minActiveNormFiberLength, double transitionNormFiberLength, double maxActiveNormFiberLength, double shallowAscendingSlope, double minimumValue)</td></tr>
+<tr class="memdesc:a61f6fa01611061ef997c0a96d97a940d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs an active-force-length curve using the provided parameters and assigns a default name.  <a href="#a61f6fa01611061ef997c0a96d97a940d">More...</a><br/></td></tr>
+<tr class="separator:a61f6fa01611061ef997c0a96d97a940d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aceaed06aa4443ea194f93b38867c9c4e"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classOpenSim_1_1ActiveForceLengthCurve.html#aceaed06aa4443ea194f93b38867c9c4e">getMinActiveFiberLength</a> () const </td></tr>
+<tr class="separator:aceaed06aa4443ea194f93b38867c9c4e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a264e8a1446666a5bcfe7ad076994779f"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classOpenSim_1_1ActiveForceLengthCurve.html#a264e8a1446666a5bcfe7ad076994779f">getTransitionFiberLength</a> () const </td></tr>
+<tr class="separator:a264e8a1446666a5bcfe7ad076994779f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2258a12e8ba7215204543865bde7a395"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classOpenSim_1_1ActiveForceLengthCurve.html#a2258a12e8ba7215204543865bde7a395">getMaxActiveFiberLength</a> () const </td></tr>
+<tr class="separator:a2258a12e8ba7215204543865bde7a395"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afba0455c5145387fc66cacc9466b6e06"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classOpenSim_1_1ActiveForceLengthCurve.html#afba0455c5145387fc66cacc9466b6e06">getShallowAscendingSlope</a> () const </td></tr>
+<tr class="separator:afba0455c5145387fc66cacc9466b6e06"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af945e6f721d5fa49de3ead8410dccdf9"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classOpenSim_1_1ActiveForceLengthCurve.html#af945e6f721d5fa49de3ead8410dccdf9">getMinValue</a> () const </td></tr>
+<tr class="separator:af945e6f721d5fa49de3ead8410dccdf9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad0e3a4825e4589d18c470dfe77b1d5a0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classOpenSim_1_1ActiveForceLengthCurve.html#ad0e3a4825e4589d18c470dfe77b1d5a0">setActiveFiberLengths</a> (double minActiveNormFiberLength, double transitionNormFiberLength, double maxActiveNormFiberLength, double shallowAscendingSlope)</td></tr>
+<tr class="separator:ad0e3a4825e4589d18c470dfe77b1d5a0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae0557431f1eb418930e5ee4c7dd02e66"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classOpenSim_1_1ActiveForceLengthCurve.html#ae0557431f1eb418930e5ee4c7dd02e66">setMinValue</a> (double minimumValue)</td></tr>
+<tr class="separator:ae0557431f1eb418930e5ee4c7dd02e66"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab037516d703d0569bdf02a68318a54c9"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classOpenSim_1_1ActiveForceLengthCurve.html#ab037516d703d0569bdf02a68318a54c9">calcValue</a> (const SimTK::Vector &amp;x) const override</td></tr>
+<tr class="memdesc:ab037516d703d0569bdf02a68318a54c9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Implement the generic <a class="el" href="classOpenSim_1_1Function.html">OpenSim::Function</a> interface.  <a href="#ab037516d703d0569bdf02a68318a54c9">More...</a><br/></td></tr>
+<tr class="separator:ab037516d703d0569bdf02a68318a54c9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a293cd71324786326bcd136cdf2c5de74"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classOpenSim_1_1ActiveForceLengthCurve.html#a293cd71324786326bcd136cdf2c5de74">calcValue</a> (double normFiberLength) const </td></tr>
+<tr class="memdesc:a293cd71324786326bcd136cdf2c5de74"><td class="mdescLeft">&#160;</td><td class="mdescRight">Evaluates the active-force-length curve at a normalized fiber length of 'normFiberLength'.  <a href="#a293cd71324786326bcd136cdf2c5de74">More...</a><br/></td></tr>
+<tr class="separator:a293cd71324786326bcd136cdf2c5de74"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af311d8f9fd96d1d435c81e72465af378"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classOpenSim_1_1ActiveForceLengthCurve.html#af311d8f9fd96d1d435c81e72465af378">calcDerivative</a> (double normFiberLength, int order) const </td></tr>
+<tr class="memdesc:af311d8f9fd96d1d435c81e72465af378"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculates the derivative of the active-force-length multiplier with respect to the normalized fiber length.  <a href="#af311d8f9fd96d1d435c81e72465af378">More...</a><br/></td></tr>
+<tr class="separator:af311d8f9fd96d1d435c81e72465af378"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aad5428ca98f30e6bd6cf94fda259e8e3"><td class="memItemLeft" align="right" valign="top">SimTK::Vec2&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classOpenSim_1_1ActiveForceLengthCurve.html#aad5428ca98f30e6bd6cf94fda259e8e3">getCurveDomain</a> () const </td></tr>
+<tr class="memdesc:aad5428ca98f30e6bd6cf94fda259e8e3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a SimTK::Vec2 containing the lower (0th element) and upper (1st element) bounds on the domain of the curve.  <a href="#aad5428ca98f30e6bd6cf94fda259e8e3">More...</a><br/></td></tr>
+<tr class="separator:aad5428ca98f30e6bd6cf94fda259e8e3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5eb05f09f8645ad742a387338abc6da9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classOpenSim_1_1ActiveForceLengthCurve.html#a5eb05f09f8645ad742a387338abc6da9">printMuscleCurveToCSVFile</a> (const std::string &amp;path)</td></tr>
+<tr class="memdesc:a5eb05f09f8645ad742a387338abc6da9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generates a .csv file with a name that matches the curve name (e.g., "bicepsfemoris_ActiveForceLengthCurve.csv").  <a href="#a5eb05f09f8645ad742a387338abc6da9">More...</a><br/></td></tr>
+<tr class="separator:a5eb05f09f8645ad742a387338abc6da9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a13faa5e9d446c33b4ded0a05b9c153c5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classOpenSim_1_1ActiveForceLengthCurve.html#a13faa5e9d446c33b4ded0a05b9c153c5">ensureCurveUpToDate</a> ()</td></tr>
+<tr class="separator:a13faa5e9d446c33b4ded0a05b9c153c5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr><td colspan="2"><div class="groupHeader">Property declarations</div></td></tr>
+<tr><td colspan="2"><div class="groupText"><p>These are the serializable properties associated with this class.</p>
+</div></td></tr>
+<tr class="memitem:a48619ba5079f4b954cf3e887bd7a8602"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classOpenSim_1_1ActiveForceLengthCurve.html#a48619ba5079f4b954cf3e887bd7a8602">OpenSim_DECLARE_PROPERTY</a> (min_norm_active_fiber_length, double,&quot;Normalized fiber length where the steep ascending limb starts&quot;)</td></tr>
+<tr class="separator:a48619ba5079f4b954cf3e887bd7a8602"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a80625dd11c828d1a0b5f623e5519a4bd"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classOpenSim_1_1ActiveForceLengthCurve.html#a80625dd11c828d1a0b5f623e5519a4bd">OpenSim_DECLARE_PROPERTY</a> (transition_norm_fiber_length, double,&quot;Normalized fiber length where the steep ascending limb transitions to the shallow ascending limb&quot;)</td></tr>
+<tr class="separator:a80625dd11c828d1a0b5f623e5519a4bd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a48b9473012e2ab0f0ff39602d4d5b6b6"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classOpenSim_1_1ActiveForceLengthCurve.html#a48b9473012e2ab0f0ff39602d4d5b6b6">OpenSim_DECLARE_PROPERTY</a> (max_norm_active_fiber_length, double,&quot;Normalized fiber length where the descending limb ends&quot;)</td></tr>
+<tr class="separator:a48b9473012e2ab0f0ff39602d4d5b6b6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a77a4bcce78e5bbcea06104e05f0ed566"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classOpenSim_1_1ActiveForceLengthCurve.html#a77a4bcce78e5bbcea06104e05f0ed566">OpenSim_DECLARE_PROPERTY</a> (shallow_ascending_slope, double,&quot;Slope of the shallow ascending limb&quot;)</td></tr>
+<tr class="separator:a77a4bcce78e5bbcea06104e05f0ed566"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4716217226f4347695d51c38a2311c3b"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classOpenSim_1_1ActiveForceLengthCurve.html#a4716217226f4347695d51c38a2311c3b">OpenSim_DECLARE_PROPERTY</a> (minimum_value, double,&quot;Minimum value of the active-force-length curve&quot;)</td></tr>
+<tr class="separator:a4716217226f4347695d51c38a2311c3b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_methods_classOpenSim_1_1Function"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classOpenSim_1_1Function')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classOpenSim_1_1Function.html">OpenSim::Function</a></td></tr>
+<tr class="memitem:a0e6989f9340cf0f9ccd3acec3f856d07 inherit pub_methods_classOpenSim_1_1Function"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classOpenSim_1_1Function.html#a0e6989f9340cf0f9ccd3acec3f856d07">Function</a> ()</td></tr>
+<tr class="separator:a0e6989f9340cf0f9ccd3acec3f856d07 inherit pub_methods_classOpenSim_1_1Function"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a62a248fc3291c9bd322e6c62d2331273 inherit pub_methods_classOpenSim_1_1Function"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classOpenSim_1_1Function.html#a62a248fc3291c9bd322e6c62d2331273">Function</a> (const <a class="el" href="classOpenSim_1_1Function.html">Function</a> &amp;aFunction)</td></tr>
+<tr class="separator:a62a248fc3291c9bd322e6c62d2331273 inherit pub_methods_classOpenSim_1_1Function"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a553995ee00e3fa0c89c9ce8020de131e inherit pub_methods_classOpenSim_1_1Function"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classOpenSim_1_1Function.html#a553995ee00e3fa0c89c9ce8020de131e">~Function</a> ()</td></tr>
+<tr class="separator:a553995ee00e3fa0c89c9ce8020de131e inherit pub_methods_classOpenSim_1_1Function"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaeb780fa78e97a73d8fe98442ab8dbd4 inherit pub_methods_classOpenSim_1_1Function"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classOpenSim_1_1Function.html#aaeb780fa78e97a73d8fe98442ab8dbd4">init</a> (<a class="el" href="classOpenSim_1_1Function.html">Function</a> *aFunction)</td></tr>
+<tr class="separator:aaeb780fa78e97a73d8fe98442ab8dbd4 inherit pub_methods_classOpenSim_1_1Function"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6caa92cc7e3892e82de3ea91a24964aa inherit pub_methods_classOpenSim_1_1Function"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classOpenSim_1_1Function.html">Function</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classOpenSim_1_1Function.html#a6caa92cc7e3892e82de3ea91a24964aa">operator=</a> (const <a class="el" href="classOpenSim_1_1Function.html">Function</a> &amp;aFunction)</td></tr>
+<tr class="separator:a6caa92cc7e3892e82de3ea91a24964aa inherit pub_methods_classOpenSim_1_1Function"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8fba6e59c215f3708f961b979c27dc70 inherit pub_methods_classOpenSim_1_1Function"><td class="memItemLeft" align="right" valign="top">virtual double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classOpenSim_1_1Function.html#a8fba6e59c215f3708f961b979c27dc70">calcDerivative</a> (const std::vector&lt; int &gt; &amp;derivComponents, const SimTK::Vector &amp;x) const </td></tr>
+<tr class="memdesc:a8fba6e59c215f3708f961b979c27dc70 inherit pub_methods_classOpenSim_1_1Function"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculate a partial derivative of this function at a particular point.  <a href="#a8fba6e59c215f3708f961b979c27dc70">More...</a><br/></td></tr>
+<tr class="separator:a8fba6e59c215f3708f961b979c27dc70 inherit pub_methods_classOpenSim_1_1Function"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6050bd92a798cea000a9dc863ae8dff0 inherit pub_methods_classOpenSim_1_1Function"><td class="memItemLeft" align="right" valign="top">virtual int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classOpenSim_1_1Function.html#a6050bd92a798cea000a9dc863ae8dff0">getArgumentSize</a> () const </td></tr>
+<tr class="memdesc:a6050bd92a798cea000a9dc863ae8dff0 inherit pub_methods_classOpenSim_1_1Function"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the number of components expected in the input vector.  <a href="#a6050bd92a798cea000a9dc863ae8dff0">More...</a><br/></td></tr>
+<tr class="separator:a6050bd92a798cea000a9dc863ae8dff0 inherit pub_methods_classOpenSim_1_1Function"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a579c8a9c12d787a44ff899417d66f1d5 inherit pub_methods_classOpenSim_1_1Function"><td class="memItemLeft" align="right" valign="top">virtual int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classOpenSim_1_1Function.html#a579c8a9c12d787a44ff899417d66f1d5">getMaxDerivativeOrder</a> () const </td></tr>
+<tr class="memdesc:a579c8a9c12d787a44ff899417d66f1d5 inherit pub_methods_classOpenSim_1_1Function"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the maximum derivative order this <a class="el" href="classOpenSim_1_1Function.html">Function</a> object can calculate.  <a href="#a579c8a9c12d787a44ff899417d66f1d5">More...</a><br/></td></tr>
+<tr class="separator:a579c8a9c12d787a44ff899417d66f1d5 inherit pub_methods_classOpenSim_1_1Function"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_methods_classOpenSim_1_1Object"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classOpenSim_1_1Object')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classOpenSim_1_1Object.html">OpenSim::Object</a></td></tr>
+<tr class="memitem:a5dc026c632531b193236dfaa65962d40 inherit pub_methods_classOpenSim_1_1Object"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classOpenSim_1_1Object.html#a5dc026c632531b193236dfaa65962d40">~Object</a> ()</td></tr>
+<tr class="memdesc:a5dc026c632531b193236dfaa65962d40 inherit pub_methods_classOpenSim_1_1Object"><td class="mdescLeft">&#160;</td><td class="mdescRight">Virtual destructor for cleanup.  <a href="#a5dc026c632531b193236dfaa65962d40">More...</a><br/></td></tr>
+<tr class="separator:a5dc026c632531b193236dfaa65962d40 inherit pub_methods_classOpenSim_1_1Object"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af221c900c5447df9928f1786469ef1b8 inherit pub_methods_classOpenSim_1_1Object"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="classOpenSim_1_1Object.html">Object</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classOpenSim_1_1Object.html#af221c900c5447df9928f1786469ef1b8">clone</a> () const =0</td></tr>
+<tr class="memdesc:af221c900c5447df9928f1786469ef1b8 inherit pub_methods_classOpenSim_1_1Object"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a new heap-allocated copy of the concrete object to which this Object refers.  <a href="#af221c900c5447df9928f1786469ef1b8">More...</a><br/></td></tr>
+<tr class="separator:af221c900c5447df9928f1786469ef1b8 inherit pub_methods_classOpenSim_1_1Object"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a56f3462342f51392a34cb4f0787ae2b7 inherit pub_methods_classOpenSim_1_1Object"><td class="memItemLeft" align="right" valign="top">virtual const std::string &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classOpenSim_1_1Object.html#a56f3462342f51392a34cb4f0787ae2b7">getConcreteClassName</a> () const =0</td></tr>
+<tr class="memdesc:a56f3462342f51392a34cb4f0787ae2b7 inherit pub_methods_classOpenSim_1_1Object"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the class name of the concrete Object-derived class of the actual object referenced by this Object, as a string.  <a href="#a56f3462342f51392a34cb4f0787ae2b7">More...</a><br/></td></tr>
+<tr class="separator:a56f3462342f51392a34cb4f0787ae2b7 inherit pub_methods_classOpenSim_1_1Object"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad198104a9d49d467c58488a6964d6730 inherit pub_methods_classOpenSim_1_1Object"><td class="memItemLeft" align="right" valign="top">virtual const <a class="el" href="classOpenSim_1_1VisibleObject.html">VisibleObject</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classOpenSim_1_1Object.html#ad198104a9d49d467c58488a6964d6730">getDisplayer</a> () const </td></tr>
+<tr class="memdesc:ad198104a9d49d467c58488a6964d6730 inherit pub_methods_classOpenSim_1_1Object"><td class="mdescLeft">&#160;</td><td class="mdescRight">Methods to support making the object displayable in the GUI or Visualizer Implemented only in few objects.  <a href="#ad198104a9d49d467c58488a6964d6730">More...</a><br/></td></tr>
+<tr class="separator:ad198104a9d49d467c58488a6964d6730 inherit pub_methods_classOpenSim_1_1Object"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abe46905179b5d21f37c9b20f5ad70ffb inherit pub_methods_classOpenSim_1_1Object"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="classOpenSim_1_1VisibleObject.html">VisibleObject</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classOpenSim_1_1Object.html#abe46905179b5d21f37c9b20f5ad70ffb">updDisplayer</a> ()</td></tr>
+<tr class="memdesc:abe46905179b5d21f37c9b20f5ad70ffb inherit pub_methods_classOpenSim_1_1Object"><td class="mdescLeft">&#160;</td><td class="mdescRight">get Non const pointer to <a class="el" href="classOpenSim_1_1VisibleObject.html" title="Class VisibleObject is intended to be used as the base class for all Visible objects that subclass Ob...">VisibleObject</a>  <a href="#abe46905179b5d21f37c9b20f5ad70ffb">More...</a><br/></td></tr>
+<tr class="separator:abe46905179b5d21f37c9b20f5ad70ffb inherit pub_methods_classOpenSim_1_1Object"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6690bb504728e0ba5d675178616005c0 inherit pub_methods_classOpenSim_1_1Object"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classOpenSim_1_1Object.html#a6690bb504728e0ba5d675178616005c0">isEqualTo</a> (const <a class="el" href="classOpenSim_1_1Object.html">Object</a> &amp;aObject) const </td></tr>
+<tr class="memdesc:a6690bb504728e0ba5d675178616005c0 inherit pub_methods_classOpenSim_1_1Object"><td class="mdescLeft">&#160;</td><td class="mdescRight">Equality operator wrapper for use from languages not supporting operator overloading.  <a href="#a6690bb504728e0ba5d675178616005c0">More...</a><br/></td></tr>
+<tr class="separator:a6690bb504728e0ba5d675178616005c0 inherit pub_methods_classOpenSim_1_1Object"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1296dda9711e0e061fd29b88eacae796 inherit pub_methods_classOpenSim_1_1Object"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classOpenSim_1_1Object.html">Object</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classOpenSim_1_1Object.html#a1296dda9711e0e061fd29b88eacae796">operator=</a> (const <a class="el" href="classOpenSim_1_1Object.html">Object</a> &amp;aObject)</td></tr>
+<tr class="memdesc:a1296dda9711e0e061fd29b88eacae796 inherit pub_methods_classOpenSim_1_1Object"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy assignment copies he base class fields, including the properties.  <a href="#a1296dda9711e0e061fd29b88eacae796">More...</a><br/></td></tr>
+<tr class="separator:a1296dda9711e0e061fd29b88eacae796 inherit pub_methods_classOpenSim_1_1Object"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a96b3686d0084ddba34a754cf61996b71 inherit pub_methods_classOpenSim_1_1Object"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classOpenSim_1_1Object.html#a96b3686d0084ddba34a754cf61996b71">operator==</a> (const <a class="el" href="classOpenSim_1_1Object.html">Object</a> &amp;aObject) const </td></tr>
+<tr class="memdesc:a96b3686d0084ddba34a754cf61996b71 inherit pub_methods_classOpenSim_1_1Object"><td class="mdescLeft">&#160;</td><td class="mdescRight">Determine if two objects are equal.  <a href="#a96b3686d0084ddba34a754cf61996b71">More...</a><br/></td></tr>
+<tr class="separator:a96b3686d0084ddba34a754cf61996b71 inherit pub_methods_classOpenSim_1_1Object"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3fe4c39736b73c4df2f9c68c7a9f74a3 inherit pub_methods_classOpenSim_1_1Object"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classOpenSim_1_1Object.html#a3fe4c39736b73c4df2f9c68c7a9f74a3">operator&lt;</a> (const <a class="el" href="classOpenSim_1_1Object.html">Object</a> &amp;aObject) const </td></tr>
+<tr class="memdesc:a3fe4c39736b73c4df2f9c68c7a9f74a3 inherit pub_methods_classOpenSim_1_1Object"><td class="mdescLeft">&#160;</td><td class="mdescRight">Provide an ordering for objects so they can be put in sorted containers.  <a href="#a3fe4c39736b73c4df2f9c68c7a9f74a3">More...</a><br/></td></tr>
+<tr class="separator:a3fe4c39736b73c4df2f9c68c7a9f74a3 inherit pub_methods_classOpenSim_1_1Object"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a44921f417260a606255a162bfaa74e85 inherit pub_methods_classOpenSim_1_1Object"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classOpenSim_1_1Object.html#a44921f417260a606255a162bfaa74e85">setName</a> (const std::string &amp;name)</td></tr>
+<tr class="memdesc:a44921f417260a606255a162bfaa74e85 inherit pub_methods_classOpenSim_1_1Object"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classOpenSim_1_1Set.html" title="A class for holding a set of pointers to objects. ">Set</a> the name of the <a class="el" href="classOpenSim_1_1Object.html" title="This is the base class for all OpenSim objects that are serializable (meaning they can be written to ...">Object</a>.  <a href="#a44921f417260a606255a162bfaa74e85">More...</a><br/></td></tr>
+<tr class="separator:a44921f417260a606255a162bfaa74e85 inherit pub_methods_classOpenSim_1_1Object"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5915b8c1d384df8ac19fd11a1fb21ccd inherit pub_methods_classOpenSim_1_1Object"><td class="memItemLeft" align="right" valign="top">const std::string &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classOpenSim_1_1Object.html#a5915b8c1d384df8ac19fd11a1fb21ccd">getName</a> () const </td></tr>
+<tr class="memdesc:a5915b8c1d384df8ac19fd11a1fb21ccd inherit pub_methods_classOpenSim_1_1Object"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the name of this <a class="el" href="classOpenSim_1_1Object.html" title="This is the base class for all OpenSim objects that are serializable (meaning they can be written to ...">Object</a>.  <a href="#a5915b8c1d384df8ac19fd11a1fb21ccd">More...</a><br/></td></tr>
+<tr class="separator:a5915b8c1d384df8ac19fd11a1fb21ccd inherit pub_methods_classOpenSim_1_1Object"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a736967772e266744409791c21a94dd80 inherit pub_methods_classOpenSim_1_1Object"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classOpenSim_1_1Object.html#a736967772e266744409791c21a94dd80">setDescription</a> (const std::string &amp;description)</td></tr>
+<tr class="memdesc:a736967772e266744409791c21a94dd80 inherit pub_methods_classOpenSim_1_1Object"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classOpenSim_1_1Set.html" title="A class for holding a set of pointers to objects. ">Set</a> description, a one-liner summary.  <a href="#a736967772e266744409791c21a94dd80">More...</a><br/></td></tr>
+<tr class="separator:a736967772e266744409791c21a94dd80 inherit pub_methods_classOpenSim_1_1Object"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a95c82687e6065eaaded78637d6b962b3 inherit pub_methods_classOpenSim_1_1Object"><td class="memItemLeft" align="right" valign="top">const std::string &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classOpenSim_1_1Object.html#a95c82687e6065eaaded78637d6b962b3">getDescription</a> () const </td></tr>
+<tr class="memdesc:a95c82687e6065eaaded78637d6b962b3 inherit pub_methods_classOpenSim_1_1Object"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get description, a one-liner summary.  <a href="#a95c82687e6065eaaded78637d6b962b3">More...</a><br/></td></tr>
+<tr class="separator:a95c82687e6065eaaded78637d6b962b3 inherit pub_methods_classOpenSim_1_1Object"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a33466c9415fae20658e0cb03919c9ea3 inherit pub_methods_classOpenSim_1_1Object"><td class="memItemLeft" align="right" valign="top">const std::string &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classOpenSim_1_1Object.html#a33466c9415fae20658e0cb03919c9ea3">getAuthors</a> () const </td></tr>
+<tr class="memdesc:a33466c9415fae20658e0cb03919c9ea3 inherit pub_methods_classOpenSim_1_1Object"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get Authors of this <a class="el" href="classOpenSim_1_1Object.html" title="This is the base class for all OpenSim objects that are serializable (meaning they can be written to ...">Object</a>.  <a href="#a33466c9415fae20658e0cb03919c9ea3">More...</a><br/></td></tr>
+<tr class="separator:a33466c9415fae20658e0cb03919c9ea3 inherit pub_methods_classOpenSim_1_1Object"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5543fa91645f86c336d121cf6da60dfd inherit pub_methods_classOpenSim_1_1Object"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classOpenSim_1_1Object.html#a5543fa91645f86c336d121cf6da60dfd">setAuthors</a> (const std::string &amp;authors)</td></tr>
+<tr class="memdesc:a5543fa91645f86c336d121cf6da60dfd inherit pub_methods_classOpenSim_1_1Object"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classOpenSim_1_1Set.html" title="A class for holding a set of pointers to objects. ">Set</a> Authors of this object, call this method in your constructor if needed.  <a href="#a5543fa91645f86c336d121cf6da60dfd">More...</a><br/></td></tr>
+<tr class="separator:a5543fa91645f86c336d121cf6da60dfd inherit pub_methods_classOpenSim_1_1Object"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1e03d1cd0bda7673fc8d697a0114fc96 inherit pub_methods_classOpenSim_1_1Object"><td class="memItemLeft" align="right" valign="top">const std::string &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classOpenSim_1_1Object.html#a1e03d1cd0bda7673fc8d697a0114fc96">getReferences</a> () const </td></tr>
+<tr class="memdesc:a1e03d1cd0bda7673fc8d697a0114fc96 inherit pub_methods_classOpenSim_1_1Object"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get references or publications to cite if using this object.  <a href="#a1e03d1cd0bda7673fc8d697a0114fc96">More...</a><br/></td></tr>
+<tr class="separator:a1e03d1cd0bda7673fc8d697a0114fc96 inherit pub_methods_classOpenSim_1_1Object"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3cf59c40ec8751e01d736db3383cbe50 inherit pub_methods_classOpenSim_1_1Object"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classOpenSim_1_1Object.html#a3cf59c40ec8751e01d736db3383cbe50">setReferences</a> (const std::string &amp;references)</td></tr>
+<tr class="memdesc:a3cf59c40ec8751e01d736db3383cbe50 inherit pub_methods_classOpenSim_1_1Object"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classOpenSim_1_1Set.html" title="A class for holding a set of pointers to objects. ">Set</a> references or publications to cite if using this object.  <a href="#a3cf59c40ec8751e01d736db3383cbe50">More...</a><br/></td></tr>
+<tr class="separator:a3cf59c40ec8751e01d736db3383cbe50 inherit pub_methods_classOpenSim_1_1Object"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa298781dd5a5b3c892662ef73172f0bf inherit pub_methods_classOpenSim_1_1Object"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classOpenSim_1_1Object.html#aa298781dd5a5b3c892662ef73172f0bf">getNumProperties</a> () const </td></tr>
+<tr class="memdesc:aa298781dd5a5b3c892662ef73172f0bf inherit pub_methods_classOpenSim_1_1Object"><td class="mdescLeft">&#160;</td><td class="mdescRight">Determine how many properties are stored with this Object.  <a href="#aa298781dd5a5b3c892662ef73172f0bf">More...</a><br/></td></tr>
+<tr class="separator:aa298781dd5a5b3c892662ef73172f0bf inherit pub_methods_classOpenSim_1_1Object"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3135199b9122677080358606b672d8df inherit pub_methods_classOpenSim_1_1Object"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classOpenSim_1_1AbstractProperty.html">AbstractProperty</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classOpenSim_1_1Object.html#a3135199b9122677080358606b672d8df">getPropertyByIndex</a> (int propertyIndex) const </td></tr>
+<tr class="memdesc:a3135199b9122677080358606b672d8df inherit pub_methods_classOpenSim_1_1Object"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get a const reference to a property by its index number, returned as an <a class="el" href="classOpenSim_1_1AbstractProperty.html" title="An abstract property is a serializable (name,value) pair, for which we do not know the type of the va...">AbstractProperty</a>.  <a href="#a3135199b9122677080358606b672d8df">More...</a><br/></td></tr>
+<tr class="separator:a3135199b9122677080358606b672d8df inherit pub_methods_classOpenSim_1_1Object"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac3f81ef13cb278c49785cbb2236cc2b0 inherit pub_methods_classOpenSim_1_1Object"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classOpenSim_1_1AbstractProperty.html">AbstractProperty</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classOpenSim_1_1Object.html#ac3f81ef13cb278c49785cbb2236cc2b0">updPropertyByIndex</a> (int propertyIndex)</td></tr>
+<tr class="memdesc:ac3f81ef13cb278c49785cbb2236cc2b0 inherit pub_methods_classOpenSim_1_1Object"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get a writable reference to a property by its index number, returned as an <a class="el" href="classOpenSim_1_1AbstractProperty.html" title="An abstract property is a serializable (name,value) pair, for which we do not know the type of the va...">AbstractProperty</a>.  <a href="#ac3f81ef13cb278c49785cbb2236cc2b0">More...</a><br/></td></tr>
+<tr class="separator:ac3f81ef13cb278c49785cbb2236cc2b0 inherit pub_methods_classOpenSim_1_1Object"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0e325f974b4640ba3a61658d83a4e5bc inherit pub_methods_classOpenSim_1_1Object"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classOpenSim_1_1Object.html#a0e325f974b4640ba3a61658d83a4e5bc">hasProperty</a> (const std::string &amp;name) const </td></tr>
+<tr class="memdesc:a0e325f974b4640ba3a61658d83a4e5bc inherit pub_methods_classOpenSim_1_1Object"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return true if this Object has a property of any type with the given <em>name</em>, which must not be empty.  <a href="#a0e325f974b4640ba3a61658d83a4e5bc">More...</a><br/></td></tr>
+<tr class="separator:a0e325f974b4640ba3a61658d83a4e5bc inherit pub_methods_classOpenSim_1_1Object"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1a65abcee1fee7ef6a261f99c45e46d9 inherit pub_methods_classOpenSim_1_1Object"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classOpenSim_1_1AbstractProperty.html">AbstractProperty</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classOpenSim_1_1Object.html#a1a65abcee1fee7ef6a261f99c45e46d9">getPropertyByName</a> (const std::string &amp;name) const </td></tr>
+<tr class="memdesc:a1a65abcee1fee7ef6a261f99c45e46d9 inherit pub_methods_classOpenSim_1_1Object"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get a const reference to a property by its name, returned as an <a class="el" href="classOpenSim_1_1AbstractProperty.html" title="An abstract property is a serializable (name,value) pair, for which we do not know the type of the va...">AbstractProperty</a>.  <a href="#a1a65abcee1fee7ef6a261f99c45e46d9">More...</a><br/></td></tr>
+<tr class="separator:a1a65abcee1fee7ef6a261f99c45e46d9 inherit pub_methods_classOpenSim_1_1Object"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a62268af4017fc9d547ae718b3cb3733d inherit pub_methods_classOpenSim_1_1Object"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classOpenSim_1_1AbstractProperty.html">AbstractProperty</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classOpenSim_1_1Object.html#a62268af4017fc9d547ae718b3cb3733d">updPropertyByName</a> (const std::string &amp;name)</td></tr>
+<tr class="memdesc:a62268af4017fc9d547ae718b3cb3733d inherit pub_methods_classOpenSim_1_1Object"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get a writable reference to a property by its name, returned as an <a class="el" href="classOpenSim_1_1AbstractProperty.html" title="An abstract property is a serializable (name,value) pair, for which we do not know the type of the va...">AbstractProperty</a>.  <a href="#a62268af4017fc9d547ae718b3cb3733d">More...</a><br/></td></tr>
+<tr class="separator:a62268af4017fc9d547ae718b3cb3733d inherit pub_methods_classOpenSim_1_1Object"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab6af5b2dc8e345c2a99a50f75ce12275 inherit pub_methods_classOpenSim_1_1Object"><td class="memTemplParams" colspan="2">template&lt;class T &gt; </td></tr>
+<tr class="memitem:ab6af5b2dc8e345c2a99a50f75ce12275 inherit pub_methods_classOpenSim_1_1Object"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classOpenSim_1_1Object.html#ab6af5b2dc8e345c2a99a50f75ce12275">hasProperty</a> () const </td></tr>
+<tr class="memdesc:ab6af5b2dc8e345c2a99a50f75ce12275 inherit pub_methods_classOpenSim_1_1Object"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return true if this Object contains an unnamed, one-object property that contains objects of the given template type T.  <a href="#ab6af5b2dc8e345c2a99a50f75ce12275">More...</a><br/></td></tr>
+<tr class="separator:ab6af5b2dc8e345c2a99a50f75ce12275 inherit pub_methods_classOpenSim_1_1Object"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae569867dea47d552436ca887a580dd3c inherit pub_methods_classOpenSim_1_1Object"><td class="memTemplParams" colspan="2">template&lt;class T &gt; </td></tr>
+<tr class="memitem:ae569867dea47d552436ca887a580dd3c inherit pub_methods_classOpenSim_1_1Object"><td class="memTemplItemLeft" align="right" valign="top">const <a class="el" href="classOpenSim_1_1Property.html">Property</a>&lt; T &gt; &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classOpenSim_1_1Object.html#ae569867dea47d552436ca887a580dd3c">getProperty</a> (const PropertyIndex &amp;index) const </td></tr>
+<tr class="memdesc:ae569867dea47d552436ca887a580dd3c inherit pub_methods_classOpenSim_1_1Object"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get property of known type <a class="el" href="classOpenSim_1_1Property.html" title="A Property&lt;T&gt; is a serializable (name, list-of-values) pair, where each value is of type T...">Property</a>&lt;T&gt; as a const reference; the property must be present and have the right type.  <a href="#ae569867dea47d552436ca887a580dd3c">More...</a><br/></td></tr>
+<tr class="separator:ae569867dea47d552436ca887a580dd3c inherit pub_methods_classOpenSim_1_1Object"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a351933e7ddc7a7e761e2a8a9cd12728b inherit pub_methods_classOpenSim_1_1Object"><td class="memTemplParams" colspan="2">template&lt;class T &gt; </td></tr>
+<tr class="memitem:a351933e7ddc7a7e761e2a8a9cd12728b inherit pub_methods_classOpenSim_1_1Object"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classOpenSim_1_1Property.html">Property</a>&lt; T &gt; &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classOpenSim_1_1Object.html#a351933e7ddc7a7e761e2a8a9cd12728b">updProperty</a> (const PropertyIndex &amp;index)</td></tr>
+<tr class="memdesc:a351933e7ddc7a7e761e2a8a9cd12728b inherit pub_methods_classOpenSim_1_1Object"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get property of known type <a class="el" href="classOpenSim_1_1Property.html" title="A Property&lt;T&gt; is a serializable (name, list-of-values) pair, where each value is of type T...">Property</a>&lt;T&gt; as a writable reference; the property must be present and have the right type.  <a href="#a351933e7ddc7a7e761e2a8a9cd12728b">More...</a><br/></td></tr>
+<tr class="separator:a351933e7ddc7a7e761e2a8a9cd12728b inherit pub_methods_classOpenSim_1_1Object"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6aff140025aa58def7bad8810a6c4652 inherit pub_methods_classOpenSim_1_1Object"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classOpenSim_1_1Object.html#a6aff140025aa58def7bad8810a6c4652">setObjectIsUpToDateWithProperties</a> ()</td></tr>
+<tr class="memdesc:a6aff140025aa58def7bad8810a6c4652 inherit pub_methods_classOpenSim_1_1Object"><td class="mdescLeft">&#160;</td><td class="mdescRight">When an object is initialized using the current values of its properties, it can set a flag indicating that it is up to date.  <a href="#a6aff140025aa58def7bad8810a6c4652">More...</a><br/></td></tr>
+<tr class="separator:a6aff140025aa58def7bad8810a6c4652 inherit pub_methods_classOpenSim_1_1Object"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8e4e64da3072679681702cdb786c41cf inherit pub_methods_classOpenSim_1_1Object"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classOpenSim_1_1Object.html#a8e4e64da3072679681702cdb786c41cf">isObjectUpToDateWithProperties</a> () const </td></tr>
+<tr class="memdesc:a8e4e64da3072679681702cdb786c41cf inherit pub_methods_classOpenSim_1_1Object"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns <code>true</code> if no property's value has changed since the last time <a class="el" href="classOpenSim_1_1Object.html#a6aff140025aa58def7bad8810a6c4652" title="When an object is initialized using the current values of its properties, it can set a flag indicatin...">setObjectIsUpToDateWithProperties()</a> was called.  <a href="#a8e4e64da3072679681702cdb786c41cf">More...</a><br/></td></tr>
+<tr class="separator:a8e4e64da3072679681702cdb786c41cf inherit pub_methods_classOpenSim_1_1Object"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abd740e38f08939be0c05b622b2a5f61e inherit pub_methods_classOpenSim_1_1Object"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classOpenSim_1_1Object.html#abd740e38f08939be0c05b622b2a5f61e">readObjectFromXMLNodeOrFile</a> (SimTK::Xml::Element &amp;objectElement, int versionNumber)</td></tr>
+<tr class="memdesc:abd740e38f08939be0c05b622b2a5f61e inherit pub_methods_classOpenSim_1_1Object"><td class="mdescLeft">&#160;</td><td class="mdescRight">We're given an XML element from which we are to populate this Object.  <a href="#abd740e38f08939be0c05b622b2a5f61e">More...</a><br/></td></tr>
+<tr class="separator:abd740e38f08939be0c05b622b2a5f61e inherit pub_methods_classOpenSim_1_1Object"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a988abda95a67bb454373a89fe38f2af7 inherit pub_methods_classOpenSim_1_1Object"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classOpenSim_1_1Object.html#a988abda95a67bb454373a89fe38f2af7">updateFromXMLNode</a> (SimTK::Xml::Element &amp;objectElement, int versionNumber)</td></tr>
+<tr class="memdesc:a988abda95a67bb454373a89fe38f2af7 inherit pub_methods_classOpenSim_1_1Object"><td class="mdescLeft">&#160;</td><td class="mdescRight">Use this method to deserialize an object from a SimTK::Xml::Element.  <a href="#a988abda95a67bb454373a89fe38f2af7">More...</a><br/></td></tr>
+<tr class="separator:a988abda95a67bb454373a89fe38f2af7 inherit pub_methods_classOpenSim_1_1Object"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0bad202ee6d57acbbcc28c2b51cf7413 inherit pub_methods_classOpenSim_1_1Object"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classOpenSim_1_1Object.html#a0bad202ee6d57acbbcc28c2b51cf7413">updateXMLNode</a> (SimTK::Xml::Element &amp;parent)</td></tr>
+<tr class="memdesc:a0bad202ee6d57acbbcc28c2b51cf7413 inherit pub_methods_classOpenSim_1_1Object"><td class="mdescLeft">&#160;</td><td class="mdescRight">Serialize this object into the XML node that represents it.  <a href="#a0bad202ee6d57acbbcc28c2b51cf7413">More...</a><br/></td></tr>
+<tr class="separator:a0bad202ee6d57acbbcc28c2b51cf7413 inherit pub_methods_classOpenSim_1_1Object"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a10d8a9b32fa174430a354c3508345bc0 inherit pub_methods_classOpenSim_1_1Object"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classOpenSim_1_1Object.html#a10d8a9b32fa174430a354c3508345bc0">getInlined</a> () const </td></tr>
+<tr class="memdesc:a10d8a9b32fa174430a354c3508345bc0 inherit pub_methods_classOpenSim_1_1Object"><td class="mdescLeft">&#160;</td><td class="mdescRight">Inlined means an in-memory <a class="el" href="classOpenSim_1_1Object.html" title="This is the base class for all OpenSim objects that are serializable (meaning they can be written to ...">Object</a> that is not associated with an <a class="el" href="classOpenSim_1_1XMLDocument.html">XMLDocument</a>.  <a href="#a10d8a9b32fa174430a354c3508345bc0">More...</a><br/></td></tr>
+<tr class="separator:a10d8a9b32fa174430a354c3508345bc0 inherit pub_methods_classOpenSim_1_1Object"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab419ca21895e653bffb4fc5b0ac3afa2 inherit pub_methods_classOpenSim_1_1Object"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classOpenSim_1_1Object.html#ab419ca21895e653bffb4fc5b0ac3afa2">setInlined</a> (bool aInlined, const std::string &amp;aFileName=&quot;&quot;)</td></tr>
+<tr class="memdesc:ab419ca21895e653bffb4fc5b0ac3afa2 inherit pub_methods_classOpenSim_1_1Object"><td class="mdescLeft">&#160;</td><td class="mdescRight">Mark this as inlined or not and optionally provide a file name to associate with the new <a class="el" href="classOpenSim_1_1XMLDocument.html">XMLDocument</a> for the non-inline case.  <a href="#ab419ca21895e653bffb4fc5b0ac3afa2">More...</a><br/></td></tr>
+<tr class="separator:ab419ca21895e653bffb4fc5b0ac3afa2 inherit pub_methods_classOpenSim_1_1Object"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad54c991bb056d6cafe4c26d670c9c891 inherit pub_methods_classOpenSim_1_1Object"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classOpenSim_1_1Object.html#ad54c991bb056d6cafe4c26d670c9c891">getDocumentFileName</a> () const </td></tr>
+<tr class="memdesc:ad54c991bb056d6cafe4c26d670c9c891 inherit pub_methods_classOpenSim_1_1Object"><td class="mdescLeft">&#160;</td><td class="mdescRight">If there is a document associated with this object then return the file name maintained by the document.  <a href="#ad54c991bb056d6cafe4c26d670c9c891">More...</a><br/></td></tr>
+<tr class="separator:ad54c991bb056d6cafe4c26d670c9c891 inherit pub_methods_classOpenSim_1_1Object"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a092550b5528d3d817022c045e4144183 inherit pub_methods_classOpenSim_1_1Object"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classOpenSim_1_1Object.html#a092550b5528d3d817022c045e4144183">setAllPropertiesUseDefault</a> (bool aUseDefault)</td></tr>
+<tr class="separator:a092550b5528d3d817022c045e4144183 inherit pub_methods_classOpenSim_1_1Object"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abb75c7ca31491448197278e589266c48 inherit pub_methods_classOpenSim_1_1Object"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classOpenSim_1_1Object.html#abb75c7ca31491448197278e589266c48">print</a> (const std::string &amp;fileName)</td></tr>
+<tr class="memdesc:abb75c7ca31491448197278e589266c48 inherit pub_methods_classOpenSim_1_1Object"><td class="mdescLeft">&#160;</td><td class="mdescRight">Write this Object into an XML file of the given name; conventionally the suffix to use is ".osim".  <a href="#abb75c7ca31491448197278e589266c48">More...</a><br/></td></tr>
+<tr class="separator:abb75c7ca31491448197278e589266c48 inherit pub_methods_classOpenSim_1_1Object"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa0e26741bc3518688164242c4b880c71 inherit pub_methods_classOpenSim_1_1Object"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classOpenSim_1_1Object.html#aa0e26741bc3518688164242c4b880c71">dump</a> (bool dumpName=false)</td></tr>
+<tr class="memdesc:aa0e26741bc3518688164242c4b880c71 inherit pub_methods_classOpenSim_1_1Object"><td class="mdescLeft">&#160;</td><td class="mdescRight">dump the XML representation of this Object into an std::string and return it.  <a href="#aa0e26741bc3518688164242c4b880c71">More...</a><br/></td></tr>
+<tr class="separator:aa0e26741bc3518688164242c4b880c71 inherit pub_methods_classOpenSim_1_1Object"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5291e688292cba7a488b077e6dc64938 inherit pub_methods_classOpenSim_1_1Object"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classOpenSim_1_1Object.html#a5291e688292cba7a488b077e6dc64938">clearObjectIsUpToDateWithProperties</a> ()</td></tr>
+<tr class="memdesc:a5291e688292cba7a488b077e6dc64938 inherit pub_methods_classOpenSim_1_1Object"><td class="mdescLeft">&#160;</td><td class="mdescRight">For testing or debugging purposes, manually clear the "object is up to 
+date with respect to properties" flag.  <a href="#a5291e688292cba7a488b077e6dc64938">More...</a><br/></td></tr>
+<tr class="separator:a5291e688292cba7a488b077e6dc64938 inherit pub_methods_classOpenSim_1_1Object"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a126f1d87df28a081c7b1c99bb477cb3b inherit pub_methods_classOpenSim_1_1Object"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classOpenSim_1_1Object.html#a126f1d87df28a081c7b1c99bb477cb3b">isA</a> (const char *type) const </td></tr>
+<tr class="memdesc:a126f1d87df28a081c7b1c99bb477cb3b inherit pub_methods_classOpenSim_1_1Object"><td class="mdescLeft">&#160;</td><td class="mdescRight">The default implementation returns true only if the supplied string is "Object"; each Object-derived class overrides this to match its own class name.  <a href="#a126f1d87df28a081c7b1c99bb477cb3b">More...</a><br/></td></tr>
+<tr class="separator:a126f1d87df28a081c7b1c99bb477cb3b inherit pub_methods_classOpenSim_1_1Object"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac3c9abc33ff7e6f061e35c7e67e6eb14 inherit pub_methods_classOpenSim_1_1Object"><td class="memItemLeft" align="right" valign="top">const std::string &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classOpenSim_1_1Object.html#ac3c9abc33ff7e6f061e35c7e67e6eb14">toString</a> () const </td></tr>
+<tr class="memdesc:ac3c9abc33ff7e6f061e35c7e67e6eb14 inherit pub_methods_classOpenSim_1_1Object"><td class="mdescLeft">&#160;</td><td class="mdescRight">Wrapper to be used on Java side to display objects in tree; this returns just the object's name.  <a href="#ac3c9abc33ff7e6f061e35c7e67e6eb14">More...</a><br/></td></tr>
+<tr class="separator:ac3c9abc33ff7e6f061e35c7e67e6eb14 inherit pub_methods_classOpenSim_1_1Object"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:accf9602cb1075775f01243618e8cf57b inherit pub_methods_classOpenSim_1_1Object"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classOpenSim_1_1PropertySet.html">PropertySet</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classOpenSim_1_1Object.html#accf9602cb1075775f01243618e8cf57b">getPropertySet</a> ()</td></tr>
+<tr class="memdesc:accf9602cb1075775f01243618e8cf57b inherit pub_methods_classOpenSim_1_1Object"><td class="mdescLeft">&#160;</td><td class="mdescRight">OBSOLETE: Get a reference to the <a class="el" href="classOpenSim_1_1PropertySet.html" title="A property set is simply a set of properties. ">PropertySet</a> maintained by the <a class="el" href="classOpenSim_1_1Object.html" title="This is the base class for all OpenSim objects that are serializable (meaning they can be written to ...">Object</a>.  <a href="#accf9602cb1075775f01243618e8cf57b">More...</a><br/></td></tr>
+<tr class="separator:accf9602cb1075775f01243618e8cf57b inherit pub_methods_classOpenSim_1_1Object"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a08df031ee6f34e151108dbb94be924f6 inherit pub_methods_classOpenSim_1_1Object"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classOpenSim_1_1PropertySet.html">PropertySet</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classOpenSim_1_1Object.html#a08df031ee6f34e151108dbb94be924f6">getPropertySet</a> () const </td></tr>
+<tr class="separator:a08df031ee6f34e151108dbb94be924f6 inherit pub_methods_classOpenSim_1_1Object"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="inherited"></a>
+Additional Inherited Members</h2></td></tr>
+<tr class="inherit_header pub_static_methods_classOpenSim_1_1Function"><td colspan="2" onclick="javascript:toggleInherit('pub_static_methods_classOpenSim_1_1Function')"><img src="closed.png" alt="-"/>&#160;Static Public Member Functions inherited from <a class="el" href="classOpenSim_1_1Function.html">OpenSim::Function</a></td></tr>
+<tr class="memitem:a628a8dca1d896c2fe0db508e543561d4 inherit pub_static_methods_classOpenSim_1_1Function"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classOpenSim_1_1Function.html">Function</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classOpenSim_1_1Function.html#a628a8dca1d896c2fe0db508e543561d4">makeFunctionOfType</a> (<a class="el" href="classOpenSim_1_1Function.html">Function</a> *aFunction, const std::string &amp;aNewTypeName)</td></tr>
+<tr class="separator:a628a8dca1d896c2fe0db508e543561d4 inherit pub_static_methods_classOpenSim_1_1Function"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_static_methods_classOpenSim_1_1Object"><td colspan="2" onclick="javascript:toggleInherit('pub_static_methods_classOpenSim_1_1Object')"><img src="closed.png" alt="-"/>&#160;Static Public Member Functions inherited from <a class="el" href="classOpenSim_1_1Object.html">OpenSim::Object</a></td></tr>
+<tr class="memitem:ace1fe7d9f4d7509b5d9e74fbe757b72d inherit pub_static_methods_classOpenSim_1_1Object"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classOpenSim_1_1Object.html#ace1fe7d9f4d7509b5d9e74fbe757b72d">registerType</a> (const <a class="el" href="classOpenSim_1_1Object.html">Object</a> &amp;defaultObject)</td></tr>
+<tr class="memdesc:ace1fe7d9f4d7509b5d9e74fbe757b72d inherit pub_static_methods_classOpenSim_1_1Object"><td class="mdescLeft">&#160;</td><td class="mdescRight">Register an instance of a class; if the class is already registered it will be replaced.  <a href="#ace1fe7d9f4d7509b5d9e74fbe757b72d">More...</a><br/></td></tr>
+<tr class="separator:ace1fe7d9f4d7509b5d9e74fbe757b72d inherit pub_static_methods_classOpenSim_1_1Object"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad4f89d1f8a5d4b85dba51df9b207183b inherit pub_static_methods_classOpenSim_1_1Object"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classOpenSim_1_1Object.html#ad4f89d1f8a5d4b85dba51df9b207183b">renameType</a> (const std::string &amp;oldTypeName, const std::string &amp;newTypeName)</td></tr>
+<tr class="memdesc:ad4f89d1f8a5d4b85dba51df9b207183b inherit pub_static_methods_classOpenSim_1_1Object"><td class="mdescLeft">&#160;</td><td class="mdescRight">Support versioning by associating the current Object type with an old name.  <a href="#ad4f89d1f8a5d4b85dba51df9b207183b">More...</a><br/></td></tr>
+<tr class="separator:ad4f89d1f8a5d4b85dba51df9b207183b inherit pub_static_methods_classOpenSim_1_1Object"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afa003166ace3f14af022b6650fc6fbd7 inherit pub_static_methods_classOpenSim_1_1Object"><td class="memItemLeft" align="right" valign="top">static const <a class="el" href="classOpenSim_1_1Object.html">Object</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classOpenSim_1_1Object.html#afa003166ace3f14af022b6650fc6fbd7">getDefaultInstanceOfType</a> (const std::string &amp;concreteClassName)</td></tr>
+<tr class="memdesc:afa003166ace3f14af022b6650fc6fbd7 inherit pub_static_methods_classOpenSim_1_1Object"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return a pointer to the default instance of the registered (concrete) Object whose class name is given, or NULL if the type is not registered.  <a href="#afa003166ace3f14af022b6650fc6fbd7">More...</a><br/></td></tr>
+<tr class="separator:afa003166ace3f14af022b6650fc6fbd7 inherit pub_static_methods_classOpenSim_1_1Object"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a77a7df6eb433b4e130ce7aa63b8d3d7e inherit pub_static_methods_classOpenSim_1_1Object"><td class="memTemplParams" colspan="2">template&lt;class T &gt; </td></tr>
+<tr class="memitem:a77a7df6eb433b4e130ce7aa63b8d3d7e inherit pub_static_methods_classOpenSim_1_1Object"><td class="memTemplItemLeft" align="right" valign="top">static bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classOpenSim_1_1Object.html#a77a7df6eb433b4e130ce7aa63b8d3d7e">isObjectTypeDerivedFrom</a> (const std::string &amp;concreteClassName)</td></tr>
+<tr class="memdesc:a77a7df6eb433b4e130ce7aa63b8d3d7e inherit pub_static_methods_classOpenSim_1_1Object"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return true if the given concrete object type represents a subclass of the template object type T, and thus could be referenced with a T*.  <a href="#a77a7df6eb433b4e130ce7aa63b8d3d7e">More...</a><br/></td></tr>
+<tr class="separator:a77a7df6eb433b4e130ce7aa63b8d3d7e inherit pub_static_methods_classOpenSim_1_1Object"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afd44aecebc85d2f98ff3adf443e284d0 inherit pub_static_methods_classOpenSim_1_1Object"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classOpenSim_1_1Object.html">Object</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classOpenSim_1_1Object.html#afd44aecebc85d2f98ff3adf443e284d0">newInstanceOfType</a> (const std::string &amp;concreteClassName)</td></tr>
+<tr class="memdesc:afd44aecebc85d2f98ff3adf443e284d0 inherit pub_static_methods_classOpenSim_1_1Object"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a new instance of the concrete Object type whose class name is given as <em>concreteClassName</em>.  <a href="#afd44aecebc85d2f98ff3adf443e284d0">More...</a><br/></td></tr>
+<tr class="separator:afd44aecebc85d2f98ff3adf443e284d0 inherit pub_static_methods_classOpenSim_1_1Object"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0296f61a06c319786a46d29743135d74 inherit pub_static_methods_classOpenSim_1_1Object"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classOpenSim_1_1Object.html#a0296f61a06c319786a46d29743135d74">getRegisteredTypenames</a> (<a class="el" href="classOpenSim_1_1Array.html">Array</a>&lt; std::string &gt; &amp;typeNames)</td></tr>
+<tr class="memdesc:a0296f61a06c319786a46d29743135d74 inherit pub_static_methods_classOpenSim_1_1Object"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieve all the typenames registered so far.  <a href="#a0296f61a06c319786a46d29743135d74">More...</a><br/></td></tr>
+<tr class="separator:a0296f61a06c319786a46d29743135d74 inherit pub_static_methods_classOpenSim_1_1Object"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a34f0039fba61c2fef84ba6bf8c07de6d inherit pub_static_methods_classOpenSim_1_1Object"><td class="memTemplParams" colspan="2">template&lt;class T &gt; </td></tr>
+<tr class="memitem:a34f0039fba61c2fef84ba6bf8c07de6d inherit pub_static_methods_classOpenSim_1_1Object"><td class="memTemplItemLeft" align="right" valign="top">static void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classOpenSim_1_1Object.html#a34f0039fba61c2fef84ba6bf8c07de6d">getRegisteredObjectsOfGivenType</a> (ArrayPtrs&lt; T &gt; &amp;rArray)</td></tr>
+<tr class="memdesc:a34f0039fba61c2fef84ba6bf8c07de6d inherit pub_static_methods_classOpenSim_1_1Object"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return an array of pointers to the default instances of all registered (concrete) Object types that derive from a given Object-derived type that does not have to be concrete.  <a href="#a34f0039fba61c2fef84ba6bf8c07de6d">More...</a><br/></td></tr>
+<tr class="separator:a34f0039fba61c2fef84ba6bf8c07de6d inherit pub_static_methods_classOpenSim_1_1Object"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0586ab0764c0a94ead847bb0ca4c0eb3 inherit pub_static_methods_classOpenSim_1_1Object"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classOpenSim_1_1Object.html#a0586ab0764c0a94ead847bb0ca4c0eb3">PrintPropertyInfo</a> (std::ostream &amp;os, const std::string &amp;classNameDotPropertyName)</td></tr>
+<tr class="memdesc:a0586ab0764c0a94ead847bb0ca4c0eb3 inherit pub_static_methods_classOpenSim_1_1Object"><td class="mdescLeft">&#160;</td><td class="mdescRight">Dump formatted property information to a given output stream, useful for creating a "help" facility for registered objects.  <a href="#a0586ab0764c0a94ead847bb0ca4c0eb3">More...</a><br/></td></tr>
+<tr class="separator:a0586ab0764c0a94ead847bb0ca4c0eb3 inherit pub_static_methods_classOpenSim_1_1Object"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaab93bb0a139e5e11f359d61fe1ae3e1 inherit pub_static_methods_classOpenSim_1_1Object"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classOpenSim_1_1Object.html#aaab93bb0a139e5e11f359d61fe1ae3e1">PrintPropertyInfo</a> (std::ostream &amp;os, const std::string &amp;className, const std::string &amp;propertyName)</td></tr>
+<tr class="memdesc:aaab93bb0a139e5e11f359d61fe1ae3e1 inherit pub_static_methods_classOpenSim_1_1Object"><td class="mdescLeft">&#160;</td><td class="mdescRight">Same as the other signature but the class name and property name are provided as two separate strings.  <a href="#aaab93bb0a139e5e11f359d61fe1ae3e1">More...</a><br/></td></tr>
+<tr class="separator:aaab93bb0a139e5e11f359d61fe1ae3e1 inherit pub_static_methods_classOpenSim_1_1Object"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab7d860a7849ddbb27885673dbf5dbf76 inherit pub_static_methods_classOpenSim_1_1Object"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classOpenSim_1_1Object.html">Object</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classOpenSim_1_1Object.html#ab7d860a7849ddbb27885673dbf5dbf76">makeObjectFromFile</a> (const std::string &amp;fileName)</td></tr>
+<tr class="memdesc:ab7d860a7849ddbb27885673dbf5dbf76 inherit pub_static_methods_classOpenSim_1_1Object"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create an OpenSim object whose type is based on the tag at the root node of the XML file passed in.  <a href="#ab7d860a7849ddbb27885673dbf5dbf76">More...</a><br/></td></tr>
+<tr class="separator:ab7d860a7849ddbb27885673dbf5dbf76 inherit pub_static_methods_classOpenSim_1_1Object"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a37944898e801cba2bf6f772272df2649 inherit pub_static_methods_classOpenSim_1_1Object"><td class="memItemLeft" align="right" valign="top">static const std::string &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classOpenSim_1_1Object.html#a37944898e801cba2bf6f772272df2649">getClassName</a> ()</td></tr>
+<tr class="memdesc:a37944898e801cba2bf6f772272df2649 inherit pub_static_methods_classOpenSim_1_1Object"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return the name of this class as a string; i.e., "Object".  <a href="#a37944898e801cba2bf6f772272df2649">More...</a><br/></td></tr>
+<tr class="separator:a37944898e801cba2bf6f772272df2649 inherit pub_static_methods_classOpenSim_1_1Object"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adc42e7d52c371b14898ce7e13e55700c inherit pub_static_methods_classOpenSim_1_1Object"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classOpenSim_1_1Object.html#adc42e7d52c371b14898ce7e13e55700c">setSerializeAllDefaults</a> (bool shouldSerializeDefaults)</td></tr>
+<tr class="memdesc:adc42e7d52c371b14898ce7e13e55700c inherit pub_static_methods_classOpenSim_1_1Object"><td class="mdescLeft">&#160;</td><td class="mdescRight">Static function to control whether all registered objects and their properties are written to the defaults section of output files rather than only those values for which the default was explicitly overwritten when read in from an input file or set programmatically.  <a href="#adc42e7d52c371b14898ce7e13e55700c">More...</a><br/></td></tr>
+<tr class="separator:adc42e7d52c371b14898ce7e13e55700c inherit pub_static_methods_classOpenSim_1_1Object"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a533e0a9420d312a73cb9a5d8efd17081 inherit pub_static_methods_classOpenSim_1_1Object"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classOpenSim_1_1Object.html#a533e0a9420d312a73cb9a5d8efd17081">getSerializeAllDefaults</a> ()</td></tr>
+<tr class="memdesc:a533e0a9420d312a73cb9a5d8efd17081 inherit pub_static_methods_classOpenSim_1_1Object"><td class="mdescLeft">&#160;</td><td class="mdescRight">Report the value of the "serialize all defaults" flag.  <a href="#a533e0a9420d312a73cb9a5d8efd17081">More...</a><br/></td></tr>
+<tr class="separator:a533e0a9420d312a73cb9a5d8efd17081 inherit pub_static_methods_classOpenSim_1_1Object"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9debf9775f9e8c0b517654cb19669518 inherit pub_static_methods_classOpenSim_1_1Object"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classOpenSim_1_1Object.html#a9debf9775f9e8c0b517654cb19669518">isKindOf</a> (const char *type)</td></tr>
+<tr class="memdesc:a9debf9775f9e8c0b517654cb19669518 inherit pub_static_methods_classOpenSim_1_1Object"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns true if the passed-in string is "Object"; each Object-derived class defines a method of this name for its own class name.  <a href="#a9debf9775f9e8c0b517654cb19669518">More...</a><br/></td></tr>
+<tr class="separator:a9debf9775f9e8c0b517654cb19669518 inherit pub_static_methods_classOpenSim_1_1Object"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a46f10ccc4bc8ab3b0b4e68d3ab75f892 inherit pub_static_methods_classOpenSim_1_1Object"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classOpenSim_1_1Object.html#a46f10ccc4bc8ab3b0b4e68d3ab75f892">setDebugLevel</a> (int newLevel)</td></tr>
+<tr class="memdesc:a46f10ccc4bc8ab3b0b4e68d3ab75f892 inherit pub_static_methods_classOpenSim_1_1Object"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classOpenSim_1_1Set.html" title="A class for holding a set of pointers to objects. ">Set</a> the debug level to get verbose output.  <a href="#a46f10ccc4bc8ab3b0b4e68d3ab75f892">More...</a><br/></td></tr>
+<tr class="separator:a46f10ccc4bc8ab3b0b4e68d3ab75f892 inherit pub_static_methods_classOpenSim_1_1Object"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a96486fa12910478db9b65384546d9e97 inherit pub_static_methods_classOpenSim_1_1Object"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classOpenSim_1_1Object.html#a96486fa12910478db9b65384546d9e97">getDebugLevel</a> ()</td></tr>
+<tr class="memdesc:a96486fa12910478db9b65384546d9e97 inherit pub_static_methods_classOpenSim_1_1Object"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get current setting of debug level.  <a href="#a96486fa12910478db9b65384546d9e97">More...</a><br/></td></tr>
+<tr class="separator:a96486fa12910478db9b65384546d9e97 inherit pub_static_methods_classOpenSim_1_1Object"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a72643bf97b601311912f678bb3770abe inherit pub_static_methods_classOpenSim_1_1Object"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classOpenSim_1_1Object.html">Object</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classOpenSim_1_1Object.html#a72643bf97b601311912f678bb3770abe">SafeCopy</a> (const <a class="el" href="classOpenSim_1_1Object.html">Object</a> *aObject)</td></tr>
+<tr class="memdesc:a72643bf97b601311912f678bb3770abe inherit pub_static_methods_classOpenSim_1_1Object"><td class="mdescLeft">&#160;</td><td class="mdescRight">Use the <a class="el" href="classOpenSim_1_1Object.html#af221c900c5447df9928f1786469ef1b8" title="Create a new heap-allocated copy of the concrete object to which this Object refers. ">clone()</a> method to duplicate the given object unless the pointer is null in which case null is returned.  <a href="#a72643bf97b601311912f678bb3770abe">More...</a><br/></td></tr>
+<tr class="separator:a72643bf97b601311912f678bb3770abe inherit pub_static_methods_classOpenSim_1_1Object"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0a6f962db2c026cce6176ed5017e805c inherit pub_static_methods_classOpenSim_1_1Object"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classOpenSim_1_1Object.html#a0a6f962db2c026cce6176ed5017e805c">RegisterType</a> (const <a class="el" href="classOpenSim_1_1Object.html">Object</a> &amp;defaultObject)</td></tr>
+<tr class="memdesc:a0a6f962db2c026cce6176ed5017e805c inherit pub_static_methods_classOpenSim_1_1Object"><td class="mdescLeft">&#160;</td><td class="mdescRight">OBSOLETE alternate name for <a class="el" href="classOpenSim_1_1Object.html#ace1fe7d9f4d7509b5d9e74fbe757b72d" title="Register an instance of a class; if the class is already registered it will be replaced. ">registerType()</a>.  <a href="#a0a6f962db2c026cce6176ed5017e805c">More...</a><br/></td></tr>
+<tr class="separator:a0a6f962db2c026cce6176ed5017e805c inherit pub_static_methods_classOpenSim_1_1Object"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2b7d3f95ec3dcec17bd5fc17de4b3062 inherit pub_static_methods_classOpenSim_1_1Object"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classOpenSim_1_1Object.html#a2b7d3f95ec3dcec17bd5fc17de4b3062">RenameType</a> (const std::string &amp;oldName, const std::string &amp;newName)</td></tr>
+<tr class="memdesc:a2b7d3f95ec3dcec17bd5fc17de4b3062 inherit pub_static_methods_classOpenSim_1_1Object"><td class="mdescLeft">&#160;</td><td class="mdescRight">OBSOLETE alternate name for <a class="el" href="classOpenSim_1_1Object.html#ad4f89d1f8a5d4b85dba51df9b207183b" title="Support versioning by associating the current Object type with an old name. ">renameType()</a>.  <a href="#a2b7d3f95ec3dcec17bd5fc17de4b3062">More...</a><br/></td></tr>
+<tr class="separator:a2b7d3f95ec3dcec17bd5fc17de4b3062 inherit pub_static_methods_classOpenSim_1_1Object"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_static_attribs_classOpenSim_1_1Object"><td colspan="2" onclick="javascript:toggleInherit('pub_static_attribs_classOpenSim_1_1Object')"><img src="closed.png" alt="-"/>&#160;Static Public Attributes inherited from <a class="el" href="classOpenSim_1_1Object.html">OpenSim::Object</a></td></tr>
+<tr class="memitem:a84a2e7e58491709482729c7d52b90f21 inherit pub_static_attribs_classOpenSim_1_1Object"><td class="memItemLeft" align="right" valign="top">static const std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classOpenSim_1_1Object.html#a84a2e7e58491709482729c7d52b90f21">DEFAULT_NAME</a></td></tr>
+<tr class="memdesc:a84a2e7e58491709482729c7d52b90f21 inherit pub_static_attribs_classOpenSim_1_1Object"><td class="mdescLeft">&#160;</td><td class="mdescRight">Name used for default objects when they are serialized.  <a href="#a84a2e7e58491709482729c7d52b90f21">More...</a><br/></td></tr>
+<tr class="separator:a84a2e7e58491709482729c7d52b90f21 inherit pub_static_attribs_classOpenSim_1_1Object"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pro_methods_classOpenSim_1_1Function"><td colspan="2" onclick="javascript:toggleInherit('pro_methods_classOpenSim_1_1Function')"><img src="closed.png" alt="-"/>&#160;Protected Member Functions inherited from <a class="el" href="classOpenSim_1_1Function.html">OpenSim::Function</a></td></tr>
+<tr class="memitem:ae85bdaf98f58238d92d2f0505d9ddf52 inherit pro_methods_classOpenSim_1_1Function"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classOpenSim_1_1Function.html#ae85bdaf98f58238d92d2f0505d9ddf52">resetFunction</a> ()</td></tr>
+<tr class="memdesc:ae85bdaf98f58238d92d2f0505d9ddf52 inherit pro_methods_classOpenSim_1_1Function"><td class="mdescLeft">&#160;</td><td class="mdescRight">This should be called whenever this object has been modified.  <a href="#ae85bdaf98f58238d92d2f0505d9ddf52">More...</a><br/></td></tr>
+<tr class="separator:ae85bdaf98f58238d92d2f0505d9ddf52 inherit pro_methods_classOpenSim_1_1Function"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pro_methods_classOpenSim_1_1Object"><td colspan="2" onclick="javascript:toggleInherit('pro_methods_classOpenSim_1_1Object')"><img src="closed.png" alt="-"/>&#160;Protected Member Functions inherited from <a class="el" href="classOpenSim_1_1Object.html">OpenSim::Object</a></td></tr>
+<tr class="memitem:a620026774a4b0d36d93ed12a9451b356 inherit pro_methods_classOpenSim_1_1Object"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classOpenSim_1_1Object.html#a620026774a4b0d36d93ed12a9451b356">Object</a> ()</td></tr>
+<tr class="memdesc:a620026774a4b0d36d93ed12a9451b356 inherit pro_methods_classOpenSim_1_1Object"><td class="mdescLeft">&#160;</td><td class="mdescRight">The default constructor is only for use by constructors of derived types.  <a href="#a620026774a4b0d36d93ed12a9451b356">More...</a><br/></td></tr>
+<tr class="separator:a620026774a4b0d36d93ed12a9451b356 inherit pro_methods_classOpenSim_1_1Object"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af1557e960a306925e8e809123f81a331 inherit pro_methods_classOpenSim_1_1Object"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classOpenSim_1_1Object.html#af1557e960a306925e8e809123f81a331">Object</a> (const std::string &amp;fileName, bool aUpdateFromXMLNode=true) SWIG_DECLARE_EXCEPTION</td></tr>
+<tr class="memdesc:af1557e960a306925e8e809123f81a331 inherit pro_methods_classOpenSim_1_1Object"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor from a file, to be called from other constructors that take a file as input.  <a href="#af1557e960a306925e8e809123f81a331">More...</a><br/></td></tr>
+<tr class="separator:af1557e960a306925e8e809123f81a331 inherit pro_methods_classOpenSim_1_1Object"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a88fad2c70cc33674ede31a20a29610fc inherit pro_methods_classOpenSim_1_1Object"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classOpenSim_1_1Object.html#a88fad2c70cc33674ede31a20a29610fc">Object</a> (const <a class="el" href="classOpenSim_1_1Object.html">Object</a> &amp;source)</td></tr>
+<tr class="memdesc:a88fad2c70cc33674ede31a20a29610fc inherit pro_methods_classOpenSim_1_1Object"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy constructor is invoked automatically by derived classes with default copy constructors; otherwise it must be invoked explicitly.  <a href="#a88fad2c70cc33674ede31a20a29610fc">More...</a><br/></td></tr>
+<tr class="separator:a88fad2c70cc33674ede31a20a29610fc inherit pro_methods_classOpenSim_1_1Object"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af8ecc144d30a872d28ab63d82245da9b inherit pro_methods_classOpenSim_1_1Object"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classOpenSim_1_1Object.html#af8ecc144d30a872d28ab63d82245da9b">Object</a> (SimTK::Xml::Element &amp;aElement)</td></tr>
+<tr class="memdesc:af8ecc144d30a872d28ab63d82245da9b inherit pro_methods_classOpenSim_1_1Object"><td class="mdescLeft">&#160;</td><td class="mdescRight">Construct the base class portion of an Object from a given Xml element that describes this <a class="el" href="classOpenSim_1_1Object.html" title="This is the base class for all OpenSim objects that are serializable (meaning they can be written to ...">Object</a>.  <a href="#af8ecc144d30a872d28ab63d82245da9b">More...</a><br/></td></tr>
+<tr class="separator:af8ecc144d30a872d28ab63d82245da9b inherit pro_methods_classOpenSim_1_1Object"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af24322b3b4552de29ed0589a03ba7ad5 inherit pro_methods_classOpenSim_1_1Object"><td class="memTemplParams" colspan="2">template&lt;class T &gt; </td></tr>
+<tr class="memitem:af24322b3b4552de29ed0589a03ba7ad5 inherit pro_methods_classOpenSim_1_1Object"><td class="memTemplItemLeft" align="right" valign="top">PropertyIndex&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classOpenSim_1_1Object.html#af24322b3b4552de29ed0589a03ba7ad5">addProperty</a> (const std::string &amp;name, const std::string &amp;comment, const T &amp;value)</td></tr>
+<tr class="memdesc:af24322b3b4552de29ed0589a03ba7ad5 inherit pro_methods_classOpenSim_1_1Object"><td class="mdescLeft">&#160;</td><td class="mdescRight">Define a new single-value property of known type T, with the given <em>name</em>, associated <em>comment</em>, and initial <em>value</em>.  <a href="#af24322b3b4552de29ed0589a03ba7ad5">More...</a><br/></td></tr>
+<tr class="separator:af24322b3b4552de29ed0589a03ba7ad5 inherit pro_methods_classOpenSim_1_1Object"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae33cd5e9f8e0b563ac29f7cf2565d5fc inherit pro_methods_classOpenSim_1_1Object"><td class="memTemplParams" colspan="2">template&lt;class T &gt; </td></tr>
+<tr class="memitem:ae33cd5e9f8e0b563ac29f7cf2565d5fc inherit pro_methods_classOpenSim_1_1Object"><td class="memTemplItemLeft" align="right" valign="top">PropertyIndex&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classOpenSim_1_1Object.html#ae33cd5e9f8e0b563ac29f7cf2565d5fc">addOptionalProperty</a> (const std::string &amp;name, const std::string &amp;comment)</td></tr>
+<tr class="memdesc:ae33cd5e9f8e0b563ac29f7cf2565d5fc inherit pro_methods_classOpenSim_1_1Object"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add an optional property, meaning it can contain either no value or a single value.  <a href="#ae33cd5e9f8e0b563ac29f7cf2565d5fc">More...</a><br/></td></tr>
+<tr class="separator:ae33cd5e9f8e0b563ac29f7cf2565d5fc inherit pro_methods_classOpenSim_1_1Object"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:affef953ecb6526d5de51f8d045229d79 inherit pro_methods_classOpenSim_1_1Object"><td class="memTemplParams" colspan="2">template&lt;class T &gt; </td></tr>
+<tr class="memitem:affef953ecb6526d5de51f8d045229d79 inherit pro_methods_classOpenSim_1_1Object"><td class="memTemplItemLeft" align="right" valign="top">PropertyIndex&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classOpenSim_1_1Object.html#affef953ecb6526d5de51f8d045229d79">addOptionalProperty</a> (const std::string &amp;name, const std::string &amp;comment, const T &amp;value)</td></tr>
+<tr class="memdesc:affef953ecb6526d5de51f8d045229d79 inherit pro_methods_classOpenSim_1_1Object"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add an optional property, meaning it can contain either no value or a single value.  <a href="#affef953ecb6526d5de51f8d045229d79">More...</a><br/></td></tr>
+<tr class="separator:affef953ecb6526d5de51f8d045229d79 inherit pro_methods_classOpenSim_1_1Object"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad5046920687929fbc0c0ec17681c146d inherit pro_methods_classOpenSim_1_1Object"><td class="memTemplParams" colspan="2">template&lt;class T &gt; </td></tr>
+<tr class="memitem:ad5046920687929fbc0c0ec17681c146d inherit pro_methods_classOpenSim_1_1Object"><td class="memTemplItemLeft" align="right" valign="top">PropertyIndex&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classOpenSim_1_1Object.html#ad5046920687929fbc0c0ec17681c146d">addListProperty</a> (const std::string &amp;name, const std::string &amp;comment, int minSize, int maxSize)</td></tr>
+<tr class="memdesc:ad5046920687929fbc0c0ec17681c146d inherit pro_methods_classOpenSim_1_1Object"><td class="mdescLeft">&#160;</td><td class="mdescRight">Define a new list-valued property of known type T, with the given <em>name</em>, associated <em>comment</em>, minimum (==0) and maximum (&gt;0) allowable list lengths, and a zero-length initial value.  <a href="#ad5046920687929fbc0c0ec17681c146d">More...</a><br/></td></tr>
+<tr class="separator:ad5046920687929fbc0c0ec17681c146d inherit pro_methods_classOpenSim_1_1Object"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2e09382ab2bb833eba12c081f35b5a2d inherit pro_methods_classOpenSim_1_1Object"><td class="memTemplParams" colspan="2">template&lt;class T , template&lt; class &gt; class Container&gt; </td></tr>
+<tr class="memitem:a2e09382ab2bb833eba12c081f35b5a2d inherit pro_methods_classOpenSim_1_1Object"><td class="memTemplItemLeft" align="right" valign="top">PropertyIndex&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classOpenSim_1_1Object.html#a2e09382ab2bb833eba12c081f35b5a2d">addListProperty</a> (const std::string &amp;name, const std::string &amp;comment, int minSize, int maxSize, const Container&lt; T &gt; &amp;valueList)</td></tr>
+<tr class="memdesc:a2e09382ab2bb833eba12c081f35b5a2d inherit pro_methods_classOpenSim_1_1Object"><td class="mdescLeft">&#160;</td><td class="mdescRight">Define a new list-valued property as above, but assigning an initial value via some templatized container class that supports size() and indexing.  <a href="#a2e09382ab2bb833eba12c081f35b5a2d">More...</a><br/></td></tr>
+<tr class="separator:a2e09382ab2bb833eba12c081f35b5a2d inherit pro_methods_classOpenSim_1_1Object"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae2a709cf81656cfd97bf37237bd03082 inherit pro_methods_classOpenSim_1_1Object"><td class="memItemLeft" align="right" valign="top">PropertyIndex&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classOpenSim_1_1Object.html#ae2a709cf81656cfd97bf37237bd03082">getPropertyIndex</a> (const std::string &amp;name) const </td></tr>
+<tr class="memdesc:ae2a709cf81656cfd97bf37237bd03082 inherit pro_methods_classOpenSim_1_1Object"><td class="mdescLeft">&#160;</td><td class="mdescRight">Look up a property by name and return its PropertyIndex if it is found.  <a href="#ae2a709cf81656cfd97bf37237bd03082">More...</a><br/></td></tr>
+<tr class="separator:ae2a709cf81656cfd97bf37237bd03082 inherit pro_methods_classOpenSim_1_1Object"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8c14b84c3759aa0298bc772f06e9bbc6 inherit pro_methods_classOpenSim_1_1Object"><td class="memTemplParams" colspan="2">template&lt;class T &gt; </td></tr>
+<tr class="memitem:a8c14b84c3759aa0298bc772f06e9bbc6 inherit pro_methods_classOpenSim_1_1Object"><td class="memTemplItemLeft" align="right" valign="top">PropertyIndex&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classOpenSim_1_1Object.html#a8c14b84c3759aa0298bc772f06e9bbc6">getPropertyIndex</a> () const </td></tr>
+<tr class="memdesc:a8c14b84c3759aa0298bc772f06e9bbc6 inherit pro_methods_classOpenSim_1_1Object"><td class="mdescLeft">&#160;</td><td class="mdescRight">Look up an unnamed property by the type of object it contains, and return its PropertyIndex if it is found.  <a href="#a8c14b84c3759aa0298bc772f06e9bbc6">More...</a><br/></td></tr>
+<tr class="separator:a8c14b84c3759aa0298bc772f06e9bbc6 inherit pro_methods_classOpenSim_1_1Object"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1d2da63a45b146424737d00c128a8491 inherit pro_methods_classOpenSim_1_1Object"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classOpenSim_1_1Object.html#a1d2da63a45b146424737d00c128a8491">updateFromXMLDocument</a> ()</td></tr>
+<tr class="memdesc:a1d2da63a45b146424737d00c128a8491 inherit pro_methods_classOpenSim_1_1Object"><td class="mdescLeft">&#160;</td><td class="mdescRight">Use this method only if you're deserializing from a file and the object is at the top level; that is, primarily in constructors that take a file name as input.  <a href="#a1d2da63a45b146424737d00c128a8491">More...</a><br/></td></tr>
+<tr class="separator:a1d2da63a45b146424737d00c128a8491 inherit pro_methods_classOpenSim_1_1Object"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abb6cc3ab175f7fbd32e9bc001d5ba30a inherit pro_methods_classOpenSim_1_1Object"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classOpenSim_1_1Object.html#abb6cc3ab175f7fbd32e9bc001d5ba30a">setDocument</a> (<a class="el" href="classOpenSim_1_1XMLDocument.html">XMLDocument</a> *doc)</td></tr>
+<tr class="memdesc:abb6cc3ab175f7fbd32e9bc001d5ba30a inherit pro_methods_classOpenSim_1_1Object"><td class="mdescLeft">&#160;</td><td class="mdescRight">Unconditionally set the <a class="el" href="classOpenSim_1_1XMLDocument.html">XMLDocument</a> associated with this object.  <a href="#abb6cc3ab175f7fbd32e9bc001d5ba30a">More...</a><br/></td></tr>
+<tr class="separator:abb6cc3ab175f7fbd32e9bc001d5ba30a inherit pro_methods_classOpenSim_1_1Object"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a00afa73fcae409e8b8c993d3e977149f inherit pro_methods_classOpenSim_1_1Object"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classOpenSim_1_1XMLDocument.html">XMLDocument</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classOpenSim_1_1Object.html#a00afa73fcae409e8b8c993d3e977149f">getDocument</a> () const </td></tr>
+<tr class="memdesc:a00afa73fcae409e8b8c993d3e977149f inherit pro_methods_classOpenSim_1_1Object"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get a const pointer to the document (if any) associated with this object.  <a href="#a00afa73fcae409e8b8c993d3e977149f">More...</a><br/></td></tr>
+<tr class="separator:a00afa73fcae409e8b8c993d3e977149f inherit pro_methods_classOpenSim_1_1Object"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afd5324b6c5432c4c37619afc29996136 inherit pro_methods_classOpenSim_1_1Object"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classOpenSim_1_1XMLDocument.html">XMLDocument</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classOpenSim_1_1Object.html#afd5324b6c5432c4c37619afc29996136">updDocument</a> ()</td></tr>
+<tr class="memdesc:afd5324b6c5432c4c37619afc29996136 inherit pro_methods_classOpenSim_1_1Object"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get a writable pointer to the document (if any) associated with this object.  <a href="#afd5324b6c5432c4c37619afc29996136">More...</a><br/></td></tr>
+<tr class="separator:afd5324b6c5432c4c37619afc29996136 inherit pro_methods_classOpenSim_1_1Object"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pro_attribs_classOpenSim_1_1Function"><td colspan="2" onclick="javascript:toggleInherit('pro_attribs_classOpenSim_1_1Function')"><img src="closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="classOpenSim_1_1Function.html">OpenSim::Function</a></td></tr>
+<tr class="memitem:ae1fa1bd20a0e8321bfb970944ba0fea7 inherit pro_attribs_classOpenSim_1_1Function"><td class="memItemLeft" align="right" valign="top">SimTK::Function *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classOpenSim_1_1Function.html#ae1fa1bd20a0e8321bfb970944ba0fea7">_function</a></td></tr>
+<tr class="separator:ae1fa1bd20a0e8321bfb970944ba0fea7 inherit pro_attribs_classOpenSim_1_1Function"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pro_attribs_classOpenSim_1_1Object"><td colspan="2" onclick="javascript:toggleInherit('pro_attribs_classOpenSim_1_1Object')"><img src="closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="classOpenSim_1_1Object.html">OpenSim::Object</a></td></tr>
+<tr class="memitem:a22e666ea5837cc9bfd8818b86b35e4ce inherit pro_attribs_classOpenSim_1_1Object"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classOpenSim_1_1PropertySet.html">PropertySet</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classOpenSim_1_1Object.html#a22e666ea5837cc9bfd8818b86b35e4ce">_propertySet</a></td></tr>
+<tr class="memdesc:a22e666ea5837cc9bfd8818b86b35e4ce inherit pro_attribs_classOpenSim_1_1Object"><td class="mdescLeft">&#160;</td><td class="mdescRight">OBSOLETE: <a class="el" href="classOpenSim_1_1Property__Deprecated.html">Property_Deprecated</a> set for serializable member variables of this and derived classes.  <a href="#a22e666ea5837cc9bfd8818b86b35e4ce">More...</a><br/></td></tr>
+<tr class="separator:a22e666ea5837cc9bfd8818b86b35e4ce inherit pro_attribs_classOpenSim_1_1Object"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header related_classOpenSim_1_1Object"><td colspan="2" onclick="javascript:toggleInherit('related_classOpenSim_1_1Object')"><img src="closed.png" alt="-"/>&#160;Related Functions inherited from <a class="el" href="classOpenSim_1_1Object.html">OpenSim::Object</a></td></tr>
+<tr class="memitem:a13075f96c92f1a0f18b791adf0fa255b inherit related_classOpenSim_1_1Object"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classOpenSim_1_1Object.html#a13075f96c92f1a0f18b791adf0fa255b">OpenSim_DECLARE_CONCRETE_OBJECT</a>(ConcreteClass, SuperClass)</td></tr>
+<tr class="memdesc:a13075f96c92f1a0f18b791adf0fa255b inherit related_classOpenSim_1_1Object"><td class="mdescLeft">&#160;</td><td class="mdescRight">Macro to be included as the first line of the class declaration for any non-templatized, concrete class that derives from <a class="el" href="classOpenSim_1_1Object.html" title="This is the base class for all OpenSim objects that are serializable (meaning they can be written to ...">OpenSim::Object</a>.  <a href="#a13075f96c92f1a0f18b791adf0fa255b">More...</a><br/></td></tr>
+<tr class="separator:a13075f96c92f1a0f18b791adf0fa255b inherit related_classOpenSim_1_1Object"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab75c37552f6feacddf9fc1d9a7c08cbe inherit related_classOpenSim_1_1Object"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classOpenSim_1_1Object.html#ab75c37552f6feacddf9fc1d9a7c08cbe">OpenSim_DECLARE_ABSTRACT_OBJECT</a>(ConcreteClass, SuperClass)</td></tr>
+<tr class="memdesc:ab75c37552f6feacddf9fc1d9a7c08cbe inherit related_classOpenSim_1_1Object"><td class="mdescLeft">&#160;</td><td class="mdescRight">Macro to be included as the first line of the class declaration for any still-abstract class that derives from <a class="el" href="classOpenSim_1_1Object.html" title="This is the base class for all OpenSim objects that are serializable (meaning they can be written to ...">OpenSim::Object</a>.  <a href="#ab75c37552f6feacddf9fc1d9a7c08cbe">More...</a><br/></td></tr>
+<tr class="separator:ab75c37552f6feacddf9fc1d9a7c08cbe inherit related_classOpenSim_1_1Object"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a04a016239bdc0a855927f706eca78876 inherit related_classOpenSim_1_1Object"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classOpenSim_1_1Object.html#a04a016239bdc0a855927f706eca78876">OpenSim_DECLARE_CONCRETE_OBJECT_T</a>(ConcreteClass, TArg, SuperClass)</td></tr>
+<tr class="memdesc:a04a016239bdc0a855927f706eca78876 inherit related_classOpenSim_1_1Object"><td class="mdescLeft">&#160;</td><td class="mdescRight">Macro to be included as the first line of the class declaration for any templatized, concrete class that derives from <a class="el" href="classOpenSim_1_1Object.html" title="This is the base class for all OpenSim objects that are serializable (meaning they can be written to ...">OpenSim::Object</a>, like <a class="el" href="classOpenSim_1_1Set.html" title="A class for holding a set of pointers to objects. ">Set</a>&lt;T&gt;.  <a href="#a04a016239bdc0a855927f706eca78876">More...</a><br/></td></tr>
+<tr class="separator:a04a016239bdc0a855927f706eca78876 inherit related_classOpenSim_1_1Object"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af7bc131913e859c757561270bb3adb86 inherit related_classOpenSim_1_1Object"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classOpenSim_1_1Object.html#af7bc131913e859c757561270bb3adb86">OpenSim_DECLARE_ABSTRACT_OBJECT_T</a>(ConcreteClass, TArg, SuperClass)</td></tr>
+<tr class="memdesc:af7bc131913e859c757561270bb3adb86 inherit related_classOpenSim_1_1Object"><td class="mdescLeft">&#160;</td><td class="mdescRight">Macro to be included as the first line of the class declaration for any templatized, still-abstract class that derives from <a class="el" href="classOpenSim_1_1Object.html" title="This is the base class for all OpenSim objects that are serializable (meaning they can be written to ...">OpenSim::Object</a>.  <a href="#af7bc131913e859c757561270bb3adb86">More...</a><br/></td></tr>
+<tr class="separator:af7bc131913e859c757561270bb3adb86 inherit related_classOpenSim_1_1Object"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>This class serves as a serializable <a class="el" href="classOpenSim_1_1ActiveForceLengthCurve.html" title="This class serves as a serializable ActiveForceLengthCurve, commonly used to model the active element...">ActiveForceLengthCurve</a>, commonly used to model the active element in muscle models. </p>
+<p>The active-force-length curve is dimensionless: force is normalized to maximum isometric force and length is normalized to resting fiber length. Five properties are used to construct a curve:</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">minActiveNormFiberLength</td><td>The normalized fiber length where the steep ascending limb of the active-force-length curve transitions to the minimum value and has first and second derivatives of 0. </td></tr>
+    <tr><td class="paramname">transitionNormFiberLength</td><td>The normalized fiber length where the steep ascending limb transitions to the shallow ascending limb. </td></tr>
+    <tr><td class="paramname">maxActiveNormFiberLength</td><td>The normalized fiber length where the descending limb transitions to the minimum value and has first and second derivatives of 0. </td></tr>
+    <tr><td class="paramname">shallowAscendingSlope</td><td>The slope of the shallow ascending limb. </td></tr>
+    <tr><td class="paramname">minimumValue</td><td>The minimum value of the active-force-length curve. If you are using an equilibrium model, this value must be greater than 0, as a value of 0 will cause a singularity in the muscle dynamic equations.</td></tr>
+  </table>
+  </dd>
+</dl>
+<div class="image">
+<img src="fig_ActiveForceLengthCurve.png" alt="fig_ActiveForceLengthCurve.png"/>
+</div>
+<p><b>Conditions</b> </p>
+<pre class="fragment">0 &lt; minActiveNormFiberLength &lt; transitionNormFiberLength &lt; 1 &lt; maxActiveNormFiberLength
+0 &lt;= shallowAscendingSlope &lt; 1/(1-transitionNormFiberLength)
+0 &lt;= minimumValue
+</pre><p><b>Default Parameter Values</b> The default parameters have been chosen so that the resulting curve closely matches the active-force-length curve for human sarcomeres, as documented by Nigg and Herzog (1994). The descending limb has been adjusted to match the in-vitro human fiber data reported by Gollapudi and Lin (2009). The default shoulder value is set to 0.1. This relatively large value is used to ensure that muscle model dynamic equations with an active-force-length singularity do not take an unreasonable amount of time to simulate (simulation time grows as the value of the active-force-length curve approaches 0). Muscle model formulations that do not have this singularity (e.g., the <a class="el" href="classOpenSim_1_1Millard2012AccelerationMuscle.html" title="This class implements a 3 state (activation,fiber length and fiber velocity) acceleration musculo-ten...">Millard2012AccelerationMuscle</a> model) can use a minimumValue of 0.</p>
+<pre class="fragment">minActiveNormFiberLength ..... 0.4441
+transitionNormFiberLength .... 0.73
+maxActiveNormFiberLength ..... 1.8123
+shallowAscendingSlope ........ 0.8616
+minimumValue ................. 0.1
+</pre><p><b>Example</b> </p>
+<div class="fragment"><div class="line"><a class="code" href="classOpenSim_1_1ActiveForceLengthCurve.html#aee1e095f1f949c325d039b583b6ad37f">ActiveForceLengthCurve</a> falCurve1(0.44, 0.73, 1.8, 0.86, 0.1);</div>
+<div class="line"><span class="keywordtype">double</span> falVal  = falCurve1.calcValue(1.0);</div>
+<div class="line"><span class="keywordtype">double</span> dfalVal = falCurve1.calcDerivative(1.0, 1);</div>
+</div><!-- fragment --><p>Note that this object should be updated through the set methods provided. These set methods will take care of rebuilding the curve correctly. If you modify the properties directly, the curve will not be rebuilt, and upon calling a function like calcValue, calcDerivative, or printCurveToCSVFile, an exception will be thrown because the curve is out-of-date with its properties.</p>
+<p><b>References</b> </p>
+<ul>
+<li>Gollapudi, S.K., Lin, D.C. (2009) Experimental determination of sarcomere force-length relationship in type-I human skeletal muscle fibers. Journal of Biomechanics 42(13), 2011&ndash;2016. </li>
+<li>Nigg, B.M., Herzog, W. Biomechanics of the Musculo-skeletal System. Wiley, 1994.</li>
+</ul>
+<dl class="section author"><dt>Author</dt><dd>Matt Millard </dd></dl>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a class="anchor" id="aee1e095f1f949c325d039b583b6ad37f"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">OpenSim::ActiveForceLengthCurve::ActiveForceLengthCurve </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>The default constructor creates an active-force-length curve using the default property values and assigns a default name. </p>
+
+</div>
+</div>
+<a class="anchor" id="a61f6fa01611061ef997c0a96d97a940d"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">OpenSim::ActiveForceLengthCurve::ActiveForceLengthCurve </td>
+          <td>(</td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>minActiveNormFiberLength</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>transitionNormFiberLength</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>maxActiveNormFiberLength</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>shallowAscendingSlope</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>minimumValue</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Constructs an active-force-length curve using the provided parameters and assigns a default name. </p>
+
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a class="anchor" id="af311d8f9fd96d1d435c81e72465af378"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">double OpenSim::ActiveForceLengthCurve::calcDerivative </td>
+          <td>(</td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>normFiberLength</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>order</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Calculates the derivative of the active-force-length multiplier with respect to the normalized fiber length. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">normFiberLength</td><td>The normalized length of the muscle fiber. </td></tr>
+    <tr><td class="paramname">order</td><td>The order of the derivative. Only values of 0, 1, and 2 are acceptable. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The derivative of the active-force-length curve with respect to the normalized fiber length. </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="ab037516d703d0569bdf02a68318a54c9"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">double OpenSim::ActiveForceLengthCurve::calcValue </td>
+          <td>(</td>
+          <td class="paramtype">const SimTK::Vector &amp;&#160;</td>
+          <td class="paramname"><em>x</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Implement the generic <a class="el" href="classOpenSim_1_1Function.html">OpenSim::Function</a> interface. </p>
+
+<p>Reimplemented from <a class="el" href="classOpenSim_1_1Function.html#abe1dc62990fa03c7ac43fdaae3cb5999">OpenSim::Function</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a293cd71324786326bcd136cdf2c5de74"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">double OpenSim::ActiveForceLengthCurve::calcValue </td>
+          <td>(</td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>normFiberLength</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Evaluates the active-force-length curve at a normalized fiber length of 'normFiberLength'. </p>
+
+</div>
+</div>
+<a class="anchor" id="a13faa5e9d446c33b4ded0a05b9c153c5"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void OpenSim::ActiveForceLengthCurve::ensureCurveUpToDate </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="aad5428ca98f30e6bd6cf94fda259e8e3"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">SimTK::Vec2 OpenSim::ActiveForceLengthCurve::getCurveDomain </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Returns a SimTK::Vec2 containing the lower (0th element) and upper (1st element) bounds on the domain of the curve. </p>
+<p>Outside this domain, the curve is approximated using linear extrapolation. </p>
+<dl class="section return"><dt>Returns</dt><dd>The minimum and maximum value of the domain, x, of the curve y(x). Within this range, y(x) is a curve; outside this range, the function y(x) is a C2-continuous linear extrapolation. </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a2258a12e8ba7215204543865bde7a395"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">double OpenSim::ActiveForceLengthCurve::getMaxActiveFiberLength </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="section return"><dt>Returns</dt><dd>The normalized fiber length where the descending limb of the active-force-length curve transitions to the minimum activation value and simultaneously achives first and second derivatives of 0. </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="aceaed06aa4443ea194f93b38867c9c4e"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">double OpenSim::ActiveForceLengthCurve::getMinActiveFiberLength </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="section return"><dt>Returns</dt><dd>The normalized fiber length where the steep ascending limb of the active-force-length curve transitions to the minimum activation value and simultaneously achives a first and second derivative of 0. </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="af945e6f721d5fa49de3ead8410dccdf9"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">double OpenSim::ActiveForceLengthCurve::getMinValue </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="section return"><dt>Returns</dt><dd>The minimum active-force-length value permitted in the simulation. This value must be non-zero for an equilibrium model. </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="afba0455c5145387fc66cacc9466b6e06"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">double OpenSim::ActiveForceLengthCurve::getShallowAscendingSlope </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="section return"><dt>Returns</dt><dd>The slope of the shallow ascending limb (d active_force_length / d normalized_fiber_length). </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a264e8a1446666a5bcfe7ad076994779f"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">double OpenSim::ActiveForceLengthCurve::getTransitionFiberLength </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="section return"><dt>Returns</dt><dd>The normalized fiber length where the steep ascending limb of the active-force-length curve transitions to the shallow ascending limb. </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a48619ba5079f4b954cf3e887bd7a8602"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">OpenSim::ActiveForceLengthCurve::OpenSim_DECLARE_PROPERTY </td>
+          <td>(</td>
+          <td class="paramtype">min_norm_active_fiber_length&#160;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&quot;Normalized fiber length where the steep ascending limb starts&quot;&#160;</td>
+          <td class="paramname">&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a80625dd11c828d1a0b5f623e5519a4bd"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">OpenSim::ActiveForceLengthCurve::OpenSim_DECLARE_PROPERTY </td>
+          <td>(</td>
+          <td class="paramtype">transition_norm_fiber_length&#160;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&quot;Normalized fiber length where the steep ascending limb transitions to the shallow ascending limb&quot;&#160;</td>
+          <td class="paramname">&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a48b9473012e2ab0f0ff39602d4d5b6b6"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">OpenSim::ActiveForceLengthCurve::OpenSim_DECLARE_PROPERTY </td>
+          <td>(</td>
+          <td class="paramtype">max_norm_active_fiber_length&#160;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&quot;Normalized fiber length where the descending limb ends&quot;&#160;</td>
+          <td class="paramname">&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a77a4bcce78e5bbcea06104e05f0ed566"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">OpenSim::ActiveForceLengthCurve::OpenSim_DECLARE_PROPERTY </td>
+          <td>(</td>
+          <td class="paramtype">shallow_ascending_slope&#160;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&quot;Slope of the shallow ascending limb&quot;&#160;</td>
+          <td class="paramname">&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a4716217226f4347695d51c38a2311c3b"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">OpenSim::ActiveForceLengthCurve::OpenSim_DECLARE_PROPERTY </td>
+          <td>(</td>
+          <td class="paramtype">minimum_value&#160;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&quot;Minimum value of the active-force-length curve&quot;&#160;</td>
+          <td class="paramname">&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a5eb05f09f8645ad742a387338abc6da9"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void OpenSim::ActiveForceLengthCurve::printMuscleCurveToCSVFile </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>path</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Generates a .csv file with a name that matches the curve name (e.g., "bicepsfemoris_ActiveForceLengthCurve.csv"). </p>
+<p>This function is not const to permit the curve to be rebuilt if it is out-of-date with its properties. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">path</td><td>The full destination path. Note that forward slashes ('/') must be used and there should not be a slash after the last folder.</td></tr>
+  </table>
+  </dd>
+</dl>
+<p>The file will contain the following data: </p>
+<pre class="fragment">column: 1 | 2 |     3 |       4
+  data: x | y | dy/dx | d2y/dx2
+</pre><p>Samples will be taken from the linear extrapolation region (the region less than minActiveNormFiberLength), through the curve, out to the other linear extrapolation region (the region greater than maxActiveNormFiberLength). The width of each linear extrapolation region is 10% of the curve domain, or 0.1*(maxActiveNormFiberLength-minActiveNormFiberLength). The curve is sampled quite densely: the active-force-length .csv file will have 500+20 rows.</p>
+<p><b>Example</b> To read the .csv file into Matlab, you need to set csvread to ignore the header row. Since csvread is 0-indexed, the following example will begin reading the .csv file from the first column of the second row: </p>
+<pre class="fragment">data = csvread('bicepsfemoris_ActiveForceLengthCurve.csv', 1, 0);
+</pre> 
+</div>
+</div>
+<a class="anchor" id="ad0e3a4825e4589d18c470dfe77b1d5a0"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void OpenSim::ActiveForceLengthCurve::setActiveFiberLengths </td>
+          <td>(</td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>minActiveNormFiberLength</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>transitionNormFiberLength</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>maxActiveNormFiberLength</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>shallowAscendingSlope</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">minActiveNormFiberLength</td><td>The normalized fiber length where the steep ascending limb of the active-force-length curve transitions to the minimum value and has first and second derivatives of 0. </td></tr>
+    <tr><td class="paramname">transitionNormFiberLength</td><td>The normalized fiber length where the steep ascending limb transitions to the shallow ascending limb. </td></tr>
+    <tr><td class="paramname">maxActiveNormFiberLength</td><td>The normalized fiber length where the descending limb transitions to the minimum value and has first and second derivatives of 0. </td></tr>
+    <tr><td class="paramname">shallowAscendingSlope</td><td>The slope of the shallow ascending limb.</td></tr>
+  </table>
+  </dd>
+</dl>
+<p><b>Conditions</b> </p>
+<pre class="fragment">0 &lt; minActiveNormFiberLength &lt; transitionNormFiberLength &lt; 1 &lt; maxActiveNormFiberLength
+0 &lt;= shallowAscendingSlope &lt; 1/(1-transitionNormFiberLength)
+</pre> 
+</div>
+</div>
+<a class="anchor" id="ae0557431f1eb418930e5ee4c7dd02e66"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void OpenSim::ActiveForceLengthCurve::setMinValue </td>
+          <td>(</td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>minimumValue</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">minimumValue</td><td>The minimum value of the active-force-length curve. If you are using an equilibrium model, this value must be greater than 0, as a value of 0 will cause a singularity in the muscle dynamic equations. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<hr/>The documentation for this class was generated from the following file:<ul>
+<li>C:/ReleaseEnv/src/OpenSim32Branch/OpenSim/Actuators/ActiveForceLengthCurve.h</li>
+</ul>
+</div><!-- contents -->
+</div><!-- doc-content -->
+</div>
+</body>
+</html>

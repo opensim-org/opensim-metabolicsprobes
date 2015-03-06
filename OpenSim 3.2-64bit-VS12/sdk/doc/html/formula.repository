@@ -1,0 +1,117 @@
+\form#0:$da/dt$
+\form#1:\[ \frac{da}{dt} = \frac{u-a}{\tau(u,a)} \]
+\form#2:$u$
+\form#3:$a$
+\form#4:$\tau(u,a)$
+\form#5:\[ \tau(u,a) = \tau_{\rm{act}} (0.5 + 1.5a) \quad {\rm{if}}\ u > a \]
+\form#6:\[ \tau(u,a) = \tau_{\rm{deact}} / (0.5 + 1.5a) \quad {\rm{otherwise}} \]
+\form#7:$\tau_{\rm{act}}$
+\form#8:$\tau_{\rm{deact}}$
+\form#9:$ \hat{i} $
+\form#10:\[ m \ddot{x} = F_{SE} - F_{CE} \cdot \hat{i} \]
+\form#11:$ \ddot{s} $
+\form#12:$l_{CE}$
+\form#13:$\phi$
+\form#14:\[ \ddot{x} = \Big(\ddot{l}_{CE} \cos \phi - 2 \dot{l}_{CE}\dot{\phi}\sin\phi - \dot{\phi}^2 l_{CE} \cos \phi - \ddot{\phi} l_{CE} \sin \phi\Big) \]
+\form#15:\[ l_{CE} \sin \phi = h \]
+\form#16:\[ \ddot{\phi} = -\Big( \ddot{l}_{CE}\sin\phi + 2 \dot{l}_{CE} \dot{\phi} \cos\phi - \dot{\phi}^2 l_{CE} \sin \phi \Big) / \Big( l_{CE} \cos \phi \Big) \]
+\form#17:$ \ddot{l}_{CE}$
+\form#18:$ \ddot{\phi} $
+\form#19:$\ddot{x}$
+\form#20:\[ \ddot{l}_{CE} = \frac{1}{m} \Big( F_{SE} - F_{CE} \cdot \hat{i} \Big) \cos \phi + l_{CE} \dot{\phi}^2 \]
+\form#21:$\ddot{l}_{CE}$
+\form#22:$ F_{SE}$
+\form#23:$ F_{M}\cdot\hat{i}$
+\form#24:$F_{CE}\cdot\hat{i}$
+\form#25:\[ F_{CE} \cdot \hat{i} = f_{ISO}\Big(\mathbf{a} \mathbf{f}_L(\hat{l}_{CE}) \mathbf{f}_V(\frac{\hat{v}_{CE}}{v_{MAX}}) + \beta_{CE}\hat{v}_{CE} + \mathbf{f}_{PE}(\hat{l}_{CE})(1+\beta_{PE}\hat{v}_{CE}) - \mathbf{f}_K(\hat{l}_{CE})(1-\beta_{K}\hat{v}_{CE}) \Big) \cos \phi - f_{ISO} \Big( \mathbf{f}_{c\phi}(\cos \phi) (1- \beta_{c \phi} \frac{d}{dt}(\frac{l_{CE}\cos\phi}{l_{CE,OPT}\cos\phi_{OPT}})) \Big) \]
+\form#26:\[ F_{SE} = f_{ISO} \mathbf{f}_{SE}(\hat{l}_{SE})(1+\beta_{SE}\hat{v}_{SE}) \]
+\form#27:$\mathbf{f}_{PE}$
+\form#28:$\mathbf{f}_{K}$
+\form#29:$\mathbf{f}_{c\phi}$
+\form#30:$\mathbf{f}_{SE}$
+\form#31:$\beta_{CE}\hat{v}_{CE}$
+\form#32:\begin{eqnarray*} (1+\beta_{PE}\hat{v}_{CE}) > 0 \\ (1-\beta_{K}\hat{v}_{CE}) > 0 \\ (1- \beta_{c \phi} \frac{d}{dt}(\frac{l_{CE}\cos\phi}{l_{CE,OPT}\cos\phi_{OPT}})) > 0 \\ (1+\beta_{SE}\hat{v}_{SE}) > 0 \end{eqnarray*}
+\form#33:$m/s$
+\form#34:$m/s^2$
+\form#35:$\hat{l}$
+\form#36:$\hat{v}$
+\form#37:$1/s$
+\form#38:$1/s^2$
+\form#39:$m$
+\form#40:$kg$
+\form#41:$\hat{i}$
+\form#42:$F_{SE}$
+\form#43:$N$
+\form#44:$l_{CE,OPT}$
+\form#45:$\hat{l}_{CE}=l_{CE}/l_{CE,OPT}$
+\form#46:$\hat{v}_{CE}=\dot{l}_{CE}/l_{CE,OPT}$
+\form#47:$\hat{v}_{MAX}$
+\form#48:$l_{CE,OPT}/s$
+\form#49:$\phi_{OPT}$
+\form#50:$l_{SE}$
+\form#51:$l_{SE,R}$
+\form#52:$\hat{l}_{SE} = l_{SE}/l_{SE,R}$
+\form#53:$ \hat{v}_{SE} = \dot{l}_{SE}/l_{SE,R}$
+\form#54:$f_{ISO}$
+\form#55:$\hat{v}_{CE}=0$
+\form#56:$\mathbf{a}$
+\form#57:$\mathbf{f}_L(\hat{l}_{CE})$
+\form#58:$\mathbf{f}_V(\frac{\hat{v}_{CE}}{v_{MAX}})$
+\form#59:$\mathbf{f}_{PE}(\hat{l}_{CE})$
+\form#60:$\mathbf{f}_{K}(\hat{l}_{CE})$
+\form#61:$\mathbf{f}_{c\phi}(\cos \phi)$
+\form#62:$\mathbf{f}_{SE}(\hat{l}_{SE})$
+\form#63:$\beta_{CE}$
+\form#64:$\beta_{PE}$
+\form#65:$\beta_{K}$
+\form#66:$\beta_{c \phi}$
+\form#67:$\beta_{SE}$
+\form#68:$\mathbf{f}_K(\hat{l}_{CE})$
+\form#69:$\mathbf{f}_{SE}(\hat{l}_{T})$
+\form#70:\[ f_{ISO}\Big(\mathbf{a}(t) \mathbf{f}_L(\hat{l}_{CE}) \mathbf{f}_V(\hat{v}_{CE}) + \mathbf{f}_{PE}(\hat{l}_{CE}) + \beta \hat{v}_{CE}\Big) \cos \phi - f_{ISO}\mathbf{f}_{SE}(\hat{l}_{T}) = 0 \]
+\form#71:$\mathbf{a}(t) \rightarrow 0$
+\form#72:$\phi \rightarrow 90^\circ$
+\form#73:$ \mathbf{f}_L(\hat{l}_{CE}) \rightarrow 0 $
+\form#74:$ \mathbf{f}_V(\hat{v}_{CE}) $
+\form#75:$ \hat{v}_{CE} $
+\form#76:\[ \hat{v}_{CE} = \mathbf{f}_V ^{-1} \Big( \frac{ ( \mathbf{f}_{SE}(\hat{l}_{T}) ) / \cos \phi - \mathbf{f}_{PE}(\hat{l}_{CE}) } { \mathbf{a}(t) \mathbf{f}_L(\hat{l}_{CE})} \Big) \]
+\form#77:$\mathbf{f}_V ^{-1}$
+\form#78:$\mathbf{a}(t) > 0$
+\form#79:$\phi < 90^\circ$
+\form#80:$ \hat{l}_{CE} > lowerbound$
+\form#81:$ \mathbf{f}_L(\hat{l}_{CE}) > 0 $
+\form#82:$ \mathbf{f}_L(\hat{l}_{CE})) = 0 $
+\form#83:$ \beta > 0$
+\form#84:\[ \tau(u,a) = t_{\rm{act}} (0.5 + 1.5a) \quad {\rm{if}}\ u > a \]
+\form#85:\[ \tau(u,a) = t_{\rm{deact}} / (0.5 + 1.5a) \quad {\rm{otherwise}} \]
+\form#86:$a_{\rm{min}}$
+\form#87:$\dot{a} > 0$
+\form#88:$\dot{a} < 0$
+\form#89:$\zeta$
+\form#90:$\omega$
+\form#91:$\mu$
+\form#92:\[ \ddot{a} + 2 \zeta \omega \dot{a} + \omega^2 a = \omega^2\mu \]
+\form#93:$\zeta = 1$
+\form#94:$\dot{a}$
+\form#95:$\dot{a}>0$
+\form#96:\[ \omega = \frac{1}{T} \]
+\form#97:$\dot{a}<0$
+\form#98:\[ \omega = \frac{2}{T} \]
+\form#99:$ T $
+\form#100:\[ \hat{a} = \frac{a}{1-a_{min}} \]
+\form#101:\[ \hat{a}_{min} = \frac{a_{min}}{1-a_{min}} \]
+\form#102:\[ \ddot{a}+2\zeta\omega\dot{a}+\omega^2(\hat{a}-\hat{a}_{min})=\omega^2\mu \]
+\form#103:\[ (a(t) f_{AL}(l_{CE}) f_{V}(\dot{l}_{CE}) - f_{PE}(l_{CE}))\cos \phi - f_{SE}(l_{T}) = 0 \]
+\form#104:$ f_{V}(\dot{l}_{CE}) $
+\form#105:\[ f_{V}(\dot{l}_{CE}) = \frac{ \frac{f_{SE}(l_{T})}{\cos\phi} - f_{PE}(l_{CE}) }{ a(t) f_{AL}(l_{CE}) } \]
+\form#106:\[ \dot{l}_{CE} = f_{V}^{-1}( \frac{ \frac{f_{SE}(l_{T})}{\cos\phi} - f_{PE}(l_{CE}) }{ a(t) f_{AL}(l_{CE}) } ) \]
+\form#107:$ a(t) \rightarrow 0 $
+\form#108:$ f_{AL}(l_{CE}) \rightarrow 0 $
+\form#109:$ \phi \rightarrow \frac{\pi}{2} $
+\form#110:$ f_{V}(\dot{l}_{CE}) \le 0 $
+\form#111:$ f_{V}(\dot{l}_{CE}) \ge F^M_{len}$
+\form#112:$ a(t) \rightarrow a_{min} > 0 $
+\form#113:$ f_{AL}(l_{CE}) > 0 $
+\form#114:$ V^M $
+\form#115:$ F^M < 0$
+\form#116:$ F^M > 0.95 F^M_{len}$

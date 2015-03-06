@@ -1,0 +1,27 @@
+var classOpenSim_1_1MarkersReference =
+[
+    [ "MarkersReference", "classOpenSim_1_1MarkersReference.html#a985097845f1697d4c76a8e7da2594a5a", null ],
+    [ "MarkersReference", "classOpenSim_1_1MarkersReference.html#a8ebcedfef1462244cb654c90b92170ce", null ],
+    [ "MarkersReference", "classOpenSim_1_1MarkersReference.html#afd51a0c90d0664732428278c8c19868a", null ],
+    [ "~MarkersReference", "classOpenSim_1_1MarkersReference.html#aaafe31de3415c78b0b192b03fb62b4c3", null ],
+    [ "copyData", "classOpenSim_1_1MarkersReference.html#a401d9af7edd0ad71b61eba01c74578de", null ],
+    [ "getAccelerationValues", "classOpenSim_1_1MarkersReference.html#a650ca6c9efc6176d9dc0087d78a6735e", null ],
+    [ "getNames", "classOpenSim_1_1MarkersReference.html#a3cbc32d1f3d77514a4940c1d848df67b", null ],
+    [ "getNumRefs", "classOpenSim_1_1MarkersReference.html#ab79127e2cb47bacc6d09ce0b79180bcb", null ],
+    [ "getSamplingFrequency", "classOpenSim_1_1MarkersReference.html#aa6705a9653632fa3a6fea19345224922", null ],
+    [ "getSpeedValues", "classOpenSim_1_1MarkersReference.html#a65a8e68ee4b1388f7abf7cbc56102165", null ],
+    [ "getValidTimeRange", "classOpenSim_1_1MarkersReference.html#a1a02aada119d3b192e00a1769ee3af08", null ],
+    [ "getValues", "classOpenSim_1_1MarkersReference.html#a6aa230e5aca950fcda8ed816bd90d8a8", null ],
+    [ "getWeights", "classOpenSim_1_1MarkersReference.html#af7f74dc2126392afaf39fada30a4a41b", null ],
+    [ "loadMarkersFile", "classOpenSim_1_1MarkersReference.html#a1e87c5f24df7534457364a13cc0c05ec", null ],
+    [ "operator=", "classOpenSim_1_1MarkersReference.html#a7e3d208bc057c103db86c9ba6cb15023", null ],
+    [ "setDefaultWeight", "classOpenSim_1_1MarkersReference.html#a9490402ac40d3306ef2d33fff0ca73ce", null ],
+    [ "setMarkerWeightSet", "classOpenSim_1_1MarkersReference.html#a12b0d962a91ed466c9e3510b0dac093b", null ],
+    [ "updMarkerWeightSet", "classOpenSim_1_1MarkersReference.html#a03dc56a89c9ae8a3996d778d8c19a9b2", null ],
+    [ "_defaultWeight", "classOpenSim_1_1MarkersReference.html#a86ecf67141f6bb5820abf7641fa0acb7", null ],
+    [ "_defaultWeightProp", "classOpenSim_1_1MarkersReference.html#a95b8cd979a693efa08ca49b01065da79", null ],
+    [ "_markersFile", "classOpenSim_1_1MarkersReference.html#a5db3515a174e0c5ecd09f81d3da6fc07", null ],
+    [ "_markersFileProp", "classOpenSim_1_1MarkersReference.html#ab235313939c605d3172a51b238b474de", null ],
+    [ "_markerWeightSet", "classOpenSim_1_1MarkersReference.html#a2b5e38f026bec8d43b8e2d608dda19c1", null ],
+    [ "_markerWeightSetProp", "classOpenSim_1_1MarkersReference.html#a6fa5ca0941c2414be5500273a01394fc", null ]
+];

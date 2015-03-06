@@ -1,0 +1,288 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+    <head>
+        <title>OpenSim Documentation : Common Scripting Commands</title>
+        <link rel="stylesheet" href="styles/site.css" type="text/css" />
+        <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    </head>
+
+    <body>
+        <div id="page">
+            <div id="main">
+                <div id="main-header" class="pageSectionHeader">
+                    <h1 id="title-heading" class="pagetitle">
+                                                <span id="title-text">
+                            OpenSim Documentation : Common Scripting Commands
+                        </span>
+                    </h1>
+
+                    <div class="page-metadata">
+                        <p>This page last changed on Feb 04, 2014 by <font color="#0050B2">dunne.jimmy</font>.</p>
+                    </div>
+                </div>
+
+                <div id="content" class="view">
+                    <div id="main-content" class="wiki-content group">
+                    <p><span style="color: rgb(51,51,51);">Scripting environments like Matlab, Python and the OpenSim GUI shell allow users to interact with the classes of the OpenSim API (see <a href="http://simtk-confluence.stanford.edu:8080/display/OpenSim/The+OpenSim+API">The OpenSim API</a>). </span><span style="color: rgb(51,51,51);">There are many example scripts that are located in the OpenSim scripting folder, available with the distribution to help you get started. This page summarizes some of the common calls that you will make in the scripting environment of your choice. </span></p><p><div>
+<ul>
+    <li><a href='#CommonScriptingCommands-GeneralTipsForBeginners '>General Tips For Beginners &nbsp;</a></li>
+    <li><a href='#CommonScriptingCommands-HelpfulCommands '>Helpful Commands &nbsp;</a></li>
+    <li><a href='#CommonScriptingCommands-PackagesandLibraries '>Packages and Libraries&nbsp;</a></li>
+    <li><a href='#CommonScriptingCommands-CreatingNewObjects '>Creating New Objects&nbsp;</a></li>
+    <li><a href='#CommonScriptingCommands-LoadingCreatingandInitializingModels'>Loading, Creating, and Initializing Models</a></li>
+    <li><a href='#CommonScriptingCommands-ExploringandEditingModelsandModelComponents'>Exploring and Editing Models and Model Components</a></li>
+    <li><a href='#CommonScriptingCommands-UsingtheTools'>Using the Tools</a></li>
+    <li><a href='#CommonScriptingCommands-WorkingwithFilesandPaths'>Working with Files and Paths</a></li>
+    <li><a href='#CommonScriptingCommands-Plotting'>Plotting</a></li>
+<ul>
+    <li><a href='#CommonScriptingCommands-GUIScriptingShell'>GUI Scripting Shell</a></li>
+    <li><a href='#CommonScriptingCommands-Matlab'>Matlab</a></li>
+</ul>
+    <li><a href='#CommonScriptingCommands-WorkingwithVectorsMatricesandOtherSimTKClasses'>Working with Vectors, Matrices, and Other SimTK Classes</a></li>
+<ul>
+    <li><a href='#CommonScriptingCommands-OpenSim31andlater'>OpenSim 3.1 and later</a></li>
+    <li><a href='#CommonScriptingCommands-OpenSim30and301'>OpenSim 3.0 and 3.0.1</a></li>
+</ul>
+    <li><a href='#CommonScriptingCommands-ObtainingPositionandVelocityInformation'>Obtaining Position and Velocity Information</a></li>
+    <li><a href='#CommonScriptingCommands-UsingtheSimTKVisualizerinMatlab'>Using the SimTK Visualizer in Matlab</a></li>
+    <li><a href='#CommonScriptingCommands-BatchProcessing'>Batch Processing</a></li>
+    <li><a href='#CommonScriptingCommands-References'>References</a></li>
+</ul></div></p><h2 id="CommonScriptingCommands-GeneralTipsForBeginners ">General Tips For Beginners  </h2><ol><li>Run the example scripts found in the distribution.</li><li>As you run the example scripts, find the related Classes and Methods in  
+
+
+ 
+<a href="https://simtk.org/api_docs/opensim/api_docs31/" target="_blank" class="external-link" rel="nofollow">Doxygen</a></li><li>The structure for classes can also be found in OpenSim's files (.xml or .osim). Fro example, setup_Scale.xml shows the hierarchy of the Scale tool.</li><li>Use the  
+
+
+ 
+<a href="http://opensim.stanford.edu/support/index.html" target="_blank" class="external-link" rel="nofollow">OpenSim Search bar</a> to search for a Class or Method in the documentation, on the forum or on the Doxygen pages. </li><li>If you are having trouble with a Class or Method, ask a question on the  
+
+
+ 
+<a href="https://simtk.org/forums/viewforum.php?f=91&amp;sid=c0e8a20a44fe5ca1524b3bb78fe03dcf&amp;sid=26e02750f974c25f796217f05616c06a" target="_blank" class="external-link" rel="nofollow">OpenSim forum</a>.</li></ol><h2 id="CommonScriptingCommands-HelpfulCommands ">Helpful Commands  </h2><p>Below are a number of commands that can be used in your scripting environment to help you find the methods available for a class (e.g., a body or joint). </p><div class="table-wrap"><table class="confluenceTable"><tbody><tr><th class="confluenceTh">Command</th><th colspan="1" class="confluenceTh">Platform</th><th class="confluenceTh">Description</th></tr><tr><td class="confluenceTd">methodsview('Model') or methodsview(osimModel)</td><td colspan="1" class="confluenceTd">GUI and Matlab</td><td class="confluenceTd">Examine the methods available for a class (e.g. Model) or for an existing object that you've created (e.g. osimModel)</td></tr><tr><td colspan="1" class="confluenceTd">type(aObject)</td><td colspan="1" class="confluenceTd">GUI</td><td colspan="1" class="confluenceTd">Prints the full qualified type of aObject</td></tr><tr><td colspan="1" class="confluenceTd">Up/Down Arrows at the command prompt</td><td colspan="1" class="confluenceTd">GUI</td><td colspan="1" class="confluenceTd">Recalls past commands entered at the prompt</td></tr><tr><td colspan="1" class="confluenceTd">Tab completion</td><td colspan="1" class="confluenceTd">Matlab</td><td colspan="1" class="confluenceTd">Define an OpenSim model or object then use tab completion in Matlab to see the available methods</td></tr></tbody></table></div><h2 id="CommonScriptingCommands-PackagesandLibraries ">Packages and Libraries </h2><p>Packages and libraries are collections of classes and methods that have a well-defined interface and can be imported into your programming environment to utilize. These can be packages to browse files, read and write files, do mathematics operations, and run  simulations. The commands below are common Packages or Libraries you may find useful.</p><div class="table-wrap"><table class="confluenceTable"><tbody><tr><th class="confluenceTh">Package</th><th colspan="1" class="confluenceTh">Platform</th><th class="confluenceTh">Description</th></tr><tr><td class="confluenceTd">java.swing</td><td colspan="1" class="confluenceTd">GUI</td><td class="confluenceTd">Swing is the generic GUI kit for Java, allows for I/O and creating windows if needed. Examples of usage can be found <a href="http://wiki.python.org/jython/SwingExamples" class="external-link" rel="nofollow">here</a>.</td></tr><tr><td class="confluenceTd">java.lang</td><td colspan="1" class="confluenceTd">GUI</td><td class="confluenceTd">Lang is the Java language core libraries e.g String, Math, etc. To use particular libraries (for example Math), do &quot;from java.lang import Math&quot;</td></tr><tr><td class="confluenceTd">java.io</td><td colspan="1" class="confluenceTd">GUI</td><td class="confluenceTd">IO is the package in Java that's used to perform input/output operations including file reading/writing.</td></tr><tr><td colspan="1" class="confluenceTd">org.opensim.modeling</td><td colspan="1" class="confluenceTd">GUI and Matlab</td><td colspan="1" class="confluenceTd">Modeling classes from the OpenSim API. This package is automatically imported in the GUI Shell. In Matlab, excute command <span style="color: rgb(51,153,102);">import org.opensim.modeling.*</span> to avoid having to type org.opensim.modeling.'Class'</td></tr><tr><td colspan="1" class="confluenceTd">org.opensim.utils</td><td colspan="1" class="confluenceTd">GUI</td><td colspan="1" class="confluenceTd"><span style="color: rgb(34,34,34);">Provides some convenient file browsing options</span></td></tr></tbody></table></div><div class="code panel" style="border-width: 1px;"><div class="codeHeader panelHeader" style="border-bottom-width: 1px;"><b>To import packages in the GUI, type, for example:</b></div><div class="codeContent panelContent">
+<div id="root">
+		<pre class="theme: Confluence; brush: python; gutter: false">&gt;&gt;&gt; import java.io as io				# Import Read/Write package
+&gt;&gt;&gt; trcFolder = io.File(trcDataFolder)	# Use package to read TRC file</pre>
+		</div>
+</div></div><div class="code panel" style="border-width: 1px;"><div class="codeHeader panelHeader" style="border-bottom-width: 1px;"><b>To Load the OpenSim Libraries in Matlab</b></div><div class="codeContent panelContent">
+<div id="root">
+		<pre class="theme: Confluence; brush: python; gutter: false">&gt;&gt;&gt; import org.opensim.modeling.*		% Import OpenSim Libraries</pre>
+		</div>
+</div></div><h2 id="CommonScriptingCommands-CreatingNewObjects ">Creating New Objects </h2><p>Creation of objects is performed by the constructor method of the Class. We can create an object and populate its properties, or pass the class a correctly formatted xml file. <br /><em>Note: 'path' indicates your system path to the file (i.e., C:\OpenSim 2.1\Models\...). Delete &quot;modeling.&quot; from code for Matlab.</em></p><div class="table-wrap"><table class="confluenceTable"><tbody><tr><th class="confluenceTh"><span>Action</span></th><th class="confluenceTh">Class Information</th><th colspan="1" class="confluenceTh">Default construction <span> (Scripting shell)</span></th><th class="confluenceTh">XML construction (Scripting shell)</th></tr><tr><td class="confluenceTd">Marker set object</td><td class="confluenceTd"> 
+
+
+ 
+<a href="https://simtk.org/api_docs/opensim/api_docs31/classOpenSim_1_1MarkerSet.html" target="_blank" class="external-link" rel="nofollow">OpenSim::MarkerSet</a></td><td colspan="1" class="confluenceTd">newMarkerSet = modeling.MarkerSet()</td><td class="confluenceTd">newMarkerSet = modeling.MarkerSet([<em>path</em> 'markerSet.xml'])</td></tr><tr><td class="confluenceTd">Marker data object</td><td class="confluenceTd"> 
+
+
+ 
+<a href="https://simtk.org/api_docs/opensim/api_docs31/classOpenSim_1_1MarkerData.html#a8f8c23d00721ddd4cd63ecb93e694c96" target="_blank" class="external-link" rel="nofollow">OpenSim::MarkerData</a></td><td colspan="1" class="confluenceTd">markerData = modeling.MarkerData()</td><td class="confluenceTd">markerData = modeling.MarkerData([<em>path</em> 'walkingData.trc'])</td></tr><tr><td class="confluenceTd">Scaling tool object</td><td class="confluenceTd"> 
+
+
+ 
+<a href="https://simtk.org/api_docs/opensim/api_docs31/classOpenSim_1_1ScaleTool.html#a3b138c851ff97eea6ec487841274830d" target="_blank" class="external-link" rel="nofollow">OpenSim::ScaleTool</a></td><td colspan="1" class="confluenceTd">scaleTool = modeling.ScaleTool()</td><td class="confluenceTd">scaleTool = modeling.ScaleTool([<em>path</em> 'scale_setup.xml'])</td></tr><tr><td class="confluenceTd">Inverse Dynamics analysis object</td><td class="confluenceTd"> 
+
+
+ 
+<a href="https://simtk.org/api_docs/opensim/api_docs31/classOpenSim_1_1InverseDynamicsTool.html#a8e3e85f440a8cf7c5462dfd6caac28f5" target="_blank" class="external-link" rel="nofollow">OpenSIm::InverseDynamicsTool</a></td><td colspan="1" class="confluenceTd">idTool = modeling.InverseDynamicsTool()</td><td class="confluenceTd">idTool = modeling.InverseDynamicsTool([<em>path</em> 'ID_setup.xml'])</td></tr><tr><td class="confluenceTd">Control Set</td><td class="confluenceTd"> 
+
+
+ 
+<a href="https://simtk.org/api_docs/opensim/api_docs31/classOpenSim_1_1ControlSet.html" target="_blank" class="external-link" rel="nofollow">OpenSim:Control Set</a></td><td colspan="1" class="confluenceTd">rawControls= modeling.ControlSet()</td><td class="confluenceTd">rawControls= modeling.ControlSet([<em>path</em> 'controls.mot'])</td></tr></tbody></table></div><div class="code panel" style="border-width: 1px;"><div class="codeHeader panelHeader" style="border-bottom-width: 1px;"><b>Building a MarkerSet Object from file and attaching it to a Model</b></div><div class="codeContent panelContent">
+<div id="root">
+		<pre class="theme: Confluence; brush: python; gutter: false">&gt;&gt;&gt; markerSetFile="gait2354_MarkerSet.xml"			# Define the full path to the Marker Set file
+&gt;&gt;&gt; newMarkers = modeling.MarkerSet(markerSetFile)	# Construct a MarkerSet Object 
+&gt;&gt;&gt; myModel.replaceMarkerSet(myState,newMarkers)	# Replace the models existing MarkerSet with new MarkerSet
+&gt;&gt;&gt; myModel.initSystem()							# re-initialize the system
+&gt;&gt;&gt; myState =myModel.initSystem()					# Define the new state  </pre>
+		</div>
+</div></div><div class="code panel" style="border-width: 1px;"><div class="codeHeader panelHeader" style="border-bottom-width: 1px;"><b>Building a MarkerSet Object Programmatically and attaching it to a Model</b></div><div class="codeContent panelContent">
+<div id="root">
+		<pre class="theme: Confluence; brush: python; gutter: false">&gt;&gt;&gt; myModel = modeling.Model("gait2354.osim")				# Create a Model Object
+&gt;&gt;&gt; pelvisbody = myModel.getBodySet().get("pelvis")			# Get a handle to the pelvis body
+&gt;&gt;&gt; newMarkerSet = modeling.MarkerSet()						# Create an empty MarkerSet Object
+&gt;&gt;&gt; newMarkerSet.addMarkers("LASI", [1, 1, 1], pelvisbody)	# Add a Marker to the MarkerSet called 'LASI', that is attached to the pelvis at [1,1,1]
+&gt;&gt;&gt; myModel.replaceMarkerSet(myState,newMarkers)			# Replace the models existing MarkerSet with new MarkerSet
+&gt;&gt;&gt; myModel.initSystem()									# re-initialize the system
+&gt;&gt;&gt; myState =myModel.initSystem()							# Define the new state  
+ </pre>
+		</div>
+</div></div><div class="code panel" style="border-width: 1px;"><div class="codeHeader panelHeader" style="border-bottom-width: 1px;"><b>Building a Body Programmatically in Matlab</b></div><div class="codeContent panelContent">
+<div id="root">
+		<pre class="theme: Confluence; brush: java; gutter: false">&gt;&gt; nBody  = Body(); 										% Creates an body with default mass=1
+&gt;&gt; massCenter = Vec3(-0.0707,0.0,0.0);						% Create a Vec3 Object with Mass center information
+&gt;&gt; inertiaMat = Mat33(0.1028,0,0,0,0.0871,0,0,0,0.0579);	% Create a Mat33 (3x3 Matrix) with inertial information
+&gt;&gt; nBody.setName('pelvis')									% Set the name of the body using a string
+&gt;&gt; nBody.setMass(11)										% Set the mass of the body using a double
+&gt;&gt; nBody.setMassCenter(massCenter)							% Set the Mass Center
+&gt;&gt; nBody.setInertia(inertiaMat)								% Set the Inertia 
+ 
+%% Alternatively, a body can be created by sending all of these properties directly to the constructor
+&gt;&gt; massCenter = Vec3(-0.0707,0.0,0.0);						% Create a Vec3 Object with Mass center information
+&gt;&gt; inertiaMat = Mat33(0.1028,0,0,0,0.0871,0,0,0,0.0579);	% Create a Mat33 (3x3 Matrix) with inertial information
+&gt;&gt; bodyName = 'pelvis'										% Set the name of the body using a string
+&gt;&gt; bodyMass = 11											% Set the mass of the body using a double
+&gt;&gt; nBody  = Body(bodyName,bodyMass,massCenter,inertiaMat);	% Creates an body from properties sent to constructor
+ 
+ </pre>
+		</div>
+</div></div><div class="code panel" style="border-width: 1px;"><div class="codeHeader panelHeader" style="border-bottom-width: 1px;"><b>Create a Joint programmatically in Matlab</b></div><div class="codeContent panelContent">
+<div id="root">
+		<pre class="theme: Confluence; brush: java; gutter: false">&gt;&gt; pBody  = Body('pelvis', bodyMass,massCenter,inertiaMat); 	% Either create or get a handle to the parent body
+&gt;&gt; cBody  = Body('femur_r',bodyMass,massCenter,inertiaMat);		% Either create or get a handle to the child body
+&gt;&gt; name = 'hip_r'												% Assign the joint name
+&gt;&gt; locInParent   = Vec3(-0.0707,-0.0661,0.0835);				% A Vec3 location in the parent frame
+&gt;&gt; orienInParent = Vec3(0,0,0);									% A Vec3 orientation in the parent frame
+&gt;&gt; locInChild = Vec3(0,0.0,0);									% A Vec3 location in the child frame
+&gt;&gt; orienInChild= Vec3(0,0,0);									% A Vec3 orientation in the child frame
+&gt;&gt; reverse = 0; 												% Reverse the joint (true/false)
+&gt;&gt; rrHip = BallJoint(name,nBody,locInParent,orienInParent,cBody,locInChild,orienInChild,reverse)</pre>
+		</div>
+</div></div><div class="code panel" style="border-width: 1px;"><div class="codeHeader panelHeader" style="border-bottom-width: 1px;"><b>Create a Torque Actuator for the Knee Joint (flex/ext) programmatically in Matlab</b></div><div class="codeContent panelContent">
+<div id="root">
+		<pre class="theme: Confluence; brush: java; gutter: false">&gt;&gt; myModel = Model("gait2354.osim")					# Create a Model Object
+&gt;&gt; femur_r = myModel.getBodySet().get('femur_r');	# Get a Handle to the Body A
+&gt;&gt; tibia_r  = myModel.getBodySet().get('tibia_r');	# Get a Handle to the Body B
+&gt;&gt; zAxisTorque = Vec3(0,0,1);					# A Vec3 of the z-axis
+&gt;&gt; torqueActuator = TorqueActuator();			# Create a Torque Actuator Object
+&gt;&gt; torqueActuator.setBodyA(femur_r); 			# Set Body A
+&gt;&gt; torqueActuator.setBodyB(tibia_r);			# Set Body B
+&gt;&gt; torqueActuator.setAxis(zAxisTorque);			# Set the axis about the torque to act
+&gt;&gt; torqueActuator.setOptimalForce(10);			# Set the optimal force (gain) of the actuator</pre>
+		</div>
+</div></div><p> </p><p> </p><p> </p><p> </p><h2 id="CommonScriptingCommands-LoadingCreatingandInitializingModels">Loading, Creating, and Initializing Models</h2><p>Loading models and dealing with model states is very common. Below are the methods for loading, copying and initializing a model</p><div class="table-wrap"><table class="confluenceTable"><tbody><tr><th class="confluenceTh"><span style="color: rgb(0,0,0);">Action</span></th><th class="confluenceTh">Environment</th><th class="confluenceTh"><span>GUI Command</span></th><th colspan="1" class="confluenceTh"><span style="color: rgb(0,0,0);">Matlab Command</span></th></tr><tr><td colspan="1" class="confluenceTd">Loads the specified model in the GUI (replace addModel in 3.0.1 and earlier)</td><td colspan="1" class="confluenceTd"><span>GUI (3.1 and later)</span></td><td colspan="1" class="confluenceTd"><span>loadModel(modelFileName)</span></td><td colspan="1" class="confluenceTd"> </td></tr><tr><td class="confluenceTd">Creates a handle to the current model in the GUI</td><td class="confluenceTd">GUI</td><td class="confluenceTd"><span>myModel = getCurrentModel()</span></td><td colspan="1" class="confluenceTd"> </td></tr><tr><td class="confluenceTd"><span>Load a model from file (Create Model Object)</span></td><td class="confluenceTd"><span>GUI and Matlab</span></td><td class="confluenceTd"><span>myModel = modeling.Model(modelFileName)</span></td><td colspan="1" class="confluenceTd">myModel = Model(<span>[</span><em>path</em><span> 'gait2354.osim']</span>)</td></tr><tr><td colspan="1" class="confluenceTd"><span>Creates a copy of myModel.</span></td><td colspan="1" class="confluenceTd"><span>GUI and Matlab</span></td><td colspan="1" class="confluenceTd"><span>myModelCopy = modeling.Model(myModel)</span></td><td colspan="1" class="confluenceTd">myModelCopy = myModel</td></tr><tr><td class="confluenceTd"><span>Initialize the model.</span></td><td class="confluenceTd"><span>GUI and Matlab</span></td><td class="confluenceTd"><span>myModel.initSystem()</span></td><td colspan="1" class="confluenceTd"><span>myModel.initSystem()</span></td></tr><tr><td colspan="1" class="confluenceTd">Get a handle to the current states</td><td colspan="1" class="confluenceTd"><span>GUI and Matlab</span></td><td colspan="1" class="confluenceTd"><span>myStates=myModel.initSystem()</span></td><td colspan="1" class="confluenceTd"><span>myStates=myModel.initSystem()</span></td></tr></tbody></table></div><div class="code panel" style="border-width: 1px;"><div class="codeHeader panelHeader" style="border-bottom-width: 1px;"><b>Loading a Model and States in the GUI Scripting Window</b></div><div class="codeContent panelContent">
+<div id="root">
+		<pre class="theme: Confluence; brush: python; gutter: false">&gt;&gt;&gt; modelFileName=modelFolder+"\gait2354_simbody.osim"			    # Define the full path to the model file
+&gt;&gt;&gt; loadModel(modelFileName)										# Load the model into the GUI
+&gt;&gt;&gt; myModel=getCurrentModel()										# Create a handel to the current model
+&gt;&gt;&gt; myModel.initSystem()											# Initialize the model 
+&gt;&gt;&gt; myState=myModel.initSystem()									# Get a handle to the current states of the model</pre>
+		</div>
+</div></div><p><span style="color: rgb(0,0,0);"><br /></span></p><h2 id="CommonScriptingCommands-ExploringandEditingModelsandModelComponents">Exploring and Editing Models and Model Components</h2><p>You can use the functionality of the OpenSim API to access the properties of a model and change their values. For examples, refer to the distributed scripts muscleScaler and alterTendonSlackLength. The OpenSim API Doxygen lists all of the available functions. For example, executing the following commands in the GUI scripting shell, sets and gets the name of the current model. </p><div class="code panel" style="border-width: 1px;"><div class="codeContent panelContent">
+<div id="root">
+		<pre class="theme: Confluence; brush: python; gutter: false">&gt;&gt;&gt; myModel = getCurrentModel()
+&gt;&gt;&gt; myModel.setName("My Model")
+&gt;&gt;&gt; mymodel.getName()  
+&gt;&gt;&gt; "my Model"</pre>
+		</div>
+</div></div><div class='panelMacro'><table class='infoMacro'><colgroup><col width='24'><col></colgroup><tr><td valign='top'><img src="images/icons/emoticons/information.png" width="16" height="16" align="absmiddle" alt="" border="0"></td><td><p>You should generally avoid adding and removing objects from a model that is &quot;live&quot; in the OpenSim GUI. Instead you should make a copy of the model, make additions and deletions, then reload in the GUI.</p></td></tr></table></div><p><span style="color: rgb(51,51,51);">The API also allows you to access and edit the components of an OpenSim model, like its bodies, muscles, and joints. Some properties have custom &quot;get&quot; and &quot;set&quot; functions - see the respective classes for details.</span></p><div class="table-wrap"><table class="confluenceTable"><tbody><tr><th class="confluenceTh"><span>Action</span></th><th class="confluenceTh">Class Information</th><th class="confluenceTh">Getting a Handle to a Set</th><th colspan="1" class="confluenceTh">Reference an Object by index</th><th colspan="1" class="confluenceTh">Get object from a name</th><th colspan="1" class="confluenceTh">Alternative 'long path'</th></tr><tr><td colspan="1" class="confluenceTd">Body Set</td><td colspan="1" class="confluenceTd"> 
+
+
+ 
+<a href="https://simtk.org/api_docs/opensim/api_docs/classOpenSim_1_1BodySet.html" target="_blank" class="external-link" rel="nofollow">OpenSim::BodySet</a></td><td colspan="1" class="confluenceTd">bodySet= myModel.getBodySet()</td><td colspan="1" class="confluenceTd">rightFemur = bodySet().get(1)</td><td colspan="1" class="confluenceTd">rightFemur = bodySet().get(&quot;femur_r&quot;)</td><td colspan="1" class="confluenceTd">rightFemur =myModel.getBodySet().get(&quot;femur_r&quot;)</td></tr><tr><td class="confluenceTd">Joint Set</td><td class="confluenceTd"> 
+
+
+ 
+<a href="https://simtk.org/api_docs/opensim/api_docs/classOpenSim_1_1JointSet.html" target="_blank" class="external-link" rel="nofollow">OpenSim::JointSet</a></td><td class="confluenceTd">jointSet = myModel.getJointSet()</td><td colspan="1" class="confluenceTd">rightHip = jointSet ().get(7)</td><td colspan="1" class="confluenceTd">rightHip = jointSet ().(&quot;hip_r&quot;)</td><td colspan="1" class="confluenceTd">rightHip = myModel.getJointSet().(&quot;hip_r&quot;)</td></tr><tr><td class="confluenceTd">Coordinate Set</td><td class="confluenceTd"> 
+
+
+ 
+<a href="https://simtk.org/api_docs/opensim/api_docs31/classOpenSim_1_1CoordinateSet.html" target="_blank" class="external-link" rel="nofollow">OpenSim::CoordinateSet</a></td><td class="confluenceTd">cordSet= myModel.getCoordinateSet()</td><td colspan="1" class="confluenceTd">hip_coord = cordSet().get(4)</td><td colspan="1" class="confluenceTd">hip_coord = cordSet().get(&quot;hip_flexion_r&quot;)</td><td colspan="1" class="confluenceTd">hip_coord = cordSet().get(&quot;hip_flexion_r&quot;)</td></tr><tr><td class="confluenceTd">Muscle Set</td><td class="confluenceTd"> 
+
+
+ 
+<a href="https://simtk.org/api_docs/opensim/api_docs/classOpenSim_1_1Muscle.html" target="_blank" class="external-link" rel="nofollow">Muscles</a></td><td class="confluenceTd">muscleSet= myModel.getMuscles()</td><td colspan="1" class="confluenceTd">recFemR= muscleSet().get(3)</td><td colspan="1" class="confluenceTd">rec_fem_r= recFemRt().get(&quot;'recFem_r&quot;)</td><td colspan="1" class="confluenceTd">rec_fem_r= myModel.getMuscles().get(&quot;'recFem_r&quot;)</td></tr><tr><td colspan="1" class="confluenceTd">Path Point of a Muscle</td><td colspan="1" class="confluenceTd"> 
+
+
+ 
+<a href="https://simtk.org/api_docs/opensim/api_docs31/classOpenSim_1_1PathPoint.html" target="_blank" class="external-link" rel="nofollow">OpenSim; PathPoint</a></td><td colspan="1" class="confluenceTd">pathPoints = myModel.getMuscles().get(&quot;'recFem_r&quot;).getGeometryPath().getPathPointSet()</td><td colspan="1" class="confluenceTd">recFemPathPoint1 = pathPoints.get(0)</td><td colspan="1" class="confluenceTd">recFemPathPoint1 = pathPoints.get(&quot;rect_fem_r-P1&quot;)</td><td colspan="1" class="confluenceTd">recFemPathPoint1 =myModel.getMuscles().get(&quot;'recFem_r&quot;).getGeometryPath().getPathPointSet()</td></tr></tbody></table></div><p><span style="color: rgb(51,51,51);">Once a Handle to the component has been created you can edit its properties and methods. </span></p><div class="table-wrap"><table class="confluenceTable"><tbody><tr><th class="confluenceTh"><span style="color: rgb(0,0,0);">Action</span></th><th class="confluenceTh">Class Information</th><th class="confluenceTh">Example</th></tr><tr><td class="confluenceTd">Get the Optimal fiber length</td><td class="confluenceTd"> 
+
+
+ 
+<a href="https://simtk.org/api_docs/opensim/api_docs/classOpenSim_1_1Muscle.html#a32327a0a9d82669200a10be843918a75" target="_blank" class="external-link" rel="nofollow">OpenSim::Muscle::getOptimalFiberLength	()</a></td><td class="confluenceTd">recFemFiberLength = RectusFemoris.getOptimalFiberLength()</td></tr><tr><td class="confluenceTd">Set the Optimal fiber length</td><td class="confluenceTd"> 
+
+
+ 
+<a href="https://simtk.org/api_docs/opensim/api_docs/classOpenSim_1_1Muscle.html#a4c131483f481c96cbd08ea1a6d37cb6a" target="_blank" class="external-link" rel="nofollow">OpenSim::Muscle::setOptimalFiberLength()</a></td><td class="confluenceTd"><span>RectusFemoris.setOptimalFiberLength(</span><em>0.23</em><span>)</span></td></tr><tr><td class="confluenceTd">Set the Tendon slack length</td><td class="confluenceTd"> 
+
+
+ 
+<a href="https://simtk.org/api_docs/opensim/api_docs/classOpenSim_1_1Muscle.html#a90d8ba26d30b4828f885517a5e849ea6" target="_blank" class="external-link" rel="nofollow">OpenSim::Muscle::setTendonSlackLength()</a></td><td class="confluenceTd">RectusFemoris.setTendonSlackLength(0.2105)</td></tr><tr><td class="confluenceTd">Get the Muscle Maximal isometric Force</td><td class="confluenceTd"> 
+
+
+ 
+<a href="https://simtk.org/api_docs/opensim/api_docs/classOpenSim_1_1Muscle.html#ac34dd6b32feadbead43cc46dcfd37886" target="_blank" class="external-link" rel="nofollow">OpenSim::Muscle::getMaxIsometricForce()</a></td><td class="confluenceTd">recFemMaxForce = RectusFemoris.getMaxisometruForce()</td></tr></tbody></table></div><div class="code panel" style="border-width: 1px;"><div class="codeHeader panelHeader" style="border-bottom-width: 1px;"><b>Change the ECRB muscle properties in the GUI</b></div><div class="codeContent panelContent">
+<div id="root">
+		<pre class="theme: Confluence; brush: python; gutter: false">&gt;&gt;&gt; ECRB = myModel.getMuscles().get("ECRB")							# Get a Handel to the ECRB
+&gt;&gt;&gt; backupTendonSlackLength = ECRB.getTendonSlackLength()			# Back up the original tendon slack length (just in case)
+&gt;&gt;&gt; ECRB.setTendonSlackLength(0.2105)								# Prescribe a new Tendon slack length
+&gt;&gt;&gt; myModel.initSystem()											# Re-initialize the states</pre>
+		</div>
+</div></div><p> </p><p>You may need to downcast an object from an abstract class (e.g., Muscle)  to a derived class (e.g., Thelen2003Muscle) in order to gain access to its properties and methods. Here is an example:</p><div class="code panel" style="border-width: 1px;"><div class="codeContent panelContent">
+<div id="root">
+		<pre class="theme: Confluence; brush: plain; gutter: false">&gt;&gt; import org.opensim.modeling.*
+&gt;&gt; myModel = Model('arm26.osim');
+&gt;&gt; mcl_TRIlong = Thelen2003Muscle.safeDownCast( myModel.getMuscles().get('TRIlong') );
+&gt;&gt; mcl_TRIlong.setFmaxTendonStrain( 0.5*mcl_TRIlong.getFmaxTendonStrain() );</pre>
+		</div>
+</div></div><p> </p><h2 id="CommonScriptingCommands-UsingtheTools">Using the Tools</h2><p>Tools contain a number of grouped Methods that allow you to run a study. For example, to scale a Model to match experimental data the ScaleTool groups GenericModelMaker(), ModelScaler() and MarkerPlacer() together. The AnalyzeTool() can group StaticOptimization() and MuscleAnalysis() together to output muscle states of a Static Optimization.  </p><div class="table-wrap"><table class="confluenceTable"><tbody><tr><th class="confluenceTh">Class</th><th class="confluenceTh">Doxygen Link</th><th colspan="1" class="confluenceTh"><span style="color: rgb(0,0,0);">Default construction </span><span style="color: rgb(0,0,0);"> (Scripting shell)</span></th><th colspan="1" class="confluenceTh">XML construction (Scripting shell)</th></tr><tr><td class="confluenceTd">Scale</td><td class="confluenceTd"> 
+
+
+ 
+<a href="https://simtk.org/api_docs/opensim/api_docs/classOpenSim_1_1Scale.html" target="_blank" class="external-link" rel="nofollow">OpenSim:: ScaleTool</a></td><td colspan="1" class="confluenceTd">scaleTool = modeling.ScaleTool()</td><td colspan="1" class="confluenceTd">scaleTool = modeling.ScaleTool([<em>path</em> 'scale_Setup.xml'])</td></tr><tr><td class="confluenceTd">InverseKinematicsTool</td><td class="confluenceTd"> 
+
+
+ 
+<a href="https://simtk.org/api_docs/opensim/api_docs/classOpenSim_1_1InverseKinematicsTool.html" target="_blank" class="external-link" rel="nofollow">OpenSIm:: InverseKinematicsTool</a></td><td colspan="1" class="confluenceTd">ikTool = modeling.InverseKinematicsTool()</td><td colspan="1" class="confluenceTd">idTool = modeling.<span>InverseKinematicsTool</span>([<em>path</em> 'IK_Setup.xml'])</td></tr><tr><td class="confluenceTd">InverseDynamicsTool</td><td class="confluenceTd"> 
+
+
+ 
+<a href="https://simtk.org/api_docs/opensim/api_docs/classOpenSim_1_1InverseDynamicsTool.html" target="_blank" class="external-link" rel="nofollow">OpenSim:: InverseDynamicsTool</a></td><td colspan="1" class="confluenceTd">idTool = modeling.InverseDynamicsTool()</td><td colspan="1" class="confluenceTd">idTool = modeling.InverseDynamicsTool([<em>path</em> 'ID_Setup.xml'])</td></tr><tr><td colspan="1" class="confluenceTd">RRATool</td><td colspan="1" class="confluenceTd"> 
+
+
+ 
+<a href="https://simtk.org/api_docs/opensim/api_docs/classOpenSim_1_1RRATool.html" target="_blank" class="external-link" rel="nofollow">RRA Tool</a></td><td colspan="1" class="confluenceTd"><span>rraTool = modeling.RRATool()</span></td><td colspan="1" class="confluenceTd"><span>rraTool = modeling.RRATool(<span>[</span><em>path</em><span> 'RRA_Setup.xml']</span>)</span></td></tr><tr><td colspan="1" class="confluenceTd">CMCTool</td><td colspan="1" class="confluenceTd"> 
+
+
+ 
+<a href="https://simtk.org/api_docs/opensim/api_docs/classOpenSim_1_1CMCTool.html" target="_blank" class="external-link" rel="nofollow">OpenSim::CMCTool</a></td><td colspan="1" class="confluenceTd">cmcTool = <span>modeling.</span><span>CMC</span><span>Tool()</span></td><td colspan="1" class="confluenceTd"><span>cmcTool = </span><span>modeling.</span><span>CMC</span><span>Tool(<span>[</span><em>path</em><span> 'CMC_Setup.xml']</span>)</span></td></tr><tr><td colspan="1" class="confluenceTd">ForwardTool</td><td colspan="1" class="confluenceTd"> 
+
+
+ 
+<a href="https://simtk.org/api_docs/opensim/api_docs/classOpenSim_1_1ForwardTool.html" target="_blank" class="external-link" rel="nofollow">ForwardTool</a></td><td colspan="1" class="confluenceTd"><span><span>cmcTool = </span>modeling.ForwardTool()</span></td><td colspan="1" class="confluenceTd"><span>cmcTool = </span><span>modeling.ForwardTool(<span>[</span><em>path</em><span> 'forward_Setup.xml']</span>)</span></td></tr><tr><td colspan="1" class="confluenceTd">AnalyzeTool</td><td colspan="1" class="confluenceTd"> 
+
+
+ 
+<a href="https://simtk.org/api_docs/opensim/api_docs/classOpenSim_1_1AnalyzeTool.html" target="_blank" class="external-link" rel="nofollow">OpenSim::AnalyzeTool</a></td><td colspan="1" class="confluenceTd"><span><span>analyzeTool = </span><span>modeling.</span>AnalyzeTool()</span></td><td colspan="1" class="confluenceTd"><span>analyzeTool = </span><span>modeling.</span><span>AnalyzeTool(<span>[</span><em>path</em><span> 'analyze_Setup.xml']</span>)</span></td></tr></tbody></table></div><h2 id="CommonScriptingCommands-WorkingwithFilesandPaths">Working with Files and Paths</h2><p>Below are examples of the OpenSim GUI shells native commands with files and file paths. Matlab and Python environments have their own methods for dealing with files and file paths. </p><div class="table-wrap"><table class="confluenceTable"><tbody><tr><th class="confluenceTh">Command or Class</th><th class="confluenceTh">Platform</th><th class="confluenceTh">Action</th></tr><tr><td class="confluenceTd">getScriptsDir()</td><td class="confluenceTd">GUI</td><td class="confluenceTd">Returns the path of your scripts directory</td></tr><tr><td class="confluenceTd">java.io.File</td><td class="confluenceTd">GUI</td><td class="confluenceTd">A representation of file and directory pathnames that allows you to easily create files and directories, get all the files in a given directory, and more. Read more here: <a href="http://docs.oracle.com/javase/1.4.2/docs/api/java/io/File.html" class="external-link" rel="nofollow">http://docs.oracle.com/javase/1.4.2/docs/api/java/io/File.html</a></td></tr><tr><td class="confluenceTd">getInstallDir()</td><td class="confluenceTd">GUI</td><td class="confluenceTd">Returns the path of your OpenSim Install directory</td></tr><tr><td colspan="1" class="confluenceTd">os.chdir(NewWorkingDirectoryName)</td><td colspan="1" class="confluenceTd">GUI</td><td colspan="1" class="confluenceTd">Changes the working directory of the scripting shell (default is your OpenSim installation directory) to the directory specified by NewWorkingDirectoryName (e.g. 'C:\OpenSim 3.1\Scripts'). You  need to import the python os package before using it (i.e. import os).</td></tr><tr><td colspan="1" class="confluenceTd">execfile(&quot;ScriptFileName&quot;)</td><td colspan="1" class="confluenceTd">GUI</td><td colspan="1" class="confluenceTd">Executes a script. Can be used in shell or as part of script. File name can be absolute path to file or relative to the current directory.</td></tr></tbody></table></div><h2 id="CommonScriptingCommands-Plotting">Plotting</h2><h3 id="CommonScriptingCommands-GUIScriptingShell">GUI Scripting Shell</h3><p>In the GUI scripting shell, we've provided a set of commands that allow you to easily perform some basic plotting functionality. This includes adding a plot window, adding curves, changing the legend, plotting from file, exporting the plot, etc. </p><p><a href="https://simtk.org/api_docs/opensim/api_docs/org/opensim/console/OpenSimPlotter.html" class="external-link" rel="nofollow">https://simtk.org/api_docs/opensim/api_docs/org/opensim/console/OpenSimPlotter.html</a></p><p>These commands are exercised in the example &quot;plotMuscleFiberLengthAgainstFile.py&quot; and &quot;plotMuscleMomentArmAgainstMotion.py&quot;.</p><p>There are additional advanced commands that you can call (the ones used by the GUI itself), though these commands have not been fully documented and tested with the scripting functionality, so please use with caution. </p><p><a href="https://simtk.org/api_docs/opensim/api_docs/org/opensim/console/gui.html" class="external-link" rel="nofollow">https://simtk.org/api_docs/opensim/api_docs/org/opensim/console/gui.html</a></p><h3 id="CommonScriptingCommands-Matlab">Matlab</h3><p>We encourage you to use Matlab's host of built in plotting capabilities. You can import OpenSim .sto and .mot files using Matlab's &quot;Import Data&quot; interface (see MATLAB's importdata function). </p><h2 id="CommonScriptingCommands-WorkingwithVectorsMatricesandOtherSimTKClasses">Working with Vectors, Matrices, and Other SimTK Classes</h2><h3 id="CommonScriptingCommands-OpenSim31andlater">OpenSim 3.1 and later</h3><p>In OpenSim 3.1 and later we've exposed the most commonly used SimTK classes. In particular:</p><div class="table-wrap"><table class="confluenceTable"><tbody><tr><th class="confluenceTh">Command</th><th class="confluenceTh">Platform</th><th class="confluenceTh">Description</th></tr><tr><td class="confluenceTd"><p>modeling.Vec3()</p><p>modeling.Vec3(double e)</p><p>modeling.Vec3(double e0, double e1, double e2)</p></td><td class="confluenceTd">All</td><td class="confluenceTd">Creates a Simtk Vec3 object (a vector of length 3). If passed only one argument (double e) all elements will be set to e.</td></tr><tr><td class="confluenceTd">modeling.Vector(int length, double e)</td><td class="confluenceTd">All</td><td class="confluenceTd">Creates a Simtk Vector with specified length. All elements are set to e.</td></tr><tr><td class="confluenceTd"><p>modeling.Mat33(double e)</p><p>modeling.Matt33(double e0, ... , double e8)</p></td><td class="confluenceTd">All</td><td class="confluenceTd">Creates a Simtk Mat33 object (a 3x3 matrix). If passed only one argument (double e), the diagonal elements will be set to e and other elements set to zero.</td></tr><tr><td colspan="1" class="confluenceTd"><p>modeling.Inertia()</p><p><em>See doxygen link at right for additional constructors</em></p></td><td colspan="1" class="confluenceTd">All</td><td colspan="1" class="confluenceTd">Creates a <a href="https://simtk.org/api_docs/simbody/api_docs31/Simbody/html/classSimTK_1_1Inertia__.html" class="external-link" rel="nofollow">Simtk Inertia</a> object. All constructors are available except symmetric matrix constructors.</td></tr><tr><td colspan="1" class="confluenceTd">modeling.State()</td><td colspan="1" class="confluenceTd">All</td><td colspan="1" class="confluenceTd">Creates a <a href="https://simtk.org/api_docs/simbody/api_docs31/Simbody/html/classSimTK_1_1State.html" class="external-link" rel="nofollow">Simtk State</a> object. See the doxygen link for more information.</td></tr><tr><td colspan="1" class="confluenceTd"><p>modeling.Stage()</p><p>modeling.Stage(int level)</p></td><td colspan="1" class="confluenceTd">All</td><td colspan="1" class="confluenceTd"><p>Creates a <a href="https://simtk.org/api_docs/simbody/api_docs31/Simbody/html/classSimTK_1_1Stage.html" class="external-link" rel="nofollow">Simtk Stage</a> object, optionally realized to level l. See the doxygen link for more information.</p></td></tr></tbody></table></div><p><strong>Helpful tips:</strong></p><ul><li>For Simbody doxygen links above Vec3P corresponds to a modeling.Vec3 object and RealP corresponds to a double value.</li><li>To see the available methods for these objects, use methodsview() or tab completion (Matlab only).</li><li>You can find more information in the <a href="http://simtk-confluence.stanford.edu:8080/display/OpenSim/SimTK+Basics">SimTK Basics</a> section of the User's Guide. Note that only the SimTK classes listed above are available through scripting.</li></ul><h3 id="CommonScriptingCommands-OpenSim30and301">OpenSim 3.0 and 3.0.1</h3><p>In many cases the function you're trying to call takes an argument type different from the object you have already. This is true even moving data between Matlab and Java objects, and between objects in the SimTK namespace and those in the OpenSim namespace. The following set of convenience methods are &quot;Adaptors&quot; intended to help you pass data around between OpenSim objects and low level SimTK objects.</p><div class="table-wrap"><table class="confluenceTable"><tbody><tr><th class="confluenceTh">Command</th><th colspan="1" class="confluenceTh">Platform</th><th class="confluenceTh">Description</th></tr><tr><td colspan="1" class="confluenceTd">modeling.ArrayDouble.createVec3([0.0,0.05,0.35])</td><td colspan="1" class="confluenceTd">GUI and Matlab</td><td colspan="1" class="confluenceTd">Creates a SimTK::Vec3</td></tr><tr><td colspan="1" class="confluenceTd"><p>modeling.ArrayDouble.getAsVec3()</p></td><td colspan="1" class="confluenceTd">GUI and Matlab</td><td colspan="1" class="confluenceTd">returns SimTK::Vec3 populated from ArrayDouble of size 3.</td></tr><tr><td colspan="1" class="confluenceTd">modeling.ArrayDouble.getAsVector()</td><td colspan="1" class="confluenceTd">GUI and Matlab</td><td colspan="1" class="confluenceTd">return SimTK::Vector populated from ArrayDouble</td></tr><tr><td colspan="1" class="confluenceTd">modeling.ArrayDouble.populateFromVector(SimTK::Vector aVector)</td><td colspan="1" class="confluenceTd">GUI and Matlab</td><td colspan="1" class="confluenceTd">populate an ArrayDouble from the passed in SimTK Vector</td></tr><tr><td colspan="1" class="confluenceTd">modeling.ArrayDouble.getValuesFromVec3(SimTK::Vec3 vec3) </td><td colspan="1" class="confluenceTd">GUI and Matlab</td><td colspan="1" class="confluenceTd">returns an ArrayDouble populated from the passed in SimTK Vec3</td></tr></tbody></table></div><div class='panelMacro'><table class='infoMacro'><colgroup><col width='24'><col></colgroup><tr><td valign='top'><img src="images/icons/emoticons/information.png" width="16" height="16" align="absmiddle" alt="" border="0"></td><td><p>When referring to indexed elements remember that Matlab begins indexing at 1 while OpenSim data structures begin at 0.</p></td></tr></table></div><h2 id="CommonScriptingCommands-ObtainingPositionandVelocityInformation">Obtaining Position and Velocity Information</h2><p>For more information regarding multibody system states, refer to the <a href="http://simtk-confluence.stanford.edu:8080/display/OpenSim/SimTK+Simulation+Concepts">SimTK Simulation Concepts</a> documentation in the Developer's Guide.</p><p>In order to obtain simulation position or velocity state information you must have a State object in hand. </p><div class="code panel" style="border-width: 1px;"><div class="codeHeader panelHeader" style="border-bottom-width: 1px;"><b>Using State Objects</b></div><div class="codeContent panelContent">
+<div id="root">
+		<pre class="theme: Confluence; brush: python; gutter: false">&gt;&gt;&gt; si = myModel.initSystem();
+&gt;&gt;&gt; myModel.equilibrateMuscles(si);</pre>
+		</div>
+</div></div><p>Now you can call the SimBodyEngine's getVelocity() (or getPosition()) method in order to fill a pre-allocated Vec3 object with velocity information.</p><div class="code panel" style="border-width: 1px;"><div class="codeContent panelContent">
+<div id="root">
+		<pre class="theme: Confluence; brush: java; gutter: false">&gt;&gt;&gt; massCenter = Vec3(0.0,0.0,0.0);
+&gt;&gt;&gt; velocity   = Vec3(0.0,0.0,0.0);
+&gt;&gt;&gt; bodySet = myModel.getBodySet()
+&gt;&gt;&gt; bodySet.get('r_ulna_radius_hand').getMassCenter(massCenter); 
+&gt;&gt;&gt; simbodyEngine = myModel.getSimbodyEngine();
+&gt;&gt;&gt; simbodyEngine.getVelocity(si, osimModel.getBodySet().get('r_ulna_radius_hand'), massCenter, velocity);</pre>
+		</div>
+</div></div><p> </p><h2 id="CommonScriptingCommands-UsingtheSimTKVisualizerinMatlab">Using the SimTK Visualizer in Matlab</h2><p>You can use the visualizer from SimTK in Matlab. To do so call the &quot;setUseVisualizer&quot; method and pass in the parameter &quot;true&quot;, and when you run the simulation the Visualizer GUI will pop up. The example of usage is described in &quot;TugOfWar_CompleteRunVisualizer.m&quot;</p><div class="code panel" style="border-width: 1px;"><div class="codeContent panelContent">
+<div id="root">
+		<pre class="theme: Confluence; brush: java; gutter: false">osimModel = Model('tug_of_war_muscles_controller.osim');
+osimModel.setUseVisualizer(true);</pre>
+		</div>
+</div></div><h2 id="CommonScriptingCommands-BatchProcessing">Batch Processing</h2><p>There are several examples in the Matlab scripts and GUI scripts that show how to perform batch processing by calling the OpenSim API (e.g. Analyze, IK). We encourage you to use this approach rather than using Matlab's xml parsing tools. To read more about why this is the case, please see the scripting FAQ:</p><p><a href="http://simtk-confluence.stanford.edu:8080/display/OpenSim/Frequently+Asked+Questions#FrequentlyAskedQuestions-Scripting">Frequently Asked Questions</a></p><h2 id="CommonScriptingCommands-References">References</h2><ul><li>Java File IO: <a href="http://docs.oracle.com/javase/1.4.2/docs/api/java/io/File.html" class="external-link" rel="nofollow">http://docs.oracle.com/javase/1.4.2/docs/api/java/io/File.html</a></li><li>Using Java in Jython: <a href="http://www.jython.org/jythonbook/en/1.0/JythonAndJavaIntegration.html" class="external-link" rel="nofollow">http://www.jython.org/jythonbook/en/1.0/JythonAndJavaIntegration.html</a></li><li>Jython Swing examples: <a href="http://wiki.python.org/jython/SwingExamples" class="external-link" rel="nofollow">http://wiki.python.org/jython/SwingExamples</a><br /><br /></li></ul><div class="panel" style="background-color: white;border-color: gray;border-width: 5px;"><div class="panelContent" style="background-color: white;">
+<p>Next: <a href="Scripting%2Bin%2Bthe%2BGUI.html">Scripting in the GUI</a></p><p>Previous: <a href="Scripting.html">Scripting</a></p><p>Home: <a href="http://simtk-confluence.stanford.edu:8080/display/OpenSim/Scripting+and+Development">Scripting and Development</a></p>
+</div></div>
+                    </div>
+
+                                        <div class="pageSection group">
+                        <div class="pageSectionHeader">
+                            <h2 id="attachments" class="pageSectionTitle">Attachments:</h2>
+                        </div>
+
+                        <div class="greybox" align="left">
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/3376222/3737300.png">scripting-9.PNG</a> (image/png)
+                                <br/>
+                                                    </div>
+                    </div>
+                    
+                                                      
+                </div>             </div> 
+            <div id="footer" style="background: url(http://simtk-confluence.stanford.edu:8080/images/border/border_bottom.gif) repeat-x;">
+                <p><small>Document generated by Confluence on Feb 24, 2014 09:28</small></p>
+            </div>
+        </div>     </body>
+</html>

@@ -1,0 +1,119 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+    <head>
+        <title>OpenSim Documentation : Forward Dynamics Setup Files and XML Tags</title>
+        <link rel="stylesheet" href="styles/site.css" type="text/css" />
+        <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    </head>
+
+    <body>
+        <div id="page">
+            <div id="main">
+                <div id="main-header" class="pageSectionHeader">
+                    <h1 id="title-heading" class="pagetitle">
+                                                <span id="title-text">
+                            OpenSim Documentation : Forward Dynamics Setup Files and XML Tags
+                        </span>
+                    </h1>
+
+                    <div class="page-metadata">
+                        <p>This page last changed on Jun 06, 2013 by <font color="#0050B2">chrisdembia</font>.</p>
+                    </div>
+                </div>
+
+                <div id="content" class="view">
+                    <div id="main-content" class="wiki-content group">
+                    <p>The topics covered in this section include:</p><p><div>
+<ul>
+    <li><a href='#ForwardDynamicsSetupFilesandXMLTags-SetupFileandXMLTagDefinitions'>Setup File and XML Tag Definitions</a></li>
+<ul>
+    <li><a href='#ForwardDynamicsSetupFilesandXMLTags-ExampleXMLfileforthesetupfileforforwarddynamics'>Example: XML file for the setup file for forward dynamics</a></li>
+    <li><a href='#ForwardDynamicsSetupFilesandXMLTags-SpecifyinganExecutionName'>Specifying an Execution Name</a></li>
+    <li><a href='#ForwardDynamicsSetupFilesandXMLTags-SpecifyingtheModel'>Specifying the Model</a></li>
+    <li><a href='#ForwardDynamicsSetupFilesandXMLTags-SpecifyingInitialandFinalTimes'>Specifying Initial and Final Times</a></li>
+    <li><a href='#ForwardDynamicsSetupFilesandXMLTags-SpecifyingIntegratorSettings'>Specifying Integrator Settings</a></li>
+    <li><a href='#ForwardDynamicsSetupFilesandXMLTags-SpecifyingAnalysesandResults'>Specifying Analyses and Results</a></li>
+    <li><a href='#ForwardDynamicsSetupFilesandXMLTags-SpecifyingInitialStatesandControls'>Specifying Initial States and Controls</a></li>
+    <li><a href='#ForwardDynamicsSetupFilesandXMLTags-SpecifyingExternalLoads'>Specifying External Loads</a></li>
+</ul>
+</ul></div></p><h2 id="ForwardDynamicsSetupFilesandXMLTags-SetupFileandXMLTagDefinitions">Setup File and XML Tag Definitions</h2><p>These sample XML files are from the examples/Gait2354_Simbody directory and are part of the OpenSim distribution.</p><h3 id="ForwardDynamicsSetupFilesandXMLTags-ExampleXMLfileforthesetupfileforforwarddynamics">Example: XML file for the setup file for forward dynamics</h3><div class="code panel" style="border-width: 1px;"><div class="codeHeader panelHeader" style="border-bottom-width: 1px;"><b>subject01_Setup_Forward.xml</b></div><div class="codeContent panelContent">
+<div id="root">
+		<pre class="theme: Confluence; brush: html/xml; gutter: false">&lt;?xml version="1.0" encoding="UTF-8"?&gt; 
+&lt;OpenSimDocument Version="20302"&gt; 
+&lt;ForwardTool name="subject01_walk1"&gt; 
+
+  &lt;!-- OpenSim Model --&gt; 
+  &lt;model_file&gt; subject01_adjusted.osim &lt;/model_file&gt; 
+  &lt;force_set_files&gt; gait2354_CMC_Actuators.xml &lt;/force_set_files&gt; 
+  &lt;replace_force_set&gt; false &lt;/replace_force_set&gt;
+
+  &lt;!-- Times over which to run forward --&gt; 
+  &lt;initial_time&gt; 0.80 &lt;/initial_time&gt; 
+  &lt;final_time&gt; 1.18 &lt;/final_time&gt; 
+
+  &lt;!-- Integrator Settings --&gt; 
+  &lt;maximum_number_of_integrator_steps&gt; 30000 &lt;/maximum_number_of_integrator_steps&gt; 
+  &lt;maximum_integrator_step_size&gt; 0.00025 &lt;/maximum_integrator_step_size&gt; 
+  &lt;integrator_error_tolerance&gt; 5e-006 &lt;/integrator_error_tolerance&gt; 
+  &lt;use_specified_dt&gt; true &lt;/use_specified_dt&gt; 
+
+  &lt;!--Analyses and Results --&gt; 
+  &lt;results_directory&gt; ./ResultsForward &lt;/results_directory&gt; 
+  &lt;output_precision&gt; 20 &lt;/output_precision&gt; 
+  &lt;AnalysisSet name="Analyses"&gt; 
+    &lt;objects&gt; 
+      &lt;Kinematics name="Kinematics"&gt; 
+         &lt;on&gt; true &lt;/on&gt; 
+        &lt;step_interval&gt; 10 &lt;/step_interval&gt; 
+        &lt;in_degrees&gt; true &lt;/in_degrees&gt; 
+      &lt;/Kinematics&gt; 
+
+      &lt;Actuation name="Actuation"&gt; 
+        &lt;on&gt; true &lt;/on&gt; 
+        &lt;step_interval&gt; 10 &lt;/step_interval&gt; 
+        &lt;in_degrees&gt; true &lt;/in_degrees&gt; 
+      &lt;/Actuation&gt; 
+
+      &lt;BodyKinematics name="BodyKinematics"&gt; 
+        &lt;on&gt; true &lt;/on&gt; 
+        &lt;step_interval&gt; 10 &lt;/step_interval&gt; 
+        &lt;in_degrees&gt; true &lt;/in_degrees&gt; 
+      &lt;/BodyKinematics&gt; 
+    &lt;/objects&gt; 
+  &lt;/AnalysisSet&gt; 
+
+
+  &lt;!-- Initial states and controls --&gt; 
+  &lt;states_file&gt; ResultsCMC/subject01_walk1_states.sto&lt;/states_file&gt; 
+  &lt;ControllerSet name="Controllers"&gt; 
+    &lt;objects&gt; 
+      &lt;ControlSetController name=""&gt; 
+        &lt;!--A list of actuators that this controller will control. The keyword ALL indicates the controller will control all the acuators in the model--&gt; 
+        &lt;actuator_list&gt; &lt;/actuator_list&gt; 
+        &lt;!--Flag (true or false) indicating whether or not the controller is enabled (ON) should--&gt; 
+        &lt;enable_controller&gt; ALL &lt;/enable_controller&gt; 
+        &lt;!--XML file containing the controls for the controlSet.--&gt; 
+        &lt;controls_file&gt; ResultsCMC/subject01_walk1_controls.xml &lt;/controls_file&gt; 
+      &lt;/ControlSetController&gt; 
+    &lt;/objects&gt; 
+  &lt;/ControllerSet&gt; 
+ 
+  &lt;!-- External Loads --&gt; 
+  &lt;external_loads_file&gt; subject01_walk1.xml&lt;/external_loads_file&gt; 
+ 
+&lt;/ForwardTool&gt; 
+&lt;/OpenSimDocument&gt;</pre>
+		</div>
+</div></div><h3 id="ForwardDynamicsSetupFilesandXMLTags-SpecifyinganExecutionName">Specifying an Execution Name</h3><p>The properties for the Forward Dynamics Tool are enclosed inside the opening and closing tags <span style="color: rgb(0,0,255);">&lt;</span><span style="color: rgb(128,0,0);">ForwardTool</span><span style="color: rgb(0,0,255);">&gt;</span> and <span style="color: rgb(0,0,255);">&lt;/</span><span style="color: rgb(128,0,0);">ForwardTool</span><span style="color: rgb(0,0,255);">&gt;</span>. The name attribute <span style="color: rgb(255,0,0);">name</span><span style="color: rgb(0,0,255);">=&quot;subject01_walk1&quot;</span> specifies the execution name. The names of results files generated will be prefixed with this name.</p><h3 id="ForwardDynamicsSetupFilesandXMLTags-SpecifyingtheModel">Specifying the Model</h3><p>If using controls from CMC, the model specification for the Forward Dynamics Tool must match. Visit <a href="Computed%2BMuscle%2BControl.html">Computed Muscle Control</a> for more information.</p><h3 id="ForwardDynamicsSetupFilesandXMLTags-SpecifyingInitialandFinalTimes">Specifying Initial and Final Times</h3><p>The properties <span style="color: rgb(0,0,255);">&lt;</span><span style="color: rgb(128,0,0);">initial_time</span><span style="color: rgb(0,0,255);">&gt;</span> and <span style="color: rgb(0,0,255);">&lt;</span><span style="color: rgb(128,0,0);">final_time</span><span style="color: rgb(0,0,255);">&gt;</span> specify the time interval over which a forward simulation is to be run. As explained in <a href="How%2BForward%2BDynamics%2BWorks.html">How Forward Dynamics Works</a>, the initial time may be adjusted to the nearest time for which state values are available, as these state values (typically from CMC) will be used to initialize the forward simulation.</p><h3 id="ForwardDynamicsSetupFilesandXMLTags-SpecifyingIntegratorSettings">Specifying Integrator Settings</h3><p>If using controls from CMC, as explained in <a href="How%2BForward%2BDynamics%2BWorks.html">How Forward Dynamics Works</a>, setting <span style="color: rgb(0,0,255);">&lt;</span><span style="color: rgb(128,0,0);">use_specified_dt</span><span style="color: rgb(0,0,255);">&gt;</span> to <span style="color: rgb(0,128,0);"><strong>true</strong></span> (which is recommended) ensures that the Forward Dynamics Tool uses the same integrator time steps as that for CMC. It does this by matching the time steps found in the <span style="color: rgb(0,0,255);">&lt;</span><span style="color: rgb(128,0,0);">initial_states_file</span><span style="color: rgb(0,0,255);">&gt;</span>. In this case, the values set for the remaining properties (<span style="color: rgb(0,0,255);">&lt;</span><span style="color: rgb(128,0,0);">maximum_number_of_integrator_steps</span><span style="color: rgb(0,0,255);">&gt;, &lt;</span><span style="color: rgb(128,0,0);">maximum_integrator_step_size</span><span style="color: rgb(0,0,255);">&gt;, &lt;</span><span style="color: rgb(128,0,0);">integrator_error_tolerance</span><span style="color: rgb(0,0,255);">&gt;,</span> and <span style="color: rgb(0,0,255);">&lt;</span><span style="color: rgb(128,0,0);">integrator_fine_</span> <span style="color: rgb(128,0,0);">tolerance</span><span style="color: rgb(0,0,255);">&gt;</span>) are ignored. If <span style="color: rgb(0,0,255);">&lt;</span><span style="color: rgb(128,0,0);">use_specified_dt</span><span style="color: rgb(0,0,255);">&gt;</span> is set to <span style="color: rgb(0,128,0);"><strong>false</strong></span> then the integrator properties are used to determine the adaptive time step sizes (see Chapter 4 on CMC chapter for how these are used).</p><h3 id="ForwardDynamicsSetupFilesandXMLTags-SpecifyingAnalysesandResults">Specifying Analyses and Results</h3><p>Any number of available analyses can be added to a forward dynamics run. To get a listing of available analyses, run the command <strong>forward -PropertyInfo</strong>. <br /> There are several properties associated with the analyses results. <span style="color: rgb(0,0,255);">&lt;</span><span style="color: rgb(128,0,0);">results_directory</span><span style="color: rgb(0,0,255);">&gt;</span> specifies the directory where results should be written. <span style="color: rgb(0,0,255);">&lt;</span><span style="color: rgb(128,0,0);">output_precision</span><span style="color: rgb(0,0,255);">&gt;</span> specifies how many decimal places should be used when writing results. A value of 20 is sufficient to avoid round-off error when reading results back in during other steps in the workflow. <span style="color: rgb(0,0,255);">&lt;</span><span style="color: rgb(128,0,0);">step_interval</span><span style="color: rgb(0,0,255);">&gt;</span> specifies how often to record results during numerical integration. A value of 10 means record results every 10 integration steps.</p><h3 id="ForwardDynamicsSetupFilesandXMLTags-SpecifyingInitialStatesandControls">Specifying Initial States and Controls</h3><p>Running a forward simulation requires that the states be set to initial values at the beginning of the simulation, and that the actuator control values (e.g., muscle excitations) are updated throughout the simulation. Both of these are optional with default behavior as explained in <a href="Getting%2BStarted%2Bwith%2BForward%2BDynamics.html">Getting Started with Forward Dynamics</a>. Often, the initial states and the control values used to drive the forward simulation are those computed during the CMC step, in these cases the <span style="color: rgb(0,0,255);">&lt;</span><span style="color: rgb(128,0,0);">initial_states_file</span><span style="color: rgb(0,0,255);">&gt;</span> property should be set to the states output from CMC (an .sto storage file), and <span style="color: rgb(0,0,255);">&lt;</span><span style="color: rgb(128,0,0);">controls_file</span><span style="color: rgb(0,0,255);">&gt;</span> should be set to the controls output from CMC (the .xml file, not the controls .sto file that is also written by CMC). The <span style="color: rgb(0,0,255);">&lt;</span><span style="color: rgb(128,0,0);">initial_states_file</span><span style="color: rgb(0,0,255);">&gt;</span> is used to (a) determine a valid initial time for the forward simulation (it has to coincide with a time for which state values are available), (b) supply the initial state values, and (c) if <span style="color: rgb(0,0,255);">&lt;</span><span style="color: rgb(128,0,0);">use_specified_dt</span><span style="color: rgb(0,0,255);">&gt;</span> is set to <span style="color: rgb(0,128,0);"><strong>true</strong></span>, then it is also used to determine the integration time intervals used by CMC (in order to match CMC results as much as possible).</p><h3 id="ForwardDynamicsSetupFilesandXMLTags-SpecifyingExternalLoads">Specifying External Loads</h3><p>The file containing the external loads applied to the model during a simulation is specified using the property <span style="color: rgb(0,0,255);">&lt;</span><span style="color: rgb(128,0,0);">external_loads_file</span><span style="color: rgb(0,0,255);">&gt;</span>. Please refer to section <a href="Forward%2BDynamics%2BSetup%2BFiles%2Band%2BXML%2BTags.html">Forward Dynamics Setup Files and XML Tags</a> for details about the contents of this file.</p><div class='panelMacro'><table class='infoMacro'><colgroup><col width='24'><col></colgroup><tr><td valign='top'><img src="images/icons/emoticons/information.png" width="16" height="16" align="absmiddle" alt="" border="0"></td><td><span style="color: rgb(0,0,0);">Across all steps in the OpenSim workflow, it is important to use the same settings for specifying the external loads.</span></td></tr></table></div><div class="panel" style="background-color: white;border-color: gray;border-style: solid;border-width: 5px;"><div class="panelContent" style="background-color: white;">
+<p>Next: <a href="Residual%2BReduction%2BAlgorithm.html">Residual Reduction Algorithm</a></p><p>Previous: <a href="How%2Bto%2BUse%2Bthe%2BForward%2BDynamics%2BTool.html">How to Use the Forward Dynamics Tool</a></p><p>Home: <a href="Forward%2BDynamics.html">Forward Dynamics</a></p>
+</div></div><p><br class="atl-forced-newline" /><br class="atl-forced-newline" /></p>
+                    </div>
+
+                    
+                                                      
+                </div>             </div> 
+            <div id="footer" style="background: url(http://simtk-confluence.stanford.edu:8080/images/border/border_bottom.gif) repeat-x;">
+                <p><small>Document generated by Confluence on Feb 24, 2014 09:27</small></p>
+            </div>
+        </div>     </body>
+</html>

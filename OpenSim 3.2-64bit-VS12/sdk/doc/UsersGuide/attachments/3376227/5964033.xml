@@ -1,0 +1,163 @@
+<!-- EXAMPLE SET UP FILE FOR USING INDUCED ACCELERATION ANALYSIS WITH THE ROLL CONSTRAINT IN OPENSIM 1.9
+<!-- PLEASE CITE Hamner et al., Muscle Contributions to Propulsion and Support During Running, 
+	Journal of Biomechanics, vol. 43, pp. 2709-2716, 2010. -->
+
+<?xml version="1.0" encoding="UTF-8"?>
+<OpenSimDocument Version="10600">
+<AnalyzeTool name="subject02_running_arms">
+
+	<!-- MODEL AND ACTUATORS -->
+	<!--Name of the .osim file used to construct a model.-->
+	<model_file> subject02_running_RRA_cycle02_sim02_07.osim </model_file>
+	<!--Replace the model's actuator set with sets specified in
+	    <actuator_set_files>? If false, the actuator set is appended to.-->
+	<replace_actuator_set> false </replace_actuator_set>
+	<!--List of xml files used to construct an actuator set for the model.-->
+	<actuator_set_files> gait2392_CMC_Actuators.xml </actuator_set_files>
+
+  <!--Replace the model's contact force set with sets specified in
+		    <contact_force_set_files>? If false, contact force set is appended to.-->
+  <replace_contact_force_set> true </replace_contact_force_set>
+  <!--List of xml files used to construct a contact set for the model.-->
+  <contact_force_set_files> </contact_force_set_files>
+  
+	<!-- BASIC SETTINGS -->
+	<!--Output precision.  It is 8 by default.-->
+	<output_precision> 4 </output_precision>
+	<!--Directory used for writing results.-->
+	<results_directory> ./InducedAccelerations_RollOnSurface_mu0p65_thresh15_backLock_-60deg_Unlocked </results_directory>
+	<!--Initial time for the simulation.-->
+	<initial_time> 0.73 </initial_time>
+	<!--Final time for the simulation.-->
+	<final_time> 1.4 </final_time>
+	<!--Flag indicating whether or not to compute equilibrium values for
+		    states other than the coordinates or speeds.  For example, equilibrium
+		    muscle fiber lengths or muscle forces.-->
+  <solve_for_equilibrium_for_auxiliary_states> false </solve_for_equilibrium_for_auxiliary_states>
+
+
+  <!-- INTEGRATOR SETTINGS -->
+	<!--Maximum number of integrator steps.-->
+	<maximum_number_of_integrator_steps> 20000 </maximum_number_of_integrator_steps>
+	<!--Maximum integration step size.-->
+	<maximum_integrator_step_size> 1.0000 </maximum_integrator_step_size>
+	<!--Integrator error tolerance. When the error is greater, the integrator
+	    step size is decreased.-->
+	<integrator_error_tolerance> 1e-007 </integrator_error_tolerance>
+	<!--Integrator fine tolerance. When the error is less, the integrator step
+	    size is increased.-->
+	<integrator_fine_tolerance> 1e-010 </integrator_fine_tolerance>
+	
+	<!-- INPUT FILES -->
+	<!--XML file containing the controls (e.g., muscle excitations) for the
+	    forward simulation.-->
+	<controls_file>subject02_running_CMC_controls.xml </controls_file>
+	<!--Storage file (.sto) containing the center of pressure.-->
+	<!--<cop_file> subject02_running.mot </cop_file>-->
+	<!--Storage file (.sto) containing the generalized coordinates for the
+	    model. These coordinates are used in conjuction with the center of
+	    pressure data to place the corrective springs at the centers of
+	    pressure in the local frames of each foot.-->
+	<coordinates_file> subject02_running_CMC_Kinematics_q.sto </coordinates_file>
+	<!--Storage file (.sto) containing the generalized speeds for the model.
+	    These speeds are used to set the expected velocities of the centers of
+	    pressure so that damping can be applied by the corrective springs if
+	    the trajectory of the foot deviates from the expected trajectory.-->
+	<speeds_file> subject02_running_CMC_Kinematics_u.sto </speeds_file>
+	<!--Storage file (.sto) containing the model states during the unperturbed
+	    simulation. These states are used to set the initial states of the
+	    model for each perturbed simulation.-->
+	<states_file> subject02_running_CMC_states.sto </states_file>
+
+	<!-- ANALYSES -->
+	<!--Set of analyses to be run during the investigation.-->
+	<AnalysisSet name="Analyses">
+		<objects>
+      <InducedAccelerations name="InducedAccelerations">
+        <!--Flag (true or false) specifying whether whether on. True by default.-->
+        <on> true </on>
+        <!--Specifies how often to store results during a simulation. More
+					    specifically, the interval (a positive integer) specifies how many
+					    successful integration steps should be taken before results are
+					    recorded again.-->
+        <step_interval> 40 </step_interval>
+        <!--Flag (true or false) indicating whether the results are in degrees or
+					    not.-->
+        <in_degrees> true </in_degrees>
+        <!--Names of the coordinates for which to compute induced
+					    accelerations.The key word 'All' indicates that the analysis should be
+					    performed for all coordinates.-->
+        <coordinate_names> knee_angle_r </coordinate_names>
+        <!--Names of the bodies for which to compute induced accelerations.The key
+					    word 'All' indicates that the analysis should be performed for all
+					    bodies.Use 'center_of_mass' to indicate the induced accelerations of
+					    the system center of mass.-->
+        <body_names> center_of_mass </body_names>
+
+        <!-- Temporary flag to tell the analysis to use the control set with rolling constraints -->
+        <constraint_type> roll </constraint_type>
+        <ConstraintSet>
+          <objects>
+            <RollingOnSurfaceConstraint name="right_foot_contact">
+              <!-- Specify to disable constraint by default -->
+              <isDisabled> true </isDisabled>
+              <!-- Specify the rolling body for this constraint -->
+              <rolling_body> calcn_r </rolling_body>
+              <!-- Specify the body containing the surface (plane) that the rolling body rolls on.  -->
+              <surface_body> ground </surface_body>
+              <!-- Surface's normal direction defined in the surface body -->
+              <surface_normal> 0 1 0 </surface_normal>
+              <!-- Surface height in the direction of the normal in the surface body: -->
+              <surface_height> 0 </surface_height>
+              <!-- Coulomb friction coefficient for rolling on the surface: -->
+              <friction_coefficient> 0.65 </friction_coefficient>
+              <!-- A guess at the area of contact approximated by a circle of radius: -->
+              <contact_radius> 0.01 </contact_radius>
+            </RollingOnSurfaceConstraint>
+            <RollingOnSurfaceConstraint name="left_foot_contact">
+              <!-- Specify to disable constraint by default -->
+              <isDisabled> true </isDisabled>
+              <!-- Specify the rolling body for this constraint -->
+              <rolling_body> calcn_l </rolling_body>
+              <!-- Specify the body containing the surface (plane) that the rolling body rolls on.  -->
+              <surface_body> ground </surface_body>
+              <!-- Surface's normal direction defined in the surface body: -->
+              <surface_normal> 0 1 0 </surface_normal>
+              <!-- Surface height in the direction of the normal in the surface body -->
+              <surface_height> 0 </surface_height>
+              <!-- Coulomb friction coefficient for rolling on the surface: -->
+              <friction_coefficient> 0.650 </friction_coefficient>
+              <!-- A guess at the area of contact approximated by a circle of radius: -->
+              <contact_radius> 0.01 </contact_radius>
+            </RollingOnSurfaceConstraint>
+          </objects>
+        </ConstraintSet>
+        <!-- Analysis uses the force applied to feet in a forward simulation to determine when
+             the constraints should be turned on and off. Currentlly, the constraint is enabled if
+             the applied ground force is above a threshold specified here: -->
+        <force_threshold> 15 </force_threshold>
+      </InducedAccelerations>
+    </objects>
+  </AnalysisSet>
+
+  <!-- EXTERNAL LOADS -->
+  <!--Motion file (.mot) or storage file (.sto) containing the external
+	    loads applied to the model.-->
+	<external_loads_file> GRFS.mot </external_loads_file>
+	<!--Motion file (.mot) or storage file (.sto) containing the model
+	    kinematics corresponding to the external loads.-->
+	<external_loads_model_kinematics_file> subject02_running_arms_ik.mot </external_loads_model_kinematics_file>
+	<!--Name of the body to which the first set of external loads should be
+	    applied (e.g., the name of the right foot).-->
+	<external_loads_body1> calcn_r </external_loads_body1>
+	<!--Name of the body to which the second set of external loads should be
+	    applied (e.g., the name of the left foot).-->
+	<external_loads_body2> calcn_l </external_loads_body2>
+	<!--Low-pass cut-off frequency for filtering the model kinematics
+	    corresponding to the external loads. A negative value results in no
+	    filtering. The default value is -1.0, so no filtering.-->
+	<lowpass_cutoff_frequency_for_load_kinematics> 6 </lowpass_cutoff_frequency_for_load_kinematics>
+
+</AnalyzeTool>
+</OpenSimDocument>
+

@@ -1,0 +1,63 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+    <head>
+        <title>OpenSim Documentation : Motion (.mot) Files</title>
+        <link rel="stylesheet" href="styles/site.css" type="text/css" />
+        <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    </head>
+
+    <body>
+        <div id="page">
+            <div id="main">
+                <div id="main-header" class="pageSectionHeader">
+                    <h1 id="title-heading" class="pagetitle">
+                                                <span id="title-text">
+                            OpenSim Documentation : Motion (.mot) Files
+                        </span>
+                    </h1>
+
+                    <div class="page-metadata">
+                        <p>This page last changed on Apr 15, 2013 by <font color="#0050B2">jenhicks</font>.</p>
+                    </div>
+                </div>
+
+                <div id="content" class="view">
+                    <div id="main-content" class="wiki-content group">
+                    <p>The topics covered in this section include:</p><p><div>
+<ul>
+    <li><a href='#MotionmotFiles-Overview'>Overview</a></li>
+    <li><a href='#MotionmotFiles-RepresentingJointAnglesinamotFile'>Representing Joint Angles in a .mot File</a></li>
+    <li><a href='#MotionmotFiles-RepresentingGroundReactionDatainamotFile'>Representing Ground Reaction Data in a .mot File</a></li>
+</ul></div></p><h2 id="MotionmotFiles-Overview">Overview</h2><p>The <span style="color: rgb(128,0,0);"><em>.mot</em></span> (motion) file format was created by the developers of SIMM (Software for Interactive Musculoskeletal Modeling). The .mot file format is compatible with both SIMM and OpenSim. A .mot file consists of two parts: the motion header and the data. The motion header can come in two forms: (1) SIMM header only or (2) OpenSim and SIMM header.</p><p>Form (1) of a motion header looks like this:</p><div class="code panel" style="border-width: 1px;"><div class="codeContent panelContent">
+<div id="root">
+		<pre class="theme: Confluence; brush: java; gutter: false">subject01_walk1_grf.mot
+version=1
+datacolumns 19
+datarows 9009
+range 0.000000 15.013300
+endheader</pre>
+		</div>
+</div></div><p>The first line must start with <strong>name</strong> followed by a space and the name of the .mot file. The next line should contain <strong>datacolumns</strong>, a space, and then the total number of columns of data in the .mot file (including the time column). The next line should contain <strong>datarows</strong>, a space, and then the total number of rows of data in the .mot file. A later line should contain <strong>range</strong>, a space, the first time value in the time column, a space, and then the last time value in the time column. Optionally, other comments could be included in subsequent lines. The final line <strong>endheader</strong> indicates the end of the header.</p><p>Form (2) of a motion header looks like this:</p><div class="code panel" style="border-width: 1px;"><div class="codeContent panelContent">
+<div id="root">
+		<pre class="theme: Confluence; brush: java; gutter: false">Coordinates
+nRows=500
+nColumns=24
+
+Units are S.I. units (second, meters, Newtons, ...)
+Angles are in degrees.
+ 
+endheader</pre>
+		</div>
+</div></div><p><br class="atl-forced-newline" /> The first line is the name, which is <strong>Coordinates</strong> in this case, to be used to represent this .mot file when it is loaded into OpenSim. This does not have to be the name of the .mot file. The second line contains <strong>nRows=</strong> followed by the number of rows of data in the .mot file. The third line contains <strong>nColumns=</strong> followed by the number of columns of data (including the time column) in the .mot file. The fourth line is empty. </p><p>Note that extra lines containing newline characters or comments can be included before the <strong>endheader</strong> line in the SIMM header section of both forms (1) and (2) of the .mot motion header.</p><p>Immediately after the <strong>endheader</strong> line, the data section of the .mot file begins. The first line after the <strong>endheader</strong> line should contain tab-delimited labels for each column of (tab-delimited) data in the .mot file. The first column is usually <strong>time</strong>, followed by values that vary with time such as generalized coordinates, marker coordinates, ground reaction forces and moments, centers of pressure, muscle activations, or muscle lengths. In old SIMM .mot files, there is no time column, in which case OpenSim uses the <strong>range</strong> specified in the SIMM header and assumes a fixed time step to specify the time interval for the motion. The names of the column labels should match the names used in the model with which the .mot file is intended to be used. The rows below this line of column labels must be the corresponding values of each of these quantities at the time represented by the first number in each row.</p><p>The time values in the time column of a .mot file must be uniformly spaced. An example .mot file (subject01_walk1_grf.mot) is provided in the examples/Gait2354_Simbody directory, which is part of the OpenSim distribution.</p><h2 id="MotionmotFiles-RepresentingJointAnglesinamotFile">Representing Joint Angles in a .mot File</h2><p>Optionally, if joint angles have been computed previously using other software, they may be imported into OpenSim in addition to marker data. The joint angles must be provided in a .sto or .mot file. The .mot file must contain a header. Below the header, there must be a row of column labels, and the corresponding columns of data below that. Time must be the first column and the generalized coordinates of the model must be the subsequent columns. Angles in .mot files are assumed to be in degrees.</p><h2 id="MotionmotFiles-RepresentingGroundReactionDatainamotFile">Representing Ground Reaction Data in a .mot File</h2><p>You need to represent your ground reaction data in a .mot file for input into OpenSim. An example file (subject01_walk1_grf.mot) is given in the examples/Gait2354_Simbody directory, which is part of the OpenSim distribution.</p><p>The first row below the header in the .mot file may contain the following column headings. As of OpenSim version 2.3.2 the column headers need to be unique (the program will ask you to save the file in this format first if using a file that doesn't conform to this format). Also each group of three force, point or torque columns should have a common prefix.: </p><p><strong>time, ground_force_vx, ground_force_vy, ground_force_vz,</strong></p><p><strong>ground_force_px, ground_force_py, ground_force_pz, </strong></p><p><strong>l_ground_force_vx, l_ground_force_vy, l_ground_force_vz, </strong></p><p><strong>l_ground_force_px, l_ground_force_py, l_ground_force_pz, </strong></p><p><strong>ground_torque_x, ground_torque_y, ground_torque_z, </strong></p><p><strong>l_ground_torque_x, l_ground_torque_y, l_ground_torque_z</strong></p><p>All rows below this line contain the corresponding data in each column. Columns 2-4 (ground_force_vx, ground_force_vy, ground_force_vz) represent the <em>x</em>, <em>y</em>, and <em>z</em> components of the right foot's ground reaction force vector in a specific body coordinate system (ground for the model coordinate system). Columns 5-7 represent the <em>x</em>, <em>y</em>, and <em>z</em> components of the right foot's center of pressure (i.e., the point at which the ground reaction force is applied to the right foot). Similarly, columns 8-13 represent the ground reaction force vector and center of pressure for the left foot. Columns 14-16 represent the <em>x</em>, <em>y</em>, and <em>z</em> components of the right foot's ground reaction moment vector (typically in the model coordinate system). The last three columns represent the analogous quantities for the left foot.</p><p> </p><div class="panel" style="background-color: white;border-color: gray;border-style: solid;border-width: 5px;"><div class="panelContent" style="background-color: white;">
+<p>Next: <a href="Storage%2B%2528.sto%2529%2BFiles.html">Storage (.sto) Files</a></p><p>Previous: <a href="Marker%2B%2528.trc%2529%2BFiles.html">Marker (.trc) Files</a></p><p>Home: <a href="Preparing%2BYour%2BData.html">Preparing Your Data</a></p>
+</div></div>
+                    </div>
+
+                    
+                                                      
+                </div>             </div> 
+            <div id="footer" style="background: url(http://simtk-confluence.stanford.edu:8080/images/border/border_bottom.gif) repeat-x;">
+                <p><small>Document generated by Confluence on Feb 24, 2014 09:27</small></p>
+            </div>
+        </div>     </body>
+</html>

@@ -1,0 +1,382 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+    <head>
+        <title>OpenSim Documentation : How Static Optimization Works</title>
+        <link rel="stylesheet" href="styles/site.css" type="text/css" />
+        <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    </head>
+
+    <body>
+        <div id="page">
+            <div id="main">
+                <div id="main-header" class="pageSectionHeader">
+                    <h1 id="title-heading" class="pagetitle">
+                                                <span id="title-text">
+                            OpenSim Documentation : How Static Optimization Works
+                        </span>
+                    </h1>
+
+                    <div class="page-metadata">
+                        <p>This page last changed on Jan 10, 2014 by <font color="#0050B2">chrisdembia</font>.</p>
+                    </div>
+                </div>
+
+                <div id="content" class="view">
+                    <div id="main-content" class="wiki-content group">
+                    <p>As described in <a href="Inverse%2BDynamics.html">Inverse Dynamics</a>, the motion of the model is completely defined by the generalized positions, velocities, and accelerations. The Static Optimization Tool uses the known motion of the model to solve the equations of motion for the unknown generalized forces (e.g., joint torques) subject to one of the following muscle activation-to-force conditions:</p><p>ideal force generators:
+ 
+ 
+<style>
+    #math205698611 .typeset {
+        color: black
+    }
+    #math205698611 {
+        font-size: 150%;
+        margin: 1em 0px;
+    }
+    #jsMath_button, #jsMath_message, #jsMath_Warning {
+        display: none;
+    }
+</style>
+ 
+<script type="text/javascript" src="/includes/js/jsMath/plugins/noImageFonts.js">//<![CDATA[
+
+
+//]]>
+</script>
+<script type="text/javascript" src="/includes/js/jsMath/jsMath.js">//<![CDATA[
+
+
+//]]>
+</script>
+ 
+<span id="math205698611" class="math">
+  \sum_{m=1}^{n} (a_m F_m^0) r_{m,j} = \tau_j
+</span>
+ 
+<script type="text/javascript">//<![CDATA[
+
+//check for use of this macro elsewhere on the page so that we only call jsMath once
+ if (typeof mathFormulaDetected == 'undefined') {
+    var mathFormulaDetected = false;
+}
+jQuery(document).ready(function() {
+    if (!mathFormulaDetected) {
+        jsMath.ProcessBeforeShowing();
+        mathFormulaDetected = true;
+    }
+});
+
+//]]>
+</script>or,</p><p>constrained by force-length-velocity properties:
+ 
+ 
+<style>
+    #math457173921 .typeset {
+        color: black
+    }
+    #math457173921 {
+        font-size: 150%;
+        margin: 1em 0px;
+    }
+    #jsMath_button, #jsMath_message, #jsMath_Warning {
+        display: none;
+    }
+</style>
+ 
+<script type="text/javascript" src="/includes/js/jsMath/plugins/noImageFonts.js">//<![CDATA[
+
+
+//]]>
+</script>
+<script type="text/javascript" src="/includes/js/jsMath/jsMath.js">//<![CDATA[
+
+
+//]]>
+</script>
+ 
+<span id="math457173921" class="math">
+  \sum_{m=1}^{n} [a_m f(F_m^0, l_m, v_m) ] r_{m,j} = \tau_j
+</span>
+ 
+<script type="text/javascript">//<![CDATA[
+
+//check for use of this macro elsewhere on the page so that we only call jsMath once
+ if (typeof mathFormulaDetected == 'undefined') {
+    var mathFormulaDetected = false;
+}
+jQuery(document).ready(function() {
+    if (!mathFormulaDetected) {
+        jsMath.ProcessBeforeShowing();
+        mathFormulaDetected = true;
+    }
+});
+
+//]]>
+</script> </p><p>while minimizing the objective function:
+ 
+ 
+<style>
+    #math991218173 .typeset {
+        color: black
+    }
+    #math991218173 {
+        font-size: 150%;
+        margin: 1em 0px;
+    }
+    #jsMath_button, #jsMath_message, #jsMath_Warning {
+        display: none;
+    }
+</style>
+ 
+<script type="text/javascript" src="/includes/js/jsMath/plugins/noImageFonts.js">//<![CDATA[
+
+
+//]]>
+</script>
+<script type="text/javascript" src="/includes/js/jsMath/jsMath.js">//<![CDATA[
+
+
+//]]>
+</script>
+ 
+<span id="math991218173" class="math">
+  J = \sum_{m=1}^{n} (a_m)^p
+</span>
+ 
+<script type="text/javascript">//<![CDATA[
+
+//check for use of this macro elsewhere on the page so that we only call jsMath once
+ if (typeof mathFormulaDetected == 'undefined') {
+    var mathFormulaDetected = false;
+}
+jQuery(document).ready(function() {
+    if (!mathFormulaDetected) {
+        jsMath.ProcessBeforeShowing();
+        mathFormulaDetected = true;
+    }
+});
+
+//]]>
+</script> </p><p>where <em>n</em> is the number of muscles in the model; <em>a</em><sub>m</sub> is the activation level of muscle <em>m </em>at a discrete time step;
+ 
+ 
+<style>
+    #math244831039 .typeset {
+        color: black
+    }
+    #math244831039 {
+        font-size: 150%;
+        margin: 1em 0px;
+    }
+    #jsMath_button, #jsMath_message, #jsMath_Warning {
+        display: none;
+    }
+</style>
+ 
+<script type="text/javascript" src="/includes/js/jsMath/plugins/noImageFonts.js">//<![CDATA[
+
+
+//]]>
+</script>
+<script type="text/javascript" src="/includes/js/jsMath/jsMath.js">//<![CDATA[
+
+
+//]]>
+</script>
+ 
+<span id="math244831039" class="math">
+  F_m^0
+</span>
+ 
+<script type="text/javascript">//<![CDATA[
+
+//check for use of this macro elsewhere on the page so that we only call jsMath once
+ if (typeof mathFormulaDetected == 'undefined') {
+    var mathFormulaDetected = false;
+}
+jQuery(document).ready(function() {
+    if (!mathFormulaDetected) {
+        jsMath.ProcessBeforeShowing();
+        mathFormulaDetected = true;
+    }
+});
+
+//]]>
+</script> is its maximum isometric force; <em>l<sub>m</sub></em> is its length; <em>v<sub>m </sub></em>is its shortening velocity;
+ 
+ 
+<style>
+    #math437793131 .typeset {
+        color: black
+    }
+    #math437793131 {
+        font-size: 150%;
+        margin: 1em 0px;
+    }
+    #jsMath_button, #jsMath_message, #jsMath_Warning {
+        display: none;
+    }
+</style>
+ 
+<script type="text/javascript" src="/includes/js/jsMath/plugins/noImageFonts.js">//<![CDATA[
+
+
+//]]>
+</script>
+<script type="text/javascript" src="/includes/js/jsMath/jsMath.js">//<![CDATA[
+
+
+//]]>
+</script>
+ 
+<span id="math437793131" class="math">
+  f(F_m^0, l_m, v_m)
+</span>
+ 
+<script type="text/javascript">//<![CDATA[
+
+//check for use of this macro elsewhere on the page so that we only call jsMath once
+ if (typeof mathFormulaDetected == 'undefined') {
+    var mathFormulaDetected = false;
+}
+jQuery(document).ready(function() {
+    if (!mathFormulaDetected) {
+        jsMath.ProcessBeforeShowing();
+        mathFormulaDetected = true;
+    }
+});
+
+//]]>
+</script> is its force-length-velocity surface; <em>r<sub>m,j</sub> </em>is its moment arm about the <em>j</em><sup>th</sup>joint axis;
+ 
+ 
+<style>
+    #math1507240898 .typeset {
+        color: black
+    }
+    #math1507240898 {
+        font-size: 150%;
+        margin: 1em 0px;
+    }
+    #jsMath_button, #jsMath_message, #jsMath_Warning {
+        display: none;
+    }
+</style>
+ 
+<script type="text/javascript" src="/includes/js/jsMath/plugins/noImageFonts.js">//<![CDATA[
+
+
+//]]>
+</script>
+<script type="text/javascript" src="/includes/js/jsMath/jsMath.js">//<![CDATA[
+
+
+//]]>
+</script>
+ 
+<span id="math1507240898" class="math">
+  \tau_j
+</span>
+ 
+<script type="text/javascript">//<![CDATA[
+
+//check for use of this macro elsewhere on the page so that we only call jsMath once
+ if (typeof mathFormulaDetected == 'undefined') {
+    var mathFormulaDetected = false;
+}
+jQuery(document).ready(function() {
+    if (!mathFormulaDetected) {
+        jsMath.ProcessBeforeShowing();
+        mathFormulaDetected = true;
+    }
+});
+
+//]]>
+</script> is the generalized force acting about the <em>j</em><sup>th</sup> joint axis; and <em>p </em>is a user defined constant. Note that for static optimization
+ 
+ 
+<style>
+    #math1173923535 .typeset {
+        color: black
+    }
+    #math1173923535 {
+        font-size: 150%;
+        margin: 1em 0px;
+    }
+    #jsMath_button, #jsMath_message, #jsMath_Warning {
+        display: none;
+    }
+</style>
+ 
+<script type="text/javascript" src="/includes/js/jsMath/plugins/noImageFonts.js">//<![CDATA[
+
+
+//]]>
+</script>
+<script type="text/javascript" src="/includes/js/jsMath/jsMath.js">//<![CDATA[
+
+
+//]]>
+</script>
+ 
+<span id="math1173923535" class="math">
+  f(F_m^0, l_m, v_m)
+</span>
+ 
+<script type="text/javascript">//<![CDATA[
+
+//check for use of this macro elsewhere on the page so that we only call jsMath once
+ if (typeof mathFormulaDetected == 'undefined') {
+    var mathFormulaDetected = false;
+}
+jQuery(document).ready(function() {
+    if (!mathFormulaDetected) {
+        jsMath.ProcessBeforeShowing();
+        mathFormulaDetected = true;
+    }
+});
+
+//]]>
+</script> <span style="color: rgb(34,34,34);">computes the active fiber force along the tendon assuming an inextensible tendon and does not include contribution from muscles' parallel elastic element.</span></p><p> </p><div class="panel" style="background-color: white;border-color: gray;border-style: solid;border-width: 5px;"><div class="panelContent" style="background-color: white;">
+<p>Next: <a href="How%2Bto%2BUse%2Bthe%2BStatic%2BOptimization%2BTool.html">How to Use the Static Optimization Tool</a></p><p>Previous: <a href="Getting%2BStarted%2Bwith%2BStatic%2BOptimization.html">Getting Started with Static Optimization</a></p><p>Home: <a href="Static%2BOptimization.html">Static Optimization</a></p>
+</div></div>
+                    </div>
+
+                                        <div class="pageSection group">
+                        <div class="pageSectionHeader">
+                            <h2 id="attachments" class="pageSectionTitle">Attachments:</h2>
+                        </div>
+
+                        <div class="greybox" align="left">
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/3376183/3737081.png">StaticOpt1.png</a> (image/png)
+                                <br/>
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/3376183/3737080.png">StaticOpt2.png</a> (image/png)
+                                <br/>
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/3376183/3737079.png">StaticOpt3.png</a> (image/png)
+                                <br/>
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/3376183/3737078.png">StaticOpt4.png</a> (image/png)
+                                <br/>
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/3376183/3737077.png">StaticOpt5.png</a> (image/png)
+                                <br/>
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/3376183/3737076.png">StaticOpt6.png</a> (image/png)
+                                <br/>
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/3376183/3737075.docx">StaticOptimizationEquations.docx</a> (application/vnd.openxmlformats-officedocument.wordprocessingml.document)
+                                <br/>
+                                                    </div>
+                    </div>
+                    
+                                                      
+                </div>             </div> 
+            <div id="footer" style="background: url(http://simtk-confluence.stanford.edu:8080/images/border/border_bottom.gif) repeat-x;">
+                <p><small>Document generated by Confluence on Feb 24, 2014 09:27</small></p>
+            </div>
+        </div>     </body>
+</html>

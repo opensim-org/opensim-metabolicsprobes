@@ -1,0 +1,152 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+    <head>
+        <title>OpenSim Documentation : How to Use IAA</title>
+        <link rel="stylesheet" href="styles/site.css" type="text/css" />
+        <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    </head>
+
+    <body>
+        <div id="page">
+            <div id="main">
+                <div id="main-header" class="pageSectionHeader">
+                    <h1 id="title-heading" class="pagetitle">
+                                                <span id="title-text">
+                            OpenSim Documentation : How to Use IAA
+                        </span>
+                    </h1>
+
+                    <div class="page-metadata">
+                        <p>This page last changed on Jan 06, 2014 by <font color="#0050B2">dunne.jimmy</font>.</p>
+                    </div>
+                </div>
+
+                <div id="content" class="view">
+                    <div id="main-content" class="wiki-content group">
+                    <p>The topics covered in this section include:</p><p><div>
+<ul>
+    <li><a href='#HowtoUseIAA-Command-lineExecution'>Command-line Execution</a></li>
+    <li><a href='#HowtoUseIAA-SetupFilesSetupFilesandXMLTagDefinitions'><span class="confluence-anchor-link" id="HowtoUseIAA-SetupFiles" />Setup Files and XML Tag Definitions</a></li>
+<ul>
+    <li><a href='#HowtoUseIAA-Toc174781458InducedAccelerationAnalysisProperties'><span class="confluence-anchor-link" id="HowtoUseIAA-Toc174781458" />Induced Acceleration Analysis Properties</a></li>
+</ul>
+    <li><a href='#HowtoUseIAA-EvaluatingInducedAccelerationswithStaticOptimizationResults'>Evaluating Induced Accelerations with Static Optimization Results</a></li>
+</ul></div></p><h2 id="HowtoUseIAA-Command-lineExecution">Command-line Execution</h2><p>The Induced Acceleration Analysis is run using the command <strong>analyze -S &lt;setup file name&gt;,</strong> for example,</p><div class="code panel" style="border-width: 1px;"><div class="codeContent panelContent">
+<div id="root">
+		<pre class="theme: Confluence; brush: java; gutter: false">analyze -S subject01_Setup_IAA.xml</pre>
+		</div>
+</div></div><h2 id="HowtoUseIAA-SetupFilesSetupFilesandXMLTagDefinitions"><span class="confluence-anchor-link" id="HowtoUseIAA-SetupFiles"></span>Setup Files and XML Tag Definitions</h2><h3 id="HowtoUseIAA-Toc174781458InducedAccelerationAnalysisProperties"><span class="confluence-anchor-link" id="HowtoUseIAA-Toc174781458"></span>Induced Acceleration Analysis Properties</h3><p>The Induced Acceleration Analysis is performed using the AnalyzeTool (inputs defined in the section on <a href="Getting%2BStarted%2Bwith%2BAnalyses.html">Getting Started with Analyses</a>) and is added to its set of Analyses. The specific XML properties for an Induced Accelerations analyis are presented below.  You can also <a href="attachments/3376227/3737323.xml">download the setup file</a> used to analyze a running simulation as published in<em> Hamner, SR, Seth, A, Delp, SL. Muscle contributions to propulsion and support during running, Journal of Biomechanics, vol. 43, pp. 2709-2716, 2010.</em></p><p><strong>Example</strong>: Sample properties for the setup of an Induced Acceleration Analysis</p><div class="code panel" style="border-width: 1px;"><div class="codeContent panelContent">
+<div id="root">
+		<pre class="theme: Confluence; brush: html/xml; gutter: false">&lt;InducedAccelerations name="InducedAccelerations"&gt;
+  
+&lt;!--Flag (true or false) specifying whether whether on. --&gt;
+&lt;on&gt; true &lt;/on&gt;
+ 
+&lt;!-- Starting time for the Analysis.--&gt;
+&lt;start_time&gt; 0.0 &lt;/start_time&gt;
+ 
+&lt;!--End time for the Analysis.--&gt;
+&lt;end_time&gt; 1.5 &lt;/end_time&gt;
+ 
+&lt;!--Specifies how often to store results during a simulation.--&gt;
+&lt;step_interval&gt; 10 &lt;/step_interval&gt;
+ 
+&lt;!--Flag (true or false) indicating whether output angles are in degrees.--&gt;
+&lt;in_degrees&gt; true &lt;/in_degrees&gt;
+ 
+&lt;!--Names of the coordinates for which to compute induced accelerations. The key word 'All' indicates that the analysis should be performed for all coordinates.--&gt;
+&lt;coordinate_names&gt; knee_angle_r &lt;/coordinate_names&gt;
+
+&lt;!--Names of the bodies for which to compute induced accelerations. The key word 'All' indicates that the analysis should be performed for all bodies. Use 'center_of_mass' for the induced accelerations of the system mass center --&gt;
+&lt;body_names&gt; center_of_mass &lt;/body_names&gt;
+
+&lt;!-- ConstraintSet for replacing the ExternalForces applied to the model. The analysis expects a constraint for every ExternalForce applied to the model and that the corresponding constraint is listed in the same order. --&gt;
+&lt;ConstraintSet&gt;
+  &lt;objects&gt;
+  &lt;RollingOnSurfaceConstraint name="right_foot_contact"&gt;
+  
+    &lt;!-- Specify to disable constraint by default --&gt;
+    &lt;isDisabled&gt; true &lt;/isDisabled&gt;
+
+    &lt;!-- Specify the rolling body for this constraint --&gt;
+    &lt;rolling_body&gt; calcn_r &lt;/rolling_body&gt;
+
+    &lt;!-- Specify the body containing the surface (plane) that the rolling body rolls on. --&gt;
+    &lt;surface_body&gt; ground &lt;/surface_body&gt;
+
+    &lt;!-- Surface's normal direction defined in the surface body --&gt;
+    &lt;surface_normal&gt; 0 1 0 &lt;/surface_normal&gt;
+
+    &lt;!-- Surface height in the direction of the normal in the surface body: --&gt;
+    &lt;surface_height&gt; 0 &lt;/surface_height&gt;
+
+    &lt;!-- Coulomb friction coefficient for rolling on the surface--&gt;
+    &lt;friction_coefficient&gt; 0.75 &lt;/friction_coefficient&gt;
+
+    &lt;!-- A guess at the area of contact approximated by a circle--&gt;
+    &lt;contact_radius&gt; 0.01 &lt;/contact_radius&gt;
+  &lt;/RollingOnSurfaceConstraint&gt;
+
+  &lt;RollingOnSurfaceConstraint name="left_foot_contact"&gt;
+    &lt;!-- Specify to disable constraint by default --&gt;
+    &lt;isDisabled&gt; true &lt;/isDisabled&gt;
+
+    &lt;!-- Specify the rolling body for this constraint --&gt;
+     &lt;rolling_body&gt; calcn_l &lt;/rolling_body&gt;
+
+    &lt;!-- Specify the body containing the surface (plane) that the rolling body rolls on. --&gt;
+    &lt;surface_body&gt; ground &lt;/surface_body&gt;
+
+    &lt;!-- Surface's normal direction defined in the surface body --&gt;
+    &lt;surface_normal&gt; 0 1 0 &lt;/surface_normal&gt;
+
+    &lt;!-- Surface height in the direction of the normal in the surface body --&gt;
+    &lt;surface_height&gt; 0 &lt;/surface_height&gt;
+
+    &lt;!-- Coulomb friction coefficient for rolling on the surface: --&gt;
+    &lt;friction_coefficient&gt; 0.75 &lt;/friction_coefficient&gt;
+
+    &lt;!-- A guess at the area of contact approximated by a circle --&gt;
+    &lt;contact_radius&gt; 0.01 &lt;/contact_radius&gt;
+  &lt;/RollingOnSurfaceConstraint&gt;
+  &lt;/objects&gt;
+&lt;/ConstraintSet&gt;
+
+&lt;!-- Minimum magnitude of force necessary to turn on constraint.--&gt;
+&lt;force_threshold&gt; 6 &lt;/force_threshold&gt;
+
+&lt;!-- Only compute the potential (acceleration/N) of an actuator to accelerate the model..--&gt;
+&lt;compute_potentials_only&gt; false &lt;/compute_potentials_only&gt;
+
+&lt;!-- Report individual (induced) force contributions to constraint reactions forces in addition to resulting accelerations --&gt;
+&lt;report_constraint_reactions&gt; true &lt;/report_constraint_reactions&gt;
+ 
+&lt;/InducedAccelerations&gt;</pre>
+		</div>
+</div></div><h2 id="HowtoUseIAA-EvaluatingInducedAccelerationswithStaticOptimizationResults">Evaluating Induced Accelerations with Static Optimization Results</h2><p>The Induced Acceleration Analysis uses the states and controls from a forward simulation or provided by the AnalyzeTool to compute all actuator forces, including muscle forces, and to apply them to the model to determine their contributions to the system acceleration.  The Induced Acceleration Analysis does not directly take actuator forces as an input, however, if the option to <strong>&lt;compute_potentials_only&gt;</strong> is true, then all forces are set to unity (controls and states do not determine the applied force) and the result is the potential of that actuator to accelerate the system per unit of force (moment). The potentials can be used to compute the induced acceleration when muscle forces are known, for example, from performing Static Optimization. Taking the product of the muscle force (estimated from Static Optimization) and the potential of a muscle to accelerate a joint or the center of mass (from an Induced Acceleration Analysis) yields each muscle force's contribution to the acceleration of interest. The product of muscle forces and their potentials is easily performed using Excel or MATLAB.</p><p> </p><div class="panel" style="background-color: white;border-color: gray;border-style: solid;border-width: 5px;"><div class="panelContent" style="background-color: white;">
+<p>Next: <a href="Joint%2BReactions%2BAnalysis.html">Joint Reactions Analysis</a></p><p>Previous: <a href="How%2BIAA%2BWorks.html">How IAA Works</a></p><p>Home: <a href="Induced%2BAcceleration%2BAnalysis.html">Induced Acceleration Analysis</a></p>
+</div></div><p><br class="atl-forced-newline" /><br class="atl-forced-newline" /><br class="atl-forced-newline" /><br class="atl-forced-newline" /></p>
+                    </div>
+
+                                        <div class="pageSection group">
+                        <div class="pageSectionHeader">
+                            <h2 id="attachments" class="pageSectionTitle">Attachments:</h2>
+                        </div>
+
+                        <div class="greybox" align="left">
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/3376227/5964033.xml">example_Setup_IAA_Roll.xml</a> (text/xml)
+                                <br/>
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="attachments/3376227/3737323.xml">example_Setup_IAA_Roll.xml</a> (text/xml)
+                                <br/>
+                                                    </div>
+                    </div>
+                    
+                                                      
+                </div>             </div> 
+            <div id="footer" style="background: url(http://simtk-confluence.stanford.edu:8080/images/border/border_bottom.gif) repeat-x;">
+                <p><small>Document generated by Confluence on Feb 24, 2014 09:28</small></p>
+            </div>
+        </div>     </body>
+</html>
