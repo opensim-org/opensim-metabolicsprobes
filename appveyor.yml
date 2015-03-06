@@ -1,5 +1,7 @@
 # Written by referring to OpenSim's appveyor.yml.
 
+shallow_clone: true
+
 platform: x64
 
 environment:
