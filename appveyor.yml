@@ -1,6 +1,6 @@
 # Written by referring to OpenSim's appveyor.yml.
 
-shallow_clone: true
+# shallow_clone: true
 
 environment:
   matrix:
