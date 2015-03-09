@@ -44,5 +44,5 @@ after_test:
   - analyze -S subject01_Setup_Analyze_Metabolics.xml -L ../osimMuscleMetabolicsProbes
 
   # Create zip of the installation.
-  - 7z a opensim-metabolicsprobes_opensim_%NICKN%.zip %APPVEYOR_BUILD_FOLDER%/install/
-  - appveyor PushArtifact opensim-metabolicsprobes_opensim_%NICKN%.zip
+  - 7z a opensim-metabolicsprobes_v%NICKN%.zip %APPVEYOR_BUILD_FOLDER%/install/
+  - appveyor PushArtifact opensim-metabolicsprobes_v%NICKN%.zip
