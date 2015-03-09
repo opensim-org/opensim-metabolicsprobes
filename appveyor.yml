@@ -1,6 +1,6 @@
 # Written by referring to OpenSim's appveyor.yml.
 
-# shallow_clone: true
+shallow_clone: true
 
 environment:
   matrix:
@@ -18,31 +18,31 @@ environment:
       VSVER: Visual Studio 10
 
 init:
-  - SET PATH=C:/projects/opensim-metabolicsprobes/%OSIMDIR%/bin;%PATH%
+  - SET PATH=%APPVEYOR_BUILD_FOLDER%/%OSIMDIR%/bin;%PATH%
 
 build_script:
-  - mkdir "C:/projects/opensim-metabolicsprobes/build"
-  - cd "C:/projects/opensim-metabolicsprobes/build"
+  - mkdir "%APPVEYOR_BUILD_FOLDER%/build"
+  - cd "%APPVEYOR_BUILD_FOLDER%/build"
   # Configure.
   - dir ..
-  - cmake .. -G"%VSVER%" -DOPENSIM_INSTALL_DIR="C:/projects/opensim-metabolicsprobes/%OSIMDIR%" -DCMAKE_INSTALL_PREFIX="C:/projects/opensim-metabolicsprobes/install"
+  - cmake .. -G"%VSVER%" -DOPENSIM_INSTALL_DIR="%APPVEYOR_BUILD_FOLDER%/%OSIMDIR%" -DCMAKE_INSTALL_PREFIX="%APPVEYOR_BUILD_FOLDER%/install"
   # Compile.
   #- MSBuild OpenSimMuscleMetabolicsProbes.sln /target:ALL_BUILD /p:Configuration=Release /maxcpucount:4 /verbosity:quiet
   - cmake --build . --config RelWithDebInfo --target ALL_BUILD -- /verbosity:quiet
 
 test_script:
-  - cd "C:/projects/opensim-metabolicsprobes/build"
+  - cd "%APPVEYOR_BUILD_FOLDER%/build"
   - ctest -V
 
 after_test:
-  - cd "C:/projects/opensim-metabolicsprobes/build"
+  - cd "%APPVEYOR_BUILD_FOLDER%/build"
   # Install.
   - cmake --build . --config RelWithDebInfo --target INSTALL -- /verbosity:quiet
 
   # Run the analysis.
-  - cd "C:/projects/opensim-metabolicsprobes/install/examples"
+  - cd "%APPVEYOR_BUILD_FOLDER%/install/examples"
   - analyze -S subject01_Setup_Analyze_Metabolics.xml -L ../osimMuscleMetabolicsProbes
 
   # Create zip of the installation.
-  - 7z a opensim-metabolicsprobes_opensim_%NICKN%.zip C:/projects/opensim-metabolicsprobes/install/
+  - 7z a opensim-metabolicsprobes_opensim_%NICKN%.zip %APPVEYOR_BUILD_FOLDER%/install/
   - appveyor PushArtifact opensim-metabolicsprobes_opensim_%NICKN%.zip
