@@ -16,6 +16,9 @@ environment:
     - OSIMDIR: OpenSim 3.2-32bit-VS10
       NICKN: 3.2_32bit_vs10
       VSVER: Visual Studio 10
+    - OSIMDIR: OpenSim 3.2-32bit-VS12
+      NICKN: 3.2_32bit_vs12
+      VSVER: Visual Studio 12
 
 init:
   - SET PATH=%APPVEYOR_BUILD_FOLDER%/%OSIMDIR%/bin;%PATH%
